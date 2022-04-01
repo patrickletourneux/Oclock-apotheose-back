@@ -9,31 +9,31 @@ CREATE TABLE "user" (
   pseudonym TEXT NOT NULL,
   avatar_img TEXT,
   created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id) /* DEFAULT NULL ???*/
+  house_id INT REFERENCES house(id) /* a tester avec et sans*/
 );
 
 CREATE TABLE "house" ( 
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
-  /*password TEXT,*/
+  password TEXT DEFAULT FLOOR RANDOM()*(9999999) UNIQUE, /* placer unique avant ? */
   created_at TIMESTAMPTZ NOW(),
-  user_id REFERENCES user(id) /* DEFAULT NULL ???*/
+  user_id REFERENCES user(id) NOT NULL
 );
 
-/* CREATE TABLE "generic_task" (INT
+CREATE TABLE "generic_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
   value INT NOT NULL,
   created_at TIMESTAMPTZ NOW()
 );
-*/
+
 
 CREATE TABLE "house_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
   value INT NOT NULL,
   created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id)
+  house_id INT REFERENCES house(id) NOT NULL
 );
 
 CREATE TABLE "done_task" (
@@ -41,18 +41,20 @@ CREATE TABLE "done_task" (
   name TEXT NOT NULL,
   value INT NOT NULL,
   created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id), /* J'ai mis une foreign key d'après les instructions du MLD de O'Clock*/
-  user_id INT REFERENCES user(id) /*idem*/
+  house_id INT REFERENCES house(id) NOT NULL, 
+  user_id INT REFERENCES user(id) NOT NULL 
 );
 
-CREATE TABLE "competition" (
+CREATE TABLE "reward" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   reward TEXT DEFAULT NULL,
   title TEXT DEFAULT NULL,
-  created_at TIMESTAMPTZ NOW()
+  created_at TIMESTAMPTZ NOW(),
+  house_id INT REFERENCES house(id) NOT NULL
 );
 
-CREATE TABLE "attribue" (
+CREATE TABLE "attributed_task" (
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   user_id INT REFERENCES user(id),
   house_id INT REFERENCES house(id)
 );
