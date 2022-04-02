@@ -5,7 +5,7 @@ const express = require('express');
 // const updateSchema = require('../../validation/schemas/categoryUpdateSchema');
 
 const userController = require('../../controllers/api/user');
-// const controllerHandler = require('../../helpers/controllerHandler');
+const controllerHandler = require('../../helpers/controllerHandler');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router
      * @return {ApiError} 404 - Category not found - application/json
      */
     // .post(validate('body', createSchema), controllerHandler(userController.create));
-    .post(userController.createOne);
+    .post(controllerHandler(userController.createOne));
 
 
 router
