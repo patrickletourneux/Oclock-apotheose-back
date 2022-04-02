@@ -6,7 +6,7 @@ const validator = require("email-validator");
 const bcrypt = require("bcrypt");
 
 module.exports = {
-    
+
     /**
      * user controller to post a new user.
      * ExpressMiddleware signature
@@ -16,25 +16,40 @@ module.exports = {
      */
     async createOne(req, res) {
         debug('dans createOne');
-        debug('req.body.email ',req.body.email)
+        debug('req.body.email ', req.body.email)
         // look if a user already exits with this email
         const user = await userDataMapper.findOneByEmail(req.body.email);
-        if (!user) {
+        if (user) {
+            debug('user deja existant avec cet email pas possible de cree')
+            return res.json('user deja existant avec cet email, pas possible de cree');
+            // throw new ApiError('user already exist', { statusCode: 404 });
+        } else {
             debug('pas de user trouvé, user à creer dans bdd');
             // check email with email-validator
-            if (validator.validate(req.body.email)){
+            if (validator.validate(req.body.email)) {
                 // encrypt password with bcrypt
                 req.body.password = await bcrypt.hash(req.body.password, 10);
                 const newUser = await userDataMapper.insert(req.body);
-                return res.json(newUser);
+                jwt.sign({
+                    newUser: newUser
+                }, process.env.SECRETKEYJWT, {
+                    expiresIn: '200s'
+                }, (err, token) => {
+                    debug('token generation')
+                    debug(token)
+                    return res.json({
+                        token: token
+                    });
+
+                });
+            } else {
+                debug('email pas au bon format');
             }
-            
-            
+
+
         }
-        debug('user deja existant avec cet email pas possible de cree')
-        return res.json('user deja existant avec cet email, pas possible de cree');
-        // throw new ApiError('user already exist', { statusCode: 404 });
-        
+
+
     },
     /**
      * signin controller to get a user by email and check access.
@@ -43,7 +58,7 @@ module.exports = {
      * @param {object} res Express response object
      * @returns {string} Route API JSON response
      */
-     async findOneByEmail(req, res) {
+    async findOneByEmail(req, res) {
         debug('dans findOneByEmail');
         // check if a user exist in dbb for this email
         const user = await userDataMapper.findOneByEmail(req.body.email);
@@ -51,30 +66,31 @@ module.exports = {
             debug('pas de user trouvé')
             return res.json('pas de user trouvé pour cet email');
             // throw new ApiError('user not found', { statusCode: 404 });
-            
+
         }
         debug('user trouvé pour cet email')
         //check password with bcrypt
         if (await bcrypt.compare(req.body.password, user.password)) {
             debug('user et password ok')
             // token generation with user information inside token and send it to the front
-            jwt.sign({user:user},process.env.SECRETKEYJWT,{expiresIn:'200s'} , (err,token)=>{
+            jwt.sign({
+                user: user
+            }, process.env.SECRETKEYJWT, {
+                expiresIn: '200s'
+            }, (err, token) => {
                 debug('token generation')
                 debug(token)
-                res.json({
-                    token:token
+                return res.json({
+                    token: token
                 });
-        
+
             });
 
         } else {
             // sinon je lui envoie un message d'erreur
             debug('password nok')
             res.status(400).json("il y a une erreur dans le couple login/mot de passe")
-            
+
         }
-
-
-        // return res.json(user);
     },
 };
