@@ -6,7 +6,7 @@ const debug = require('debug')('routers:signin');
 // const updateSchema = require('../../validation/schemas/categoryUpdateSchema');
 
 const controller = require('../../controllers/api/user');
-// const controllerHandler = require('../../helpers/controllerHandler');
+const controllerHandler = require('../../helpers/controllerHandler');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router
      * @return {ApiError} 400 - Bad request response - application/json
      * @return {ApiError} 404 - Category not found - application/json
      */
-    .post(controller.findOneByEmail)
+    .post(controllerHandler(controller.findOneByEmail))
    
 
 module.exports = router;

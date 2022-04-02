@@ -1,6 +1,9 @@
 const userDataMapper = require('../../datamappers/user');
 const debug = require('debug')('user controller');
 // const { ApiError } = require('../../helpers/errorHandler');
+const jwt = require('jsonwebtoken');
+const validator = require("email-validator");
+const bcrypt = require("bcrypt");
 
 module.exports = {
     
@@ -14,11 +17,17 @@ module.exports = {
     async createOne(req, res) {
         debug('dans createOne');
         debug('req.body.email ',req.body.email)
+        // look if a user already exits with this email
         const user = await userDataMapper.findOneByEmail(req.body.email);
         if (!user) {
             debug('pas de user trouvé, user à creer dans bdd');
-            const newUser = await userDataMapper.insert(req.body);
-            return res.json(newUser);
+            // check email with email-validator
+            if (validator.validate(req.body.email)){
+                // encrypt password with bcrypt
+                req.body.password = await bcrypt.hash(req.body.password, 10);
+                const newUser = await userDataMapper.insert(req.body);
+                return res.json(newUser);
+            }
             
             
         }
@@ -36,6 +45,7 @@ module.exports = {
      */
      async findOneByEmail(req, res) {
         debug('dans findOneByEmail');
+        // check if a user exist in dbb for this email
         const user = await userDataMapper.findOneByEmail(req.body.email);
         if (!user) {
             debug('pas de user trouvé')
@@ -43,7 +53,28 @@ module.exports = {
             // throw new ApiError('user not found', { statusCode: 404 });
             
         }
-        debug('user trouvé')
-        return res.json(user);
+        debug('user trouvé pour cet email')
+        //check password with bcrypt
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            debug('user et password ok')
+            // token generation with user information inside token and send it to the front
+            jwt.sign({user:user},process.env.SECRETKEYJWT,{expiresIn:'200s'} , (err,token)=>{
+                debug('token generation')
+                debug(token)
+                res.json({
+                    token:token
+                });
+        
+            });
+
+        } else {
+            // sinon je lui envoie un message d'erreur
+            debug('password nok')
+            res.status(400).json("il y a une erreur dans le couple login/mot de passe")
+            
+        }
+
+
+        // return res.json(user);
     },
 };
