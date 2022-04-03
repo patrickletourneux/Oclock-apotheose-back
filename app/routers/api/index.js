@@ -1,5 +1,4 @@
 const express = require('express');
-const debug = require('debug')('router:index');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');
@@ -11,8 +10,8 @@ const signinRouter = require('./signin');
 const router = express.Router();
 
 router.use((_, res, next) => {
-    res.type('json');
-    next();
+  res.type('json');
+  next();
 });
 
 // Route par défaut de l'API, ici on la configure pour toutes les méthodes
@@ -21,8 +20,7 @@ router.use((_, res, next) => {
 
 // On préfixe les routers de l'API
 router.use('/signin', signinRouter);
-router.use('/users',userRouter);
-
+router.use('/users', userRouter);
 
 // router.use(() => {
 //     throw new ApiError('API Route not found', { statusCode: 404 });

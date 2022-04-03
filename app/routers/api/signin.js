@@ -1,5 +1,4 @@
 const express = require('express');
-const debug = require('debug')('routers:signin');
 
 // const validate = require('../../validation/validator');
 // const createSchema = require('../../validation/schemas/categoryCreateSchema');
@@ -11,17 +10,16 @@ const controllerHandler = require('../../helpers/controllerHandler');
 const router = express.Router();
 
 router
-    .route('/')
-    /**
+  .route('/')
+/**
      * POST /api/v1/signin
      * @summary POST user email/password
      * @tags User
-     * @param {InputUser} request.body.required - category info
+     * @param {InputUser} request.body.required - user info
      * @return {User} 200 - success response - application/json
      * @return {ApiError} 400 - Bad request response - application/json
      * @return {ApiError} 404 - Category not found - application/json
      */
-    .post(controllerHandler(controller.findOneByEmail))
-   
+  .post(controllerHandler(controller.findOneByEmail));
 
 module.exports = router;
