@@ -6,10 +6,10 @@ const debug = require('debug')('controllerHandler');
  * @returns {object} a controller as middleware function
  */
 module.exports = (controllerMethod) => async (req, res, next) => {
-    try {
-        await controllerMethod(req, res, next);
-    } catch (err) {
-        debug('controllerHandler')
-        next(err);
-    }
+  try {
+    await controllerMethod(req, res, next);
+  } catch (err) {
+    debug('controllerHandler');
+    next(err);
+  }
 };

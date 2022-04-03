@@ -1,5 +1,4 @@
 const express = require('express');
-const debug = require('debug')('routers:index');
 
 const apiRouter = require('./api');
 
