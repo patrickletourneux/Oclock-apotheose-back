@@ -1,8 +1,8 @@
 const express = require('express');
 
-// const validate = require('../../validation/validator');
-// const createSchema = require('../../validation/schemas/categoryCreateSchema');
-// const updateSchema = require('../../validation/schemas/categoryUpdateSchema');
+const validate = require('../../validation/validator');
+const userCreateSchema = require('../../validation/schemas/userCreateSchema');
+const userUpdateSchema = require('../../validation/schemas/userUpdateSchema');
 
 const userController = require('../../controllers/api/user');
 const controllerHandler = require('../../helpers/controllerHandler');
@@ -20,8 +20,8 @@ router
      * @return {ApiError} 400 - Bad request response - application/json
      * @return {ApiError} 404 - User not found - application/json
      */
-// .post(validate('body', createSchema), controllerHandler(userController.create));
-  .post(controllerHandler(userController.createOne));
+  .post(validate('body', userCreateSchema), controllerHandler(userController.createOne));
+  // .post(controllerHandler(userController.createOne));
 
 router
   .route('/:id(\\d+)')
@@ -46,7 +46,7 @@ router
      * @return {ApiError} 404 - User not found - application/json
      */
 // .patch(validate('body', updateSchema), controllerHandler(userController.update))
-  .patch(controllerHandler(userController.update))
+  .patch(validate('body', userUpdateSchema), controllerHandler(userController.update))
   /**
      * DELETE /api/v1/users/{id}
      * @summary Delete one user
