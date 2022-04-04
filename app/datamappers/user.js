@@ -79,21 +79,20 @@ module.exports = {
      * @param {User} user - Les données à modifier
      * @returns {User} - Le user modifié
      */
-  async update(id, category) {
-    const fields = Object.keys(category).map((prop, index) => `"${prop}" = $${index + 1}`);
-    const values = Object.values(category);
+  async update(id, userInReqBody) {
+    const fields = Object.keys(userInReqBody).map((prop, index) => `"${prop}" = $${index + 1}`);
+    const values = Object.values(userInReqBody);
 
-    const savedCategory = await client.query(
+    const savedUser = await client.query(
       `
-                UPDATE category SET
+                UPDATE "user" SET
                     ${fields}
                 WHERE id = $${fields.length + 1}
                 RETURNING *
             `,
       [...values, id],
     );
-
-    return savedCategory.rows[0];
+    return savedUser.rows[0];
   },
 
   /**

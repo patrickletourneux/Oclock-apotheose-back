@@ -102,13 +102,28 @@ module.exports = {
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (user) {
       debug('user:', user.id, ' a effacer de la bdd');
-      // check if a user exist in dbb for this email, id in req.params.id
+      // delete the user in dbb
       const result = await userDataMapper.delete(req.params.id);
       debug('result ', result);
       if (result) {
         return res.status(200).json('user supprimmé de la bdd');
       }
       return res.status(400).json('erreur lors de la suppression du user');
+    }
+    return res.status(400).json('pas de user avec cet id');
+  },
+  async update(req, res) {
+    debug('dans update');
+    // check if a user exist in dbb for this email, id in req.params.id
+    const user = await userDataMapper.findOneByPk(req.params.id);
+    if (user) {
+      debug('user à update : ', user);
+      if (req.body.password) {
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+      }
+      const userUpdated = await userDataMapper.update(req.params.id, req.body);
+      debug('userUpdated ', userUpdated);
+      return res.status(200).json(userUpdated);
     }
     return res.status(400).json('pas de user avec cet id');
   },
