@@ -102,7 +102,7 @@ module.exports = {
      * @returns {boolean} - Le résultat de la suppression
      */
   async delete(id) {
-    const result = await client.query('DELETE FROM category WHERE id = $1', [id]);
+    const result = await client.query('DELETE FROM "user" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
     // le rowcount est égal à 1 (truthy)soit non et il est égal a 0 (falsy)
     // On cast le truthy/falsy en vrai booléen

@@ -96,4 +96,20 @@ module.exports = {
     }
     return res.status(200).json(user);
   },
+  async deleteOneByPk(req, res) {
+    debug('dans deleteOneByPk');
+    // check if a user exist in dbb for this email, id in req.params.id
+    const user = await userDataMapper.findOneByPk(req.params.id);
+    if (user) {
+      debug('user:', user.id, ' a effacer de la bdd');
+      // check if a user exist in dbb for this email, id in req.params.id
+      const result = await userDataMapper.delete(req.params.id);
+      debug('result ', result);
+      if (result) {
+        return res.status(200).json('user supprimmé de la bdd');
+      }
+      return res.status(400).json('erreur lors de la suppression du user');
+    }
+    return res.status(400).json('pas de user avec cet id');
+  },
 };

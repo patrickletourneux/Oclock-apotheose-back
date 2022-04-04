@@ -57,6 +57,6 @@ router
      * @return {ApiError} 404 - User not found - application/json
      */
 // .delete(controllerHandler(userController.delete));
-// .delete(userController.delete);
+  .delete(controllerHandler(userController.deleteOneByPk));
 
 module.exports = router;
