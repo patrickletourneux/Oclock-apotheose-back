@@ -41,7 +41,7 @@ module.exports = {
      * @returns {(User|undefined)} -
      * Le user souhaité ou undefined si aucun user à cet id
      */
-  async findByPk(id) {
+  async findOneByPk(id) {
     debug('dans findByPk');
     const result = await client.query('SELECT * FROM "user" WHERE id = $1;', [id]);
 

@@ -79,10 +79,20 @@ module.exports = {
           user_id: user.id,
         });
       });
-    } else {
-      // sinon je lui envoie un message d'erreur
-      debug('password nok');
-      return res.status(400).json('il y a une erreur dans le couple login/mot de passe');
     }
+    // sinon je lui envoie un message d'erreur
+    debug('password nok');
+    return res.status(400).json('il y a une erreur dans le couple login/mot de passe');
+  },
+  async findOneByPk(req, res) {
+    debug('dans findOneByPk');
+    // check if a user exist in dbb for this email, id in req.params.id
+    const user = await userDataMapper.findOneByPk(req.params.id);
+    if (!user) {
+      debug('pas de user trouvé pour cet id');
+      return res.status(400).json('pas de user trouvé pour cet id');
+      // throw new ApiError('user not found', { statusCode: 404 });
+    }
+    return res.status(200).json(user);
   },
 };

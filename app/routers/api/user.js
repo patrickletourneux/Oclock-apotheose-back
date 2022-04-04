@@ -24,7 +24,7 @@ router
   .post(controllerHandler(userController.createOne));
 
 router
-  .route('/:id(\\d+)');
+  .route('/:id(\\d+)')
 /**
      * GET /api/users/{id}
      * @summary Get one user by id
@@ -34,7 +34,7 @@ router
      * @return {ApiError} 400 - Bad request response - application/json
      * @return {ApiError} 404 - User not found - application/json
      */
-// .get(controllerHandler(controller.getOneByPk))
+  .get(controllerHandler(userController.findOneByPk))
 /**
      * PATCH /api/users/{id}
      * @summary Update one user
