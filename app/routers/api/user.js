@@ -15,10 +15,10 @@ router
      * POST /api/v1/users
      * @summary Create a user
      * @tags User
-     * @param {User} request.body.required - user info
+     * @param {CreateUser} request.body.required - user info
      * @return {User} 200 - success response - application/json
      * @return {ApiError} 400 - Bad request response - application/json
-     * @return {ApiError} 404 - Category not found - application/json
+     * @return {ApiError} 404 - User not found - application/json
      */
 // .post(validate('body', createSchema), controllerHandler(userController.create));
   .post(controllerHandler(userController.createOne));
@@ -26,7 +26,7 @@ router
 router
   .route('/:id(\\d+)')
 /**
-     * GET /api/users/{id}
+     * GET /api/v1/users/{id}
      * @summary Get one user by id
      * @tags User
      * @param {number} id.path.required - user identifier
@@ -36,11 +36,11 @@ router
      */
   .get(controllerHandler(userController.findOneByPk))
 /**
-     * PATCH /api/users/{id}
+     * PATCH /api/v1/users/{id}
      * @summary Update one user
      * @tags User
      * @param {number} id.path.required - user identifier
-     * @param {User} request.body.required - user info
+     * @param {UpdateUser} request.body.required - user info
      * @return {User} 200 - success response - application/json
      * @return {ApiError} 400 - Bad request response - application/json
      * @return {ApiError} 404 - User not found - application/json
@@ -48,7 +48,7 @@ router
 // .patch(validate('body', updateSchema), controllerHandler(userController.update))
   .patch(controllerHandler(userController.update))
   /**
-     * DELETE /api/users/{id}
+     * DELETE /api/v1/users/{id}
      * @summary Delete one user
      * @tags User
      * @param {number} id.path.required - user identifier
