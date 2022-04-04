@@ -14,10 +14,10 @@ router
      * POST /api/v1/signin
      * @summary POST user email/password
      * @tags User
-     * @param {SigninUser} request.body.required - user info
+     * @param {SigninUser} request.body.required - SigninUser
      * @return {User} 200 - success response - application/json
-     * @return {ApiError} 400 - Bad request response - application/json
-     * @return {ApiError} 404 - Category not found - application/json
+    //  * @return {ApiError} 400 - Bad request response - application/json
+    //  * @return {ApiError} 404 - Category not found - application/json
      */
   .post(validate('body', userSigninSchema), controllerHandler(controller.findOneByEmail));
 
