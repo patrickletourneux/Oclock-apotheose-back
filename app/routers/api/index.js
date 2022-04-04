@@ -2,6 +2,7 @@ const express = require('express');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');
+const homeRouter = require('./home');
 
 // const { apiController } = require('../../controllers/api');
 
@@ -21,6 +22,7 @@ router.use((_, res, next) => {
 // On préfixe les routers de l'API
 router.use('/signin', signinRouter);
 router.use('/users', userRouter);
+router.use('/homes', homeRouter);
 
 // router.use(() => {
 //     throw new ApiError('API Route not found', { statusCode: 404 });

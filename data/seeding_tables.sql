@@ -7,7 +7,7 @@ INSERT INTO "user" (email, password, pseudonym, avatar_img) VALUES
 ('titi@imail.fr', '$2b$10$5/yDyvdyojUVhfNO3RoH0.TLMUJDbN2pibIzgu5jHtCPz8G2ltjhi', 'Bubulles', 'mlqkjfoiqlsfhkl'),
 ('mama@imail.com', '$2b$10$Mq8xTmenZ9dRUfHNM0VcLObTmgW0/5UPpY4QMuRZCqrRwM7Wn8tdC', 'Loulette', 'mlkrjmlqkjflkgl');
 
-INSERT INTO "house" (name, user_id) VALUES
+INSERT INTO "home" (name, user_id) VALUES
 ('Maison', 2),
 ('Coloc', 1),
 ('Nos vacances à la montagne', 2);
@@ -21,17 +21,17 @@ INSERT INTO "generic_task" (name, value) VALUES
 ('Nettoyer les toilettes', 50),
 ('Laver la douche / baignoire', 15);
 
-INSERT INTO "house_task" (name, value, house_id) VALUES
+INSERT INTO "home_task" (name, value, home_id) VALUES
 ('Sortir les poubelles', 20, 1),
 ('Faire la vaisselle', 25, 2),
 ('Nourrir le chien', 10, 3),
 ('Sortir le chien', 30, 3);
 
-INSERT INTO "done_task" (name, value, house_id, user_id) VALUES
+INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ('Sortir les poubelles', 20, 1, 2);
 
-INSERT INTO "reward" (reward, title, house_id) VALUES
+INSERT INTO "reward" (reward, title, home_id) VALUES
 ('1 massage', 'Un massage', 1);
 
-INSERT INTO "attributed_task" (user_id, house_id) VALUES
+INSERT INTO "attributed_task" (user_id, home_id) VALUES
 (2, 3);

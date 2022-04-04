@@ -2,4 +2,4 @@
 %project=c_du_props
 
 init 2022-04-01T08:27:01Z anne <lodaan92@gmail.com> # Création des tables
-FK 2022-04-04T11:45:38Z anne <lodaan92@gmail.com> # Ajoute de la foreign key de house_id dans la table user
+FK 2022-04-04T11:45:38Z anne <lodaan92@gmail.com> # Ajoute de la foreign key de home_id dans la table user

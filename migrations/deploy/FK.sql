@@ -3,6 +3,6 @@
 BEGIN;
 
 ALTER TABLE "user"
-  ADD COLUMN house_id INT REFERENCES "house"(id);
+  ADD COLUMN home_id INT REFERENCES "home"(id);
 
 COMMIT;

@@ -3,6 +3,6 @@
 BEGIN;
 
 ALTER TABLE "user" 
-  DROP COLUMN house_id;
+  DROP COLUMN home_id;
 
 COMMIT;

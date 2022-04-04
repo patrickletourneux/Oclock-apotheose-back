@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE "attributed_task", "reward", "done_task", "house_task", "generic_task", "house", "user";
+DROP TABLE "attributed_task", "reward", "done_task", "home_task", "generic_task","home", "user";
 
 COMMIT;
