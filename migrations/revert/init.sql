@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add DDLs here.
+DROP TABLE "attributed_task", "reward", "done_task", "house_task", "generic_task", "house", "user";
 
 COMMIT;
