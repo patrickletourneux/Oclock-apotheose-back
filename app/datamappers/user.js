@@ -5,6 +5,7 @@ const client = require('../config/db');
  * @typedef {object} User
  * @property {number} id - Identifiant unique Pk de la table
  * @property {string} pseudonym - pseudonym for the user
+ * @property {string} email - pseudonym for the user
  * @property {string} password - password for the user acount
  * @property {string} avatar_img - filename of the avatar image
  * @property {string} house_id - id of the house of the user
@@ -12,9 +13,23 @@ const client = require('../config/db');
  */
 
 /**
- * @typedef {object} InputUser
- * @property {number} id - Identifiant unique Pk de la table
+ * @typedef {object} UpdateUser
  * @property {string} pseudonym - pseudonym for the user
+ * @property {string} email - pseudonym for the user
+ * @property {string} password - password for the user acount
+ * @property {string} avatar_img - filename of the avatar image
+ */
+
+/**
+ * @typedef {object} CreateUser
+ * @property {string} pseudonym - pseudonym for the user
+ * @property {string} email - pseudonym for the user
+ * @property {string} password - password for the user acount
+ */
+
+/**
+ * @typedef {object} SigninUser
+ * @property {string} email - pseudonym for the user
  * @property {string} password - password for the user acount
  */
 
@@ -28,7 +43,6 @@ module.exports = {
   async findOneByEmail(email) {
     debug('dans findOneByEmail');
     const result = await client.query('SELECT * FROM "user" WHERE email = $1;', [email]);
-    debug(result.rows);
     if (result.rowCount === 0) {
       return undefined;
     }
@@ -41,7 +55,7 @@ module.exports = {
      * @returns {(User|undefined)} -
      * Le user souhaité ou undefined si aucun user à cet id
      */
-  async findByPk(id) {
+  async findOneByPk(id) {
     debug('dans findByPk');
     const result = await client.query('SELECT * FROM "user" WHERE id = $1;', [id]);
 
@@ -54,7 +68,7 @@ module.exports = {
 
   /**
      * Ajoute dans la base de données
-     * @param {InputUser} user - Les données à insérer
+     * @param {CreateUser} user - Les données à insérer
      * @returns {User} - La categorie insérer
      */
   async insert(user) {
@@ -76,24 +90,24 @@ module.exports = {
   /**
      * Modifie dans la base de données
      * @param {number} id - L'id à modifier
-     * @param {User} user - Les données à modifier
+     * @param {UpdateUser} user - Les données à modifier
      * @returns {User} - Le user modifié
      */
-  async update(id, category) {
-    const fields = Object.keys(category).map((prop, index) => `"${prop}" = $${index + 1}`);
-    const values = Object.values(category);
+  async update(id, userInReqBody) {
+    debug('dans update');
+    const fields = Object.keys(userInReqBody).map((prop, index) => `"${prop}" = $${index + 1}`);
+    const values = Object.values(userInReqBody);
 
-    const savedCategory = await client.query(
+    const savedUser = await client.query(
       `
-                UPDATE category SET
+                UPDATE "user" SET
                     ${fields}
                 WHERE id = $${fields.length + 1}
                 RETURNING *
             `,
       [...values, id],
     );
-
-    return savedCategory.rows[0];
+    return savedUser.rows[0];
   },
 
   /**
@@ -102,7 +116,8 @@ module.exports = {
      * @returns {boolean} - Le résultat de la suppression
      */
   async delete(id) {
-    const result = await client.query('DELETE FROM category WHERE id = $1', [id]);
+    debug('dans delete');
+    const result = await client.query('DELETE FROM "user" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
     // le rowcount est égal à 1 (truthy)soit non et il est égal a 0 (falsy)
     // On cast le truthy/falsy en vrai booléen
