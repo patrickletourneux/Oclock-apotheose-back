@@ -1,0 +1,21 @@
+BEGIN;
+
+CREATE TABLE "user" (
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  pseudonym TEXT NOT NULL,
+  avatar_img TEXT,
+  created_at TIMESTAMPTZ default NOW()
+
+);
+
+COMMIT;
+
+
+SELECT * FROM "user" WHERE 'email' = 'a@gmail.com';
+
+insert into "user" 
+(email,password,pseudonym)
+values 
+('a@gmail.com','a','a');
