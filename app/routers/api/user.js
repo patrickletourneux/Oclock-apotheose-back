@@ -21,7 +21,7 @@ router
     //  * @return {ApiError} 404 - User not found - application/json
      */
   .post(validate('body', userCreateSchema), controllerHandler(userController.createOne));
-  // .post(controllerHandler(userController.createOne));
+// .post(controllerHandler(userController.createOne));
 
 router
   .route('/:id(\\d+)')

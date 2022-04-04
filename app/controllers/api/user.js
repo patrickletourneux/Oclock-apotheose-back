@@ -21,7 +21,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (user) {
       debug('user deja existant avec cet email pas possible de cree');
-      return res.status(400).json('user deja existant avec cet email, pas possible de cree');
+      return res.status(400).json('user deja existant avec cet email, pas possible de creer');
       // throw new ApiError('user already exist', { statusCode: 404 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
@@ -38,7 +38,12 @@ module.exports = {
         debug('token generation');
         return res.status(200).json({
           token,
-          user_id: newUser.id,
+          user: {
+            id: newUser.id,
+            email: newUser.email,
+            pseudonym: newUser.pseudonym,
+            avatar_img: newUser.avatar_img,
+          },
         });
       });
     } else {
@@ -74,7 +79,12 @@ module.exports = {
         debug('token generation');
         return res.status(200).json({
           token,
-          user_id: user.id,
+          user: {
+            id: user.id,
+            email: user.email,
+            pseudonym: user.pseudonym,
+            avatar_img: user.avatar_img,
+          },
         });
       });
     } else {
