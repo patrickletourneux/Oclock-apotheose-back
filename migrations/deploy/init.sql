@@ -16,7 +16,7 @@ CREATE TABLE "house" (
   name TEXT NOT NULL,
   password INT UNIQUE DEFAULT FLOOR (RANDOM()*(9999)),
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  user_id INT NOT NULL REFERENCES user(id) 
+  user_id INT NOT NULL REFERENCES "user"(id) 
 );
 
 CREATE TABLE "generic_task" (
@@ -32,7 +32,7 @@ CREATE TABLE "house_task" (
   name TEXT NOT NULL,
   value INT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  house_id INT NOT NULL REFERENCES house(id) 
+  house_id INT NOT NULL REFERENCES "house"(id) 
 );
 
 CREATE TABLE "done_task" (
@@ -40,8 +40,8 @@ CREATE TABLE "done_task" (
   name TEXT NOT NULL,
   value INT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  house_id INT NOT NULL INT REFERENCES house(id) , 
-  user_id INT NOT NULL REFERENCES user(id) 
+  house_id INT NOT NULL REFERENCES "house"(id) , 
+  user_id INT NOT NULL REFERENCES "user"(id) 
 );
 
 CREATE TABLE "reward" (
@@ -49,13 +49,13 @@ CREATE TABLE "reward" (
   reward TEXT DEFAULT NULL,
   title TEXT DEFAULT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  house_id INT REFERENCES house(id) NOT NULL
+  house_id INT REFERENCES "house"(id) NOT NULL
 );
 
 CREATE TABLE "attributed_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  user_id INT REFERENCES user(id),
-  house_id INT REFERENCES house(id)
+  user_id INT REFERENCES "user"(id),
+  house_id INT REFERENCES "house"(id)
 );
 
 COMMIT;
