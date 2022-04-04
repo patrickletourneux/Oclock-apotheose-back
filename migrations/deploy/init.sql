@@ -8,23 +8,22 @@ CREATE TABLE "user" (
   password TEXT NOT NULL,
   pseudonym TEXT NOT NULL,
   avatar_img TEXT,
-  created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id) /* a tester avec et sans*/
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE "house" ( 
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
-  password TEXT DEFAULT FLOOR RANDOM()*(9999999) UNIQUE, /* placer unique avant ? */
-  created_at TIMESTAMPTZ NOW(),
-  user_id REFERENCES user(id) NOT NULL
+  password INT UNIQUE DEFAULT FLOOR (RANDOM()*(9999)),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  user_id INT NOT NULL REFERENCES user(id) 
 );
 
 CREATE TABLE "generic_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
   value INT NOT NULL,
-  created_at TIMESTAMPTZ NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 
@@ -32,24 +31,24 @@ CREATE TABLE "house_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
   value INT NOT NULL,
-  created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id) NOT NULL
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  house_id INT NOT NULL REFERENCES house(id) 
 );
 
 CREATE TABLE "done_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
   value INT NOT NULL,
-  created_at TIMESTAMPTZ NOW(),
-  house_id INT REFERENCES house(id) NOT NULL, 
-  user_id INT REFERENCES user(id) NOT NULL 
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  house_id INT NOT NULL INT REFERENCES house(id) , 
+  user_id INT NOT NULL REFERENCES user(id) 
 );
 
 CREATE TABLE "reward" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   reward TEXT DEFAULT NULL,
   title TEXT DEFAULT NULL,
-  created_at TIMESTAMPTZ NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
   house_id INT REFERENCES house(id) NOT NULL
 );
 
