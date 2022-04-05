@@ -7,7 +7,13 @@ const homeUpdateSchema = require('../../validation/schemas/homeUpdateSchema');
 const controller = require('../../controllers/api/home');
 const controllerHandler = require('../../helpers/controllerHandler');
 
+const verifyToken = require('../../helpers/verifyToken')
+
 const router = express.Router();
+
+/**
+ * TODO ajouter verifyToken partout ou necessaire
+ */
 
 router
   .route('/')
@@ -34,6 +40,7 @@ router
     //  * @return {ApiError} 404 - User not found - application/json
      */
   .get(controllerHandler(controller.findOneByPk))
+  // .get(verifyToken.InReqAuthorisation, controllerHandler(controller.findOneByPk))
 /**
      * PATCH /api/v1/homes/{id}
      * @summary Update one home
