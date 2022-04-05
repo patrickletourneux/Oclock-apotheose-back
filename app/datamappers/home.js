@@ -36,4 +36,12 @@ module.exports = {
 
     return savedUser.rows[0];
   },
-}
+  async findOneByPk(id) {
+    debug('dans findByPk');
+    const result = await client.query('SELECT * FROM "home" WHERE id = $1;', [id]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
+};
