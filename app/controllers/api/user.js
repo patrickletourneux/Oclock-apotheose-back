@@ -112,7 +112,7 @@ module.exports = {
     return res.status(200).json(user);
   },
   /**
-     * user controller to post a new user.
+     * user controller to delete a new user.
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object

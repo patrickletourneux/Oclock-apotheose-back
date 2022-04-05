@@ -16,6 +16,13 @@ module.exports = {
     const newHome = await homeDataMapper.insert(req.body);
     return res.status(200).json(newHome);
   },
+  /**
+     * home controller to post a new home.
+     * ExpressMiddleware signature
+     * @param {object} req Express request object (not used)
+     * @param {object} res Express response object
+     * @returns {Home} Route API JSON response
+     */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
     // check if a user exist in dbb for this email, id in req.params.id
@@ -26,5 +33,47 @@ module.exports = {
       // throw new ApiError('user not found', { statusCode: 404 });
     }
     return res.status(200).json(home);
+  },
+  /**
+     * home controller to delete a new user.
+     * ExpressMiddleware signature
+     * @param {object} req Express request object (not used)
+     * @param {object} res Express response object
+     * @returns {User} Route API JSON response
+     */
+  async deleteOneByPk(req, res) {
+    debug('dans deleteOneByPk');
+    // check if a user exist in dbb for this email, id in req.params.id
+    const home = await homeDataMapper.findOneByPk(req.params.id);
+    if (home) {
+      debug('home:', home.id, ' a effacer de la bdd');
+      // delete the user in dbb
+      const result = await homeDataMapper.delete(req.params.id);
+      debug('result ', result);
+      if (result) {
+        return res.status(200).json('home supprimmé de la bdd');
+      }
+      return res.status(400).json('erreur lors de la suppression de la home');
+    }
+    return res.status(400).json('pas de home avec cet id');
+  },
+  /**
+     * home controller to post a new home.
+     * ExpressMiddleware signature
+     * @param {object} req Express request object (not used)
+     * @param {object} res Express response object
+     * @returns {User} Route API JSON response
+     */
+  async update(req, res) {
+    debug('dans update');
+    // check if a home exist in dbb for this email, id in req.params.id
+    const home = await homeDataMapper.findOneByPk(req.params.id);
+    if (home) {
+      debug('home à update : ', home);
+      const homeUpdated = await homeDataMapper.update(req.params.id, req.body);
+      debug('homeUpdated ', homeUpdated);
+      return res.status(200).json(homeUpdated);
+    }
+    return res.status(400).json('pas de home avec cet id');
   },
 };

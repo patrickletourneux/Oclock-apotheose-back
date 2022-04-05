@@ -50,7 +50,7 @@ module.exports = {
     return result.rows[0];
   },
   /**
-     * Récupère par sont id
+     * Récupère par son id
      * @param {number} id - L'id du user
      * @returns {(User|undefined)} -
      * Le user souhaité ou undefined si aucun user à cet id
