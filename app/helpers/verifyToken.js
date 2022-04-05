@@ -1,5 +1,6 @@
 const debug = require('debug')('verifyToken');
 const jwt = require('jsonwebtoken');
+const { ApiError } = require('./errorHandler');
 
 module.exports = {
   InReqAuthorisation(req, res, next) {
@@ -14,7 +15,7 @@ module.exports = {
       jwt.verify(req.token, process.env.SECRETKEYJWT, (err, authData) => {
         if (err) {
           debug('token non valid');
-          res.status(400).json('token non valid');
+          throw new ApiError('token not valid', { statusCode: 400 });
         } else {
           debug('token is valid');
           debug(req.token);
@@ -35,7 +36,7 @@ module.exports = {
       });
     } else {
       debug('no token received in backend');
-      res.status(400).json('no token received in backend');
+      throw new ApiError('no token received in backend', { statusCode: 400 });
     }
   },
 };

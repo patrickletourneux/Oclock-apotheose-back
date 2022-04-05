@@ -1,5 +1,5 @@
 const debug = require('debug')('Validator:log');
-// const { ApiError } = require('../helpers/errorHandler');
+const { ApiError } = require('../helpers/errorHandler');
 
 /**
  * Générateur de middleware pour la validation
@@ -23,6 +23,6 @@ module.exports = (prop, schema) => async (request, _, next) => {
     // STATUS HTTP pour une erreur de saise : 400
     // On réabille l'erreur en suivant notre propre normalisation
     debug('error validator');
-    // next(new ApiError(error.details[0].message, { statusCode: 400 }));
+    next(new ApiError(error.details[0].message, { statusCode: 400 }));
   }
 };

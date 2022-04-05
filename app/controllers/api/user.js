@@ -3,7 +3,7 @@ const validator = require('email-validator');
 const debug = require('debug')('user controller');
 const jwt = require('jsonwebtoken');
 const userDataMapper = require('../../datamappers/user');
-// const { ApiError } = require('../../helpers/errorHandler');
+const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
 
@@ -21,8 +21,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (user) {
       debug('user deja existant avec cet email pas possible de cree');
-      return res.status(400).json('user deja existant avec cet email, pas possible de creer');
-      // throw new ApiError('user already exist', { statusCode: 404 });
+      throw new ApiError('user already exist', { statusCode: 404 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
     // check email with email-validator
@@ -47,7 +46,7 @@ module.exports = {
         });
       });
     } else {
-      return res.status(400).json('email pas au bon format');
+      throw new ApiError('email format nok', { statusCode: 404 });
     }
   },
   /**
@@ -63,8 +62,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (!user) {
       debug('pas de user trouvé');
-      return res.status(400).json('pas de user trouvé pour cet email');
-      // throw new ApiError('user not found', { statusCode: 404 });
+      throw new ApiError('user not found', { statusCode: 404 });
     }
     debug('user trouvé pour cet email');
     // check password with bcrypt
@@ -90,7 +88,7 @@ module.exports = {
     } else {
       // sinon je lui envoie un message d'erreur
       debug('password nok');
-      return res.status(400).json('il y a une erreur dans le couple login/mot de passe');
+      throw new ApiError('error in login/password', { statusCode: 404 });
     }
   },
   /**
@@ -106,8 +104,7 @@ module.exports = {
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (!user) {
       debug('pas de user trouvé pour cet id');
-      return res.status(400).json('pas de user trouvé pour cet id');
-      // throw new ApiError('user not found', { statusCode: 404 });
+      throw new ApiError('user not found', { statusCode: 404 });
     }
     return res.status(200).json(user);
   },
@@ -132,7 +129,7 @@ module.exports = {
       }
       return res.status(400).json('erreur lors de la suppression du user');
     }
-    return res.status(400).json('pas de user avec cet id');
+    throw new ApiError('user not found', { statusCode: 404 });
   },
   /**
      * user controller to post a new user.
@@ -154,6 +151,6 @@ module.exports = {
       debug('userUpdated ', userUpdated);
       return res.status(200).json(userUpdated);
     }
-    return res.status(400).json('pas de user avec cet id');
+    throw new ApiError('user not found', { statusCode: 404 });
   },
 };

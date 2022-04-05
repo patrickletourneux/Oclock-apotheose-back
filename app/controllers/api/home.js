@@ -1,6 +1,6 @@
 const debug = require('debug')('home controller');
 const homeDataMapper = require('../../datamappers/home');
-// const { ApiError } = require('../../helpers/errorHandler');
+const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
   /**
@@ -29,10 +29,10 @@ module.exports = {
     const home = await homeDataMapper.findOneByPk(req.params.id);
     if (!home) {
       debug('pas de home trouvé pour cet id');
-      return res.status(400).json('pas de home trouvé pour cet id');
-      // throw new ApiError('user not found', { statusCode: 404 });
+      throw new ApiError('home not found', { statusCode: 404 });
+    } else {
+      return res.status(200).json(home);
     }
-    return res.status(200).json(home);
   },
   /**
      * home controller to delete a new user.
@@ -55,7 +55,7 @@ module.exports = {
       }
       return res.status(400).json('erreur lors de la suppression de la home');
     }
-    return res.status(400).json('pas de home avec cet id');
+    throw new ApiError('home not found', { statusCode: 404 });
   },
   /**
      * home controller to post a new home.
@@ -74,6 +74,6 @@ module.exports = {
       debug('homeUpdated ', homeUpdated);
       return res.status(200).json(homeUpdated);
     }
-    return res.status(400).json('pas de home avec cet id');
+    throw new ApiError('home not found', { statusCode: 404 });
   },
 };
