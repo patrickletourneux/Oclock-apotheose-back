@@ -8,7 +8,7 @@ const client = require('../config/db');
  * @property {string} email - pseudonym for the user
  * @property {string} password - password for the user acount
  * @property {string} avatar_img - filename of the avatar image
- * @property {string} house_id - id of the house of the user
+ * @property {string} home_id - id of the home of the user
  * @property {date} created_at - date of the creation of the user
  */
 
@@ -84,9 +84,6 @@ module.exports = {
 
     return savedUser.rows[0];
   },
-  /** TO DO la suite
-     *
-    */
   /**
      * Modifie dans la base de données
      * @param {number} id - L'id à modifier
