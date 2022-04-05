@@ -2,6 +2,6 @@
 
 BEGIN;
 
-SELECT house_id FROM "user" WHERE false;
+SELECT home_id FROM "user" WHERE false;
 
 ROLLBACK;
