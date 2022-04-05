@@ -45,7 +45,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - User not found - application/json
      */
-// .patch(validate('body', updateSchema), controllerHandler(userController.update))
   .patch(validate('body', userUpdateSchema), controllerHandler(userController.update))
   /**
      * DELETE /api/v1/users/{id}
@@ -56,7 +55,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - User not found - application/json
      */
-  // .delete(controllerHandler(userController.delete));
   .delete(controllerHandler(userController.deleteOneByPk));
 
 module.exports = router;
