@@ -16,5 +16,15 @@ module.exports = {
     const newHome = await homeDataMapper.insert(req.body);
     return res.status(200).json(newHome);
   },
-
+  async findOneByPk(req, res) {
+    debug('dans findOneByPk');
+    // check if a user exist in dbb for this email, id in req.params.id
+    const home = await homeDataMapper.findOneByPk(req.params.id);
+    if (!home) {
+      debug('pas de home trouvé pour cet id');
+      return res.status(400).json('pas de home trouvé pour cet id');
+      // throw new ApiError('user not found', { statusCode: 404 });
+    }
+    return res.status(200).json(home);
+  },
 };
