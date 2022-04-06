@@ -15,7 +15,7 @@ module.exports = {
       jwt.verify(req.token, process.env.SECRETKEYJWT, (err, authData) => {
         if (err) {
           debug('token non valid');
-          throw new ApiError('token not valid', { statusCode: 400 });
+          throw new ApiError('token not valid', { statusCode: 401 });
         } else {
           debug('token is valid');
           debug(req.token);

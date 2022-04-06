@@ -1,6 +1,6 @@
 const debug = require('debug')('dashboard controller');
 const userDataMapper = require('../../datamappers/user');
-const dashboardDataMapper = require('../../datamappers/dashboard');
+const mytasksDataMapper = require('../../datamappers/mytasks');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
@@ -13,8 +13,8 @@ module.exports = {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-    const dashboard = await dashboardDataMapper.findOneByPk(req.params.id);
+    const mytasks = await mytasksDataMapper.findOneByPk(req.params.id);
 
-    return res.status(200).json(dashboard);
+    return res.status(200).json(mytasks);
   },
 };
