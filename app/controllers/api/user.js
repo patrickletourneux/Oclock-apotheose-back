@@ -72,7 +72,7 @@ module.exports = {
       jwt.sign({
         user,
       }, process.env.SECRETKEYJWT, {
-        expiresIn: '200s',
+        expiresIn: '3600s',
       }, (err, token) => {
         debug('token generation');
         return res.status(200).json({

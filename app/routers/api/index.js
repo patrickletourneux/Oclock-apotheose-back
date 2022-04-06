@@ -9,6 +9,8 @@ const homeRouter = require('./home');
 // const attributed_taskRouter = require('./attributed_task');
 // const done_taskRouter = require('./done_task');
 
+const dashboardRouter = require('./dashboard');
+
 // const { apiController } = require('../../controllers/api');
 
 const { ApiError } = require('../../helpers/errorHandler');
@@ -33,6 +35,8 @@ router.use('/homes', homeRouter);
 // router.use('/attributed_tasks', attributed_taskRouter);
 // router.use('/done_tasks', done_taskRouter);
 // router.use('/generic_tasks', generic_taskRouter);
+
+router.use(('/dashboard'), dashboardRouter);
 
 router.use(() => {
   debug('route not found');
