@@ -25,7 +25,7 @@ const rewardDataMapper = {
   /**
      * Ajoute un reward associé à une maison dans la base de donnée
      * @param {CreateReward} reward - Les données à insérer
-     * @returns {Reward} - La categorie insérer
+     * @returns {Reward} - Le reward insérée
      */
   async insert(reward) {
     debug('dans insert');
@@ -42,27 +42,61 @@ const rewardDataMapper = {
   },
 
   /**
+     * Récupère par son id
+     * @param {number} id - L'id du reward
+     * @returns {(Reward|undefined)} -
+     * Le reward souhaité ou undefined si aucun reward à cet id
+     */
+  async findOneByPk(id) {
+    debug('dans findByPk');
+    const result = await client.query('SELECT * FROM "reward" WHERE id = $1;', [id]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
+
+  /**
+     * Supprime de la base de données
+     * @param {number} id - L'id à supprimer
+     * @returns {boolean} - Le résultat de la suppression
+     */
+  async delete(id) {
+    debug('dans delete');
+    /**
+    * TODO delete reward link from home before, if home delete ?
+     */
+    const result = await client.query('DELETE FROM "reward" WHERE id = $1', [id]);
+    // Soit il a supprimer un enregistrement et
+    // le rowcount est égal à 1 (truthy)soit non et il est égal a 0 (falsy)
+    // On cast le truthy/falsy en vrai booléen
+    return !!result.rowCount;
+  },
+
+  /**
      * Modifie dans la base de données
      * @param {number} id - L'id du reward à modifier
      * @param {UpdateReward} reward - Les données à modifier
      * @returns {Reward} - Le reward modifié
      */
-  async update(id, title, reward) {
+  async update(id, rewardInReqBody) {
     debug('dans update');
-    // const fields = Object.keys(reward).map((prop, index) => `"${prop}" = $${index + 1}`);
-    const values = Object.values(reward);
+    const fields = Object.keys(rewardInReqBody).map((prop, index) => `"${prop}" = $${index + 1}`);
+    const values = Object.values(rewardInReqBody);
 
     const savedReward = await client.query(
       `
         UPDATE "reward" SET
-        title = new_title ($2),
-        reward = new_reward ($3)
-        WHERE id = ($1) RETURNING *
+          ${fields}
+        WHERE id = $${fields.length + 1}
+        RETURNING *
             `,
-      [...values, id, title, reward],
+      [...values, id],
     );
     return savedReward.rows[0];
   },
 };
 
 module.exports = rewardDataMapper;
+
+// api/v1/rewards/1
