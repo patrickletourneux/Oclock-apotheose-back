@@ -1,7 +1,9 @@
 const debug = require('debug')('dashboard datamapper');
 const client = require('../config/db');
+
+
 /**
- * TODO 
+ * NOT USED
  */
 /**
  * @typedef {object} Dashboard

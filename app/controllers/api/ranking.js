@@ -15,8 +15,12 @@ module.exports = {
     }
     const ranking = await rankingDataMapper.score(req.params.id);
     // debug(ranking);
-    const users = await rankingDataMapper.findUsersByPk(req.params.id);
+    const user = await rankingDataMapper.findUsersByPk(req.params.id);
     // debug(users);
-    return res.status(200).json([ranking, users]);
+    const obj = {
+      ranking,
+      user,
+    };
+    return res.status(200).json(obj);
   },
 };
