@@ -1,4 +1,5 @@
 const express = require('express');
+const verifyToken = require('../../helpers/verifyToken');
 
 const validate = require('../../validation/validator');
 const userCreateSchema = require('../../validation/schemas/userCreateSchema');
@@ -34,7 +35,7 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - User not found - application/json
      */
-  .get(controllerHandler(userController.findOneByPk))
+  .get(verifyToken.InReqAuthorisation, controllerHandler(userController.findOneByPk))
 /**
      * PATCH /api/v1/users/{id}
      * @summary Update one user
@@ -45,7 +46,7 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - User not found - application/json
      */
-  .patch(validate('body', userUpdateSchema), controllerHandler(userController.update))
+  .patch(verifyToken.InReqAuthorisation, validate('body', userUpdateSchema), controllerHandler(userController.update))
   /**
      * DELETE /api/v1/users/{id}
      * @summary Delete one user
@@ -55,6 +56,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - User not found - application/json
      */
-  .delete(controllerHandler(userController.deleteOneByPk));
+  .delete(verifyToken.InReqAuthorisation, controllerHandler(userController.deleteOneByPk));
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('router index');
+const verifyToken = require('../../helpers/verifyToken');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');
@@ -8,6 +9,11 @@ const rewardRouter = require('./reward');
 // const home_taskRouter = require('./home_task');
 // const attributed_taskRouter = require('./attributed_task');
 // const done_taskRouter = require('./done_task');
+
+const dashboardRouter = require('./dashboard');
+const mytasksRouter = require('./mytasks');
+const myhomeRouter = require('./myhome');
+const rankingRouter = require('./ranking');
 
 // const { apiController } = require('../../controllers/api');
 
@@ -27,12 +33,17 @@ router.use((_, res, next) => {
 // On préfixe les routers de l'API
 router.use('/signin', signinRouter);
 router.use('/users', userRouter);
-router.use('/homes', homeRouter);
-router.use('/rewards', rewardRouter);
-// router.use('/home_tasks', home_taskRouter);
-// router.use('/attributed_tasks', attributed_taskRouter);
-// router.use('/done_tasks', done_taskRouter);
-// router.use('/generic_tasks', generic_taskRouter);
+router.use('/homes', verifyToken.InReqAuthorisation, homeRouter);
+router.use('/rewards', verifyToken.InReqAuthorisation, rewardRouter);
+// router.use('/home_tasks', verifyToken.InReqAuthorisation, home_taskRouter);
+// router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributed_taskRouter);
+// router.use('/done_tasks', verifyToken.InReqAuthorisation, done_taskRouter);
+// router.use('/generic_tasks', verifyToken.InReqAuthorisation, generic_taskRouter);
+
+router.use('/dashboard', verifyToken.InReqAuthorisation, dashboardRouter);
+router.use('/mytasks', verifyToken.InReqAuthorisation, mytasksRouter);
+router.use('/myhome', verifyToken.InReqAuthorisation, myhomeRouter);
+router.use('/ranking', verifyToken.InReqAuthorisation, rankingRouter);
 
 router.use(() => {
   debug('route not found');

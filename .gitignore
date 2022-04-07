@@ -23,6 +23,7 @@ package-lock.json
 
 #vscode
 .vs_code/
+.vscode/
 
 #config
 .env

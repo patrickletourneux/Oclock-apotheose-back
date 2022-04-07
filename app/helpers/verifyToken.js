@@ -15,7 +15,7 @@ module.exports = {
       jwt.verify(req.token, process.env.SECRETKEYJWT, (err, authData) => {
         if (err) {
           debug('token non valid');
-          throw new ApiError('token not valid', { statusCode: 400 });
+          throw new ApiError('token not valid', { statusCode: 401 });
         } else {
           debug('token is valid');
           debug(req.token);
@@ -36,7 +36,9 @@ module.exports = {
       });
     } else {
       debug('no token received in backend');
-      throw new ApiError('no token received in backend', { statusCode: 400 });
+      debug('ATTENTION test token non actif, besoin d effacer le next() de la ligne suivante pour l activer et decommenter ligne throw error');
+      next();
+      // throw new ApiError('no token received in backend', { statusCode: 400 });
     }
   },
 };
