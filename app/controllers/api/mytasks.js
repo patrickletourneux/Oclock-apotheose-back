@@ -6,7 +6,7 @@ const { ApiError } = require('../../helpers/errorHandler');
 module.exports = {
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
-    // check if a user exist in dbb for this email, id in req.params.id
+    // check if a user exist in dbb for this id, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     debug(user);
     if (!user) {

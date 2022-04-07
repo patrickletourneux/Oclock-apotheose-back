@@ -19,10 +19,10 @@ module.exports = {
     const result = await client.query(
       `select "user".id as user_id,
         to_json(array_agg(distinct home)) as home,
-        to_json(array_agg(distinct home_task)) as home_tasks,
-        to_json(array_agg(distinct done_task))as done_tasks ,
-        to_json(array_agg(distinct attributed_task)) as attributed_tasks, 
-        to_json(array_agg(distinct reward))as rewards
+        to_json(array_agg(distinct home_task)) as home_task,
+        to_json(array_agg(distinct done_task))as done_task ,
+        to_json(array_agg(distinct attributed_task)) as attributed_task, 
+        to_json(array_agg(distinct reward))as reward
       from "user"
       left join "home" on "user".id=home.user_id
           left join "home_task" on home.id = home_task.home_id

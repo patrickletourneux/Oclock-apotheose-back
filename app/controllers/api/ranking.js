@@ -1,6 +1,6 @@
 const debug = require('debug')('dashboard controller');
 const homeDataMapper = require('../../datamappers/home');
-const myhomeDataMapper = require('../../datamappers/myhome');
+const rankingDataMapper = require('../../datamappers/ranking');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
@@ -13,8 +13,10 @@ module.exports = {
       debug('pas de home trouvé pour cet id');
       throw new ApiError('home not found', { statusCode: 404 });
     }
-    const mytasks = await myhomeDataMapper.findOneByPk(req.params.id);
-
-    return res.status(200).json(mytasks);
+    const ranking = await rankingDataMapper.score(req.params.id);
+    // debug(ranking);
+    const users = await rankingDataMapper.findUsersByPk(req.params.id);
+    // debug(users);
+    return res.status(200).json([ranking, users]);
   },
 };

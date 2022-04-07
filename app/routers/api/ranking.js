@@ -1,6 +1,6 @@
 const express = require('express');
 
-const controller = require('../../controllers/api/myhome');
+const controller = require('../../controllers/api/ranking');
 const controllerHandler = require('../../helpers/controllerHandler');
 
 const router = express.Router();
@@ -8,11 +8,11 @@ const router = express.Router();
 router
   .route('/:id(\\d+)')
 /**
-     * GET /api/v1/myhome/{id}
-     * @summary Get myhome by home id
-     * @tags myhome
-     * @param {number} id.path.required - user id identifier
-     * @return {Myhome}} 200 - success response - application/json
+     * GET /api/v1/ranking/{id}
+     * @summary Get ranking by home id
+     * @tags ranking
+     * @param {number} id.path.required - home id identifier
+     * @return {Ranking}} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
