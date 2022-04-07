@@ -24,30 +24,17 @@ module.exports = {
       throw new ApiError('user already exist', { statusCode: 404 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
-    // check email with email-validator
-    if (validator.validate(req.body.email)) {
-      // encrypt password with bcrypt
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-      const newUser = await userDataMapper.insert(req.body);
-      jwt.sign({
-        newUser,
-      }, process.env.SECRETKEYJWT, {
-        expiresIn: '200s',
-      }, (err, token) => {
-        debug('token generation');
-        return res.status(200).json({
-          token,
-          user: {
-            id: newUser.id,
-            email: newUser.email,
-            pseudonym: newUser.pseudonym,
-            avatar_img: newUser.avatar_img,
-          },
-        });
-      });
-    } else {
-      throw new ApiError('email format nok', { statusCode: 404 });
-    }
+    // encrypt password with bcrypt
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    const newUser = await userDataMapper.insert(req.body);
+    return res.status(200).json({
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        pseudonym: newUser.pseudonym,
+        // avatar_img: newUser.avatar_img,
+      },
+    });
   },
   /**
      * signin controller to get a user by email and check access.
