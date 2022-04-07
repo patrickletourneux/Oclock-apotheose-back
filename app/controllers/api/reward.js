@@ -13,7 +13,7 @@ const rewardController = {
   async createOne(req, res) {
     debug('dans createOne');
     debug('req.body.title ', req.body.title);
-    debug('req.body.reward ', req.body.reward);
+    debug('req.body.description ', req.body.description);
     const newReward = await rewardDataMapper.insert(req.body);
     return res.status(200).json(newReward);
   },

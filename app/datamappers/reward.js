@@ -4,21 +4,21 @@ const client = require('../config/db');
 /**
  * @typedef {object} Reward
  * @property {number} id - Identifiant unique Pk de la table
- * @property {string} reward - description for the reward
  * @property {string} title - title of the reward
+ * @property {string} description - description for the reward
  * @property {date} created_at - date of the creation of the reward
  * @property {number} home_id - id of the associate home
  */
 /**
  * @typedef {object} CreateReward
  * @property {string} title - title of the reward
- * @property {string} reward - description for the reward
+ * @property {string} description - description for the reward
  * @property {number} home_id - id of the associate home
  */
 /**
  * @typedef {object} UpdateReward
  * @property {string} title - title of the reward
- * @property {string} reward - description for the reward
+ * @property {string} description - description for the reward
  */
 
 const rewardDataMapper = {
@@ -32,7 +32,7 @@ const rewardDataMapper = {
     const newReward = await client.query(
       `
         INSERT INTO "reward"
-        (title, reward, house_id) VALUES
+        (title, description, house_id) VALUES
         ($1, $2, $3) RETURNING *
             `,
       [reward.title, reward.reward, reward.house_id],

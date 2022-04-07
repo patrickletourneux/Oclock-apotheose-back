@@ -4,7 +4,7 @@ const debug = require('debug')('router index');
 const userRouter = require('./user');
 const signinRouter = require('./signin');
 const homeRouter = require('./home');
-// const rewardRouter = require('./reward');
+const rewardRouter = require('./reward');
 // const home_taskRouter = require('./home_task');
 // const attributed_taskRouter = require('./attributed_task');
 // const done_taskRouter = require('./done_task');
@@ -28,7 +28,7 @@ router.use((_, res, next) => {
 router.use('/signin', signinRouter);
 router.use('/users', userRouter);
 router.use('/homes', homeRouter);
-// router.use('/reward', rewardRouter);
+router.use('/rewards', rewardRouter);
 // router.use('/home_tasks', home_taskRouter);
 // router.use('/attributed_tasks', attributed_taskRouter);
 // router.use('/done_tasks', done_taskRouter);

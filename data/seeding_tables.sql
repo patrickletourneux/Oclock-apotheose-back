@@ -30,8 +30,8 @@ INSERT INTO "home_task" (name, value, home_id) VALUES
 INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ('Sortir les poubelles', 20, 1, 2);
 
-INSERT INTO "reward" (reward, title, home_id) VALUES
-('1 massage', 'Un massage', 1);
+INSERT INTO "reward" (title, description, home_id) VALUES
+('Un massage', '1 massage', 1);
 
 INSERT INTO "attributed_task" (user_id, home_task_id) VALUES
 (2, 3);
