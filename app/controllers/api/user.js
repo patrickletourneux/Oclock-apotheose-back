@@ -66,7 +66,7 @@ module.exports = {
           token,
           user: {
             id: user.id,
-            email: user.email,
+            // email: user.email,
             pseudonym: user.pseudonym,
             avatar_img: user.avatar_img,
           },
@@ -87,12 +87,15 @@ module.exports = {
      */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    debug('res.connectedUserId : ', res.connectedUserId);
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (!user) {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
+    delete user.password;
+    delete user.created_at;
     return res.status(200).json(user);
   },
   /**
@@ -114,7 +117,8 @@ module.exports = {
       if (result) {
         return res.status(200).json('user supprimmé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression du user');
+      // return res.status(400).json('erreur lors de la suppression du user');
+      throw new ApiError('erreur lors de la suppression du user', { statusCode: 400 });
     }
     throw new ApiError('user not found', { statusCode: 404 });
   },
@@ -127,6 +131,7 @@ module.exports = {
      */
   async update(req, res) {
     debug('dans update');
+
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (user) {
@@ -136,6 +141,8 @@ module.exports = {
       }
       const userUpdated = await userDataMapper.update(req.params.id, req.body);
       debug('userUpdated ', userUpdated);
+      delete userUpdated.password;
+      delete userUpdated.created_at;
       return res.status(200).json(userUpdated);
     }
     throw new ApiError('user not found', { statusCode: 404 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const debug = require('debug')('router index');
 const verifyToken = require('../../helpers/verifyToken');
+// const verifyUserAccess = require('../../helpers/verifyUserAccess');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');
@@ -34,7 +35,7 @@ router.use((_, res, next) => {
 router.use('/signin', signinRouter);
 router.use('/users', userRouter);
 router.use('/homes', verifyToken.InReqAuthorisation, homeRouter);
-// router.use('/reward', verifyToken.InReqAuthorisation, rewardRouter);
+// router.use('/rewards', verifyToken.InReqAuthorisation, rewardRouter);
 // router.use('/home_tasks', verifyToken.InReqAuthorisation, home_taskRouter);
 // router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributed_taskRouter);
 // router.use('/done_tasks', verifyToken.InReqAuthorisation, done_taskRouter);
