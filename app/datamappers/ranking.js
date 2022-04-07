@@ -54,7 +54,7 @@ module.exports = {
       group by "user".pseudonym`,
       [homeId],
     );
-    debug(result.rows);
+    // debug(result.rows);
 
     if (result.rowCount === 0) {
       return undefined;

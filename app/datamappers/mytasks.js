@@ -38,7 +38,7 @@ module.exports = {
       having "user".id=$1;`,
       [id],
     );
-    debug(result.rows);
+    // debug(result.rows);
 
     if (result.rowCount === 0) {
       return undefined;
