@@ -45,8 +45,8 @@ ALTER TABLE "done_task"
 INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ('vaisselle', 20, 1, 1),
 ('Sortir les poubelles', 20, 1, 1),
-('vaisselle', 20, 3, 3),
-('Sortir les poubelles', 20, 3, 3),
+('vaisselle', 20, 1, 3),
+('Sortir les poubelles', 20, 1, 3),
 ('vaisselle', 20, 2, 2),
 ('Sortir les poubelles', 20, 2, 2);
 
@@ -54,7 +54,7 @@ INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ALTER TABLE "reward" 
     ALTER COLUMN id 
         RESTART WITH 1;
-INSERT INTO "reward" (reward, title, home_id) VALUES
+INSERT INTO "reward" (description, title, home_id) VALUES
 ('1 restaurant', 'Un restaurant', 2),
 ('1 massage', 'Un massage', 1);
 
