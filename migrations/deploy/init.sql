@@ -46,7 +46,7 @@ CREATE TABLE "done_task" (
 
 CREATE TABLE "reward" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  reward TEXT DEFAULT NULL,
+  description TEXT DEFAULT NULL,
   title TEXT DEFAULT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   home_id INT REFERENCES "home"(id) NOT NULL
@@ -55,7 +55,8 @@ CREATE TABLE "reward" (
 CREATE TABLE "attributed_task" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   user_id INT REFERENCES "user"(id),
-  home_task_id INT REFERENCES "home_task"(id)
+  home_task_id INT REFERENCES "home_task"(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 COMMIT;
