@@ -1,4 +1,4 @@
-const debug = require('debug')('dashboard controller');
+const debug = require('debug')('ranking controller');
 const homeDataMapper = require('../../datamappers/home');
 const rankingDataMapper = require('../../datamappers/ranking');
 const { ApiError } = require('../../helpers/errorHandler');
