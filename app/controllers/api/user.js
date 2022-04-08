@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const validator = require('email-validator');
 const debug = require('debug')('user controller');
 const jwt = require('jsonwebtoken');
 const userDataMapper = require('../../datamappers/user');
@@ -21,7 +20,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (user) {
       debug('user deja existant avec cet email pas possible de cree');
-      throw new ApiError('user already exist', { statusCode: 404 });
+      throw new ApiError('user already exist', { statusCode: 409 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
     // encrypt password with bcrypt
@@ -66,7 +65,7 @@ module.exports = {
           token,
           user: {
             id: user.id,
-            email: user.email,
+            // email: user.email,
             pseudonym: user.pseudonym,
             avatar_img: user.avatar_img,
           },
@@ -75,7 +74,7 @@ module.exports = {
     } else {
       // sinon je lui envoie un message d'erreur
       debug('password nok');
-      throw new ApiError('error in login/password', { statusCode: 404 });
+      throw new ApiError('error in login/password', { statusCode: 401 });
     }
   },
   /**
@@ -87,12 +86,15 @@ module.exports = {
      */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    debug('res.connectedUserId : ', res.connectedUserId);
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (!user) {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
+    delete user.password;
+    delete user.created_at;
     return res.status(200).json(user);
   },
   /**
@@ -114,7 +116,8 @@ module.exports = {
       if (result) {
         return res.status(200).json('user supprimmé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression du user');
+      // return res.status(400).json('erreur lors de la suppression du user');
+      throw new ApiError('erreur lors de la suppression du user', { statusCode: 502 });
     }
     throw new ApiError('user not found', { statusCode: 404 });
   },
@@ -127,6 +130,7 @@ module.exports = {
      */
   async update(req, res) {
     debug('dans update');
+
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     if (user) {
@@ -136,6 +140,8 @@ module.exports = {
       }
       const userUpdated = await userDataMapper.update(req.params.id, req.body);
       debug('userUpdated ', userUpdated);
+      delete userUpdated.password;
+      delete userUpdated.created_at;
       return res.status(200).json(userUpdated);
     }
     throw new ApiError('user not found', { statusCode: 404 });

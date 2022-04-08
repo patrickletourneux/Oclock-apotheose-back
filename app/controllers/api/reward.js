@@ -12,9 +12,10 @@ const rewardController = {
      */
   async createOne(req, res) {
     debug('dans createOne');
-    debug('req.body.title ', req.body.title);
-    debug('req.body.description ', req.body.description);
+    // debug('req.body.title ', req.body.title);
+    // debug('req.body.description ', req.body.description);
     const newReward = await rewardDataMapper.insert(req.body);
+    delete newReward.created_at;
     return res.status(200).json(newReward);
   },
 
@@ -30,9 +31,10 @@ const rewardController = {
     // check if a reward exist in dbb with this id in req.params.id
     const reward = await rewardDataMapper.findOneByPk(req.params.id);
     if (!reward) {
-      debug('pas de reward trouvé pour cet id');
+      // debug('pas de reward trouvé pour cet id');
       throw new ApiError('reward not found', { statusCode: 404 });
     } else {
+      delete reward.created_at;
       return res.status(200).json(reward);
     }
   },
@@ -56,7 +58,7 @@ const rewardController = {
       if (result) {
         return res.status(200).json('reward supprimé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression du reward');
+      throw new ApiError('erreur lors de la suppression du reward', { statusCode: 500 });
     }
     throw new ApiError('reward not found', { statusCode: 404 });
   },
@@ -66,7 +68,7 @@ const rewardController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {User} Route API JSON response
+     * @returns {Reward} Route API JSON response
      */
   async update(req, res) {
     debug('dans update');
@@ -76,6 +78,7 @@ const rewardController = {
       debug('reward à update : ', reward);
       const rewardUpdated = await rewardDataMapper.update(req.params.id, req.body);
       debug('rewardUpdated ', rewardUpdated);
+      delete rewardUpdated.created_at;
       return res.status(200).json(rewardUpdated);
     }
     throw new ApiError('reward not found', { statusCode: 404 });

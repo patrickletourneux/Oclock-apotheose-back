@@ -6,7 +6,6 @@ const client = require('../config/db');
  * @property {number} id - Identifiant unique Pk de la table
  * @property {string} title - title of the reward
  * @property {string} description - description for the reward
- * @property {date} created_at - date of the creation of the reward
  * @property {number} home_id - id of the associate home
  */
 /**
@@ -64,7 +63,7 @@ const rewardDataMapper = {
   async delete(id) {
     debug('dans delete');
     /**
-    * TODO delete reward link from home before, if home delete ?
+    * TODO delete reward link from home before, if home delete
      */
     const result = await client.query('DELETE FROM "reward" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
