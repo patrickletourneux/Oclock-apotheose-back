@@ -32,10 +32,10 @@ const rewardDataMapper = {
     const newReward = await client.query(
       `
         INSERT INTO "reward"
-        (title, description, house_id) VALUES
+        (title, description, home_id) VALUES
         ($1, $2, $3) RETURNING *
             `,
-      [reward.title, reward.reward, reward.house_id],
+      [reward.title, reward.description, reward.home_id],
     );
 
     return newReward.rows[0];
