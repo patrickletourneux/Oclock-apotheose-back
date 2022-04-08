@@ -38,7 +38,7 @@ module.exports = {
       debug('no token received in backend');
       debug('ATTENTION test token non actif, besoin d effacer le next() de la ligne suivante pour l activer et decommenter ligne throw error');
       next();
-      // throw new ApiError('no token received in backend', { statusCode: 400 });
+      // throw new ApiError('no token received in backend', { statusCode: 401 });
     }
   },
 };

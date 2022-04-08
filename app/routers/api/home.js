@@ -7,13 +7,7 @@ const homeUpdateSchema = require('../../validation/schemas/homeUpdateSchema');
 const controller = require('../../controllers/api/home');
 const controllerHandler = require('../../helpers/controllerHandler');
 
-const verifyToken = require('../../helpers/verifyToken')
-
 const router = express.Router();
-
-/**
- * TODO ajouter verifyToken partout ou necessaire
- */
 
 router
   .route('/')

@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const validator = require('email-validator');
 const debug = require('debug')('user controller');
 const jwt = require('jsonwebtoken');
 const userDataMapper = require('../../datamappers/user');
@@ -21,7 +20,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (user) {
       debug('user deja existant avec cet email pas possible de cree');
-      throw new ApiError('user already exist', { statusCode: 404 });
+      throw new ApiError('user already exist', { statusCode: 409 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
     // encrypt password with bcrypt
@@ -75,7 +74,7 @@ module.exports = {
     } else {
       // sinon je lui envoie un message d'erreur
       debug('password nok');
-      throw new ApiError('error in login/password', { statusCode: 404 });
+      throw new ApiError('error in login/password', { statusCode: 401 });
     }
   },
   /**
@@ -118,7 +117,7 @@ module.exports = {
         return res.status(200).json('user supprimmé de la bdd');
       }
       // return res.status(400).json('erreur lors de la suppression du user');
-      throw new ApiError('erreur lors de la suppression du user', { statusCode: 400 });
+      throw new ApiError('erreur lors de la suppression du user', { statusCode: 502 });
     }
     throw new ApiError('user not found', { statusCode: 404 });
   },

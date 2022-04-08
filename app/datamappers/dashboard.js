@@ -1,7 +1,6 @@
 const debug = require('debug')('dashboard datamapper');
 const client = require('../config/db');
 
-
 /**
  * NOT USED
  */
@@ -21,7 +20,7 @@ module.exports = {
     debug('dans findByPk');
     // query for dashboard
     const result = await client.query(
-      ``,
+      '',
       [id],
     );
     debug(result.rows);
