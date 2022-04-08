@@ -44,14 +44,15 @@ module.exports = {
     debug('dans findByPk');
     // score for my home
     const result = await client.query(
-      `select "user".pseudonym as user_pseudonym, SUM(done_task.value) as user_score 
-      from "done_task"
-      left join "user" on  "user".id=done_task.user_id
-      left join "home" on  "user".id=home.user_id
-      where to_char(done_task.created_at,'YYYY') = to_char(now(),'YYYY')
-            AND to_char(done_task.created_at,'WW') = to_char(now(),'WW')
-            AND done_task.home_id = $1
-      group by "user".pseudonym`,
+      `select "user".pseudonym as user_pseudonym, SUM(done_task.value) as user_score ,
+      to_json(array_agg(distinct done_task.name)) as done_task
+        from "done_task"
+        left join "user" on  "user".id=done_task.user_id
+        left join "home" on  "user".id=home.user_id
+        where to_char(done_task.created_at,'YYYY') = to_char(now(),'YYYY')
+              AND to_char(done_task.created_at,'WW') = to_char(now(),'WW')
+        group by "user".pseudonym,done_task.home_id
+      having done_task.home_id = $1`,
       [homeId],
     );
     // debug(result.rows);
