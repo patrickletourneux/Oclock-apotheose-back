@@ -2,7 +2,7 @@ const debug = require('debug')('home_task datamapper');
 const client = require('../config/db');
 
 /**
- * @typedef {object} Home_task
+ * @typedef {object} HomeTask
  * @property {number} id - Identifiant unique Pk de la table
  * @property {string} name - title of the home_task
  * @property {number} value - description for the home_task
@@ -22,7 +22,7 @@ const homeTaskDataMapper = {
      * @param {CreateHomeTask} home_task - Les données à insérer
      * @returns {HomeTask} - La home_task insérée
      */
-  async insert(home_task) {
+  async insert(homeTask) {
     debug('dans insert');
     const newHomeTask = await client.query(
       `
@@ -30,7 +30,7 @@ const homeTaskDataMapper = {
         (name, value, home_id) VALUES
         ($1, $2, $3) RETURNING *
             `,
-      [home_task.name, home_task.value, home_task.home_id],
+      [homeTask.name, homeTask.value, homeTask.home_id],
     );
 
     return newHomeTask.rows[0];

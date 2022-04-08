@@ -8,18 +8,18 @@ const homeTaskController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {Home_task} Route API JSON response
+     * @returns {HomeTask} Route API JSON response
      */
   async createOne(req, res) {
     debug('dans createOne');
-    debug('req.body.name ', req.body.title);
-    debug('req.body.value ', req.body.description);
+    debug('req.body.name ', req.body.name);
+    debug('req.body.value ', req.body.value);
     const newHomeTask = await homeTaskDataMapper.insert(req.body);
-    return res.status(200).json(newHome_task);
+    return res.status(200).json(newHomeTask);
   },
 
   /**
-     * reward controller to get a reward.
+     * home_task controller to get a home_task.
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
@@ -27,7 +27,7 @@ const homeTaskController = {
      */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
-    // check if a reward exist in dbb with this id in req.params.id
+    // check if a home_task exist in dbb with this id in req.params.id
     const homeTask = await homeTaskDataMapper.findOneByPk(req.params.id);
     if (!homeTask) {
       debug('pas de reward trouvé pour cet id');
@@ -38,7 +38,7 @@ const homeTaskController = {
   },
 
   /**
-     * reward controller to delete a reward.
+     * home_task controller to delete a home_task.
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
@@ -46,40 +46,21 @@ const homeTaskController = {
      */
   async deleteOneByPk(req, res) {
     debug('dans deleteOneByPk');
-    // check if a reward exist in dbb for this id in req.params.id
-    const reward = await rewardDataMapper.findOneByPk(req.params.id);
-    if (reward) {
-      debug('reward:', reward.id, ' a effacer de la bdd');
-      // delete the reward in dbb
-      const result = await rewardDataMapper.delete(req.params.id);
+    // check if a home_task exist in dbb for this id in req.params.id
+    const homeTask = await homeTaskDataMapper.findOneByPk(req.params.id);
+    if (homeTask) {
+      debug('homeTask:', homeTask.id, ' a effacer de la bdd');
+      // delete the home_task in dbb
+      const result = await homeTaskDataMapper.delete(req.params.id);
       debug('result ', result);
       if (result) {
-        return res.status(200).json('reward supprimé de la bdd');
+        return res.status(200).json('home_task supprimé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression du reward');
+      return res.status(400).json('erreur lors de la suppression de la home_task');
     }
-    throw new ApiError('reward not found', { statusCode: 404 });
+    throw new ApiError('home_task not found', { statusCode: 404 });
   },
 
-  /**
-     * reward controller to update a reward.
-     * ExpressMiddleware signature
-     * @param {object} req Express request object (not used)
-     * @param {object} res Express response object
-     * @returns {User} Route API JSON response
-     */
-  async update(req, res) {
-    debug('dans update');
-    // check if a reward exist in dbb with this id in req.params.id
-    const reward = await rewardDataMapper.findOneByPk(req.params.id);
-    if (reward) {
-      debug('reward à update : ', reward);
-      const rewardUpdated = await rewardDataMapper.update(req.params.id, req.body);
-      debug('rewardUpdated ', rewardUpdated);
-      return res.status(200).json(rewardUpdated);
-    }
-    throw new ApiError('reward not found', { statusCode: 404 });
-  },
 };
 
 module.exports = homeTaskController;
