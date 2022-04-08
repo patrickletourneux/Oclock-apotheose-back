@@ -19,7 +19,7 @@ module.exports = {
     // debug(users);
     const obj = {
       ranking,
-      user,
+      user: user.user,
     };
     return res.status(200).json(obj);
   },

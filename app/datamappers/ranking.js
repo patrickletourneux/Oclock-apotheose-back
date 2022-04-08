@@ -20,7 +20,11 @@ module.exports = {
       `select home.id as home_id, 
       to_json(array_agg(distinct "user"))as "user"
       from home
-      join "user" on "user".home_id=home.id
+      LEFT JOIN (
+          SELECT "user".id,"user".pseudonym ,"user".home_id
+          FROM "user"
+         ) AS "user"
+          ON  home.id = "user".home_id
       group by home.id
       having home.id =$1`,
       [homeId],

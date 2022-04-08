@@ -19,7 +19,8 @@ module.exports = {
     const userId = user.id;
     const homeId = user.home_id;
 
-    const myhome = await homeDataMapper.findOneByPk(homeId);
+    const home = await homeDataMapper.findOneByPk(homeId);
+    delete home.created_at;
     const mytasks = await mytasksDataMapper.findOneByPk(userId);
     const ranking = await rankingDataMapper.score(homeId);
     /**
@@ -28,7 +29,7 @@ module.exports = {
     // besoin de recuperer le reward par award.home_id
     // const reward = await awardDataMapper.findOneByPk(userId);
     const obj = {
-      myhome,
+      home,
       mytasks,
       ranking,
     };
