@@ -7,7 +7,7 @@ const homeTaskCreateSchema = Joi.object({
     .required(),
   value: Joi.number()
     .min(1)
-    .max(3)
+    .max(1000)
     .required(),
   home_id: Joi.number()
     .integer()

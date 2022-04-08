@@ -6,7 +6,7 @@ const userRouter = require('./user');
 const signinRouter = require('./signin');
 const homeRouter = require('./home');
 const rewardRouter = require('./reward');
-// const home_taskRouter = require('./home_task');
+const homeTaskRouter = require('./home_task');
 // const attributed_taskRouter = require('./attributed_task');
 // const done_taskRouter = require('./done_task');
 
@@ -35,7 +35,7 @@ router.use('/signin', signinRouter);
 router.use('/users', userRouter);
 router.use('/homes', verifyToken.InReqAuthorisation, homeRouter);
 router.use('/rewards', verifyToken.InReqAuthorisation, rewardRouter);
-// router.use('/home_tasks', verifyToken.InReqAuthorisation, home_taskRouter);
+router.use('/home_tasks', verifyToken.InReqAuthorisation, homeTaskRouter);
 // router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributed_taskRouter);
 // router.use('/done_tasks', verifyToken.InReqAuthorisation, done_taskRouter);
 // router.use('/generic_tasks', verifyToken.InReqAuthorisation, generic_taskRouter);

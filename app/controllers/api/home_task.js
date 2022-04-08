@@ -30,8 +30,8 @@ const homeTaskController = {
     // check if a home_task exist in dbb with this id in req.params.id
     const homeTask = await homeTaskDataMapper.findOneByPk(req.params.id);
     if (!homeTask) {
-      debug('pas de reward trouvé pour cet id');
-      throw new ApiError('reward not found', { statusCode: 404 });
+      debug('pas de home_task trouvée pour cet id');
+      throw new ApiError('home_task not found', { statusCode: 404 });
     } else {
       return res.status(200).json(homeTask);
     }
