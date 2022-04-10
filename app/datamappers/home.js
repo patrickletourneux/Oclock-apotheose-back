@@ -6,9 +6,7 @@ const client = require('../config/db');
  * @property {number} id - Identifiant unique Pk de la table
  * @property {string} name - name for the home
  * @property {string} password - password for the home
- * @property {number} user_id - creator user_id
- * @property {number} max_user- maximum number of users
- * @property {date} created_at - date of the creation of the user
+ * @property {number} user_id - creator home_id
  */
 
 /**
@@ -30,7 +28,7 @@ module.exports = {
      */
   async insert(home) {
     debug('dans insert');
-    const savedUser = await client.query(
+    const savedHome = await client.query(
       `
                 INSERT INTO "home"
                 (name, user_id) VALUES
@@ -39,11 +37,11 @@ module.exports = {
       [home.name, home.user_id],
     );
 
-    return savedUser.rows[0];
+    return savedHome.rows[0];
   },
   /**
      * Récupère par son id
-     * @param {number} id - L'id du user
+     * @param {number} id - L'id du home
      * @returns {(Home|undefined)} -
      * Le home souhaité ou undefined si aucun home à cet id
      */
@@ -74,8 +72,8 @@ module.exports = {
   /**
      * Modifie dans la base de données
      * @param {number} id - L'id à modifier
-     * @param {UpdateHome} user - Les données à modifier
-     * @returns {Home} - Le user modifié
+     * @param {UpdateHome} home - Les données à modifier
+     * @returns {Home} - Le home modifié
      */
   async update(id, homeInReqBody) {
     debug('dans update');
