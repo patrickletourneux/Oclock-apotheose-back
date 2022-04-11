@@ -8,7 +8,7 @@ const homeRouter = require('./home');
 const rewardRouter = require('./reward');
 const homeTaskRouter = require('./home_task');
 // const attributed_taskRouter = require('./attributed_task');
-// const done_taskRouter = require('./done_task');
+const doneTaskRouter = require('./done_task');
 
 const dashboardRouter = require('./dashboard');
 const mytasksRouter = require('./mytasks');
@@ -37,7 +37,7 @@ router.use('/homes', verifyToken.InReqAuthorisation, homeRouter);
 router.use('/rewards', verifyToken.InReqAuthorisation, rewardRouter);
 router.use('/home_tasks', verifyToken.InReqAuthorisation, homeTaskRouter);
 // router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributed_taskRouter);
-// router.use('/done_tasks', verifyToken.InReqAuthorisation, done_taskRouter);
+router.use('/done_tasks', verifyToken.InReqAuthorisation, doneTaskRouter);
 // router.use('/generic_tasks', verifyToken.InReqAuthorisation, generic_taskRouter);
 
 router.use('/dashboard', verifyToken.InReqAuthorisation, dashboardRouter);

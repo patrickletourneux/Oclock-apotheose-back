@@ -54,6 +54,23 @@ const doneTaskDataMapper = {
     return result.rows[0];
   },
 
+  /**
+     * Supprime de la base de données
+     * @param {number} id - L'id à supprimer
+     * @returns {boolean} - Le résultat de la suppression
+     */
+  async delete(id) {
+    debug('dans delete');
+    /**
+    * TODO delete done_task link from home before, if home delete ?
+     */
+    const result = await client.query('DELETE FROM "done_task" WHERE id = $1', [id]);
+    // Soit il a supprimé un enregistrement et
+    // le rowcount est égal à 1 (truthy) soit non et il est égal a 0 (falsy)
+    // On cast le truthy/falsy en vrai booléen
+    return !!result.rowCount;
+  },
+
 };
 
 module.exports = doneTaskDataMapper;

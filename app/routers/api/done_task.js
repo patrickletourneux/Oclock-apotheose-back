@@ -16,29 +16,29 @@ const router = express.Router();
 
 router
   .route('/')
-/**
-  * POST /api/v1/done_tasks
-  * @summary POST done_task
-  * @tags DoneTask
-  * @param {CreateReward} request.body.required - CreateDoneTask
-  * @return {DoneTask} 200 - success response - application/json
-  //  * @return {ApiError} 400 - Bad request response - application/json
-  //  * @return {ApiError} 404 - DoneTask not found - application/json
+  /**
+    * POST /api/v1/done_tasks
+    * @summary POST done_task
+    * @tags DoneTask
+    * @param {CreateReward} request.body.required - CreateDoneTask
+    * @return {DoneTask} 200 - success response - application/json
+    //  * @return {ApiError} 400 - Bad request response - application/json
+    //  * @return {ApiError} 404 - DoneTask not found - application/json
     */
   .post(validate('body', doneTaskCreateSchema), controllerHandler(doneTaskController.createOne));
 
 router
   .route('/:id(\\d+)')
   /**
-    * GET /api/v1/done_tasks/{id}
-    * @summary Get one done_task by id
+    * DELETE /api/v1/done_tasks/{id}
+    * @summary Delete one done_task
     * @tags DoneTask
     * @param {number} id.path.required - done_task id identifier
-    * @return DoneTask} 200 - success response - application/json
+    * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
-    //  * @return {ApiError} 404 - DoneTask not found - application/json
-     */
-  .get(controllerHandler(doneTaskController.findOneByPk));
-// .get(verifyToken.InReqAuthorisation, controllerHandler(rewardController.findOneByPk))
+    //  * @return {ApiError} 404 - done_task not found - application/json
+    */
+  // .delete(controllerHandler(doneTaskController.delete));
+  .delete(controllerHandler(doneTaskController.deleteOneByPk));
 
 module.exports = router;

@@ -59,7 +59,7 @@ const homeTaskDataMapper = {
   async delete(id) {
     debug('dans delete');
     /**
-    * TODO delete reward link from home before, if home delete ?
+    * TODO delete home_task link from home before, if home delete ?
      */
     const result = await client.query('DELETE FROM "home_task" WHERE id = $1', [id]);
     // Soit il a supprimé un enregistrement et

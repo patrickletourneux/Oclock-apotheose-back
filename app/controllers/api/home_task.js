@@ -23,7 +23,7 @@ const homeTaskController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {Reward} Route API JSON response
+     * @returns {HomeTask} Route API JSON response
      */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
@@ -42,7 +42,7 @@ const homeTaskController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {Reward} Route API JSON response
+     * @returns {HomeTask} Route API JSON response
      */
   async deleteOneByPk(req, res) {
     debug('dans deleteOneByPk');

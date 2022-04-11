@@ -48,7 +48,7 @@ router
     * @param {number} id.path.required - home_task id identifier
     * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
-    //  * @return {ApiError} 404 - Home_task not found - application/json
+    //  * @return {ApiError} 404 - home_task not found - application/json
     */
   // .delete(controllerHandler(homeTaskController.delete));
   .delete(controllerHandler(homeTaskController.deleteOneByPk));
