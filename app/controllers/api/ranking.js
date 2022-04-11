@@ -26,7 +26,6 @@ module.exports = {
     const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     delete reward.created_at;
     // debug('reward ', reward);
-
     // rework data for frontend need to deliver a clean ranking,
     // pseudo merge ranking with users in newUsers
     const newUsers = [];
@@ -45,9 +44,14 @@ module.exports = {
     });
     // sort by score
     newUsers.sort((b, a) => a.score - b.score);
+    let i = 1;
+    for (item of newUsers) {
+      item.rank = i;
+      i++;
+    }
     const obj = {
       // ranking,
-      newUsers,
+      users: newUsers,
       reward,
     };
     return res.status(200).json(obj);
