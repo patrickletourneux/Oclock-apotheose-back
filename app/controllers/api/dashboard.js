@@ -1,8 +1,10 @@
 const debug = require('debug')('dashboard controller');
 const userDataMapper = require('../../datamappers/user');
+const dashboardDataMapper = require('../../datamappers/dashboard');
 const homeDataMapper = require('../../datamappers/home');
 const mytasksDataMapper = require('../../datamappers/mytasks');
 const rankingDataMapper = require('../../datamappers/ranking');
+const rewardDataMapper = require('../../datamappers/reward');
 
 const { ApiError } = require('../../helpers/errorHandler');
 
@@ -21,7 +23,11 @@ module.exports = {
 
     const home = await homeDataMapper.findOneByPk(homeId);
     delete home.created_at;
-    const mytasks = await mytasksDataMapper.findOneByPk(userId);
+    const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    delete reward.created_at;
+    const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(req.params.id);
+    const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
+    // const mytasks = await mytasksDataMapper.findOneByPk(userId);
     const ranking = await rankingDataMapper.score(homeId);
     /**
      * TODO
@@ -30,7 +36,12 @@ module.exports = {
     // const reward = await awardDataMapper.findOneByPk(userId);
     const obj = {
       home,
-      mytasks,
+      reward,
+      tasks:{
+        attributed_task_count: attributedTask.attributed_task_count,
+        done_task_count: doneTask.done_task_count,
+      },
+      // mytasks,
       ranking,
     };
     return res.status(200).json(obj);

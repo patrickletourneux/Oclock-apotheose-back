@@ -16,11 +16,13 @@ module.exports = {
      * Le user souhaité ou undefined si aucun user à cet id
      */
 
-  async findOneByPk(id) {
-    debug('dans findByPk');
+  async findAttributedTaskCountByUserId(id) {
+    debug('dans findAttributedTaskCountByUserId');
     // query for dashboard
     const result = await client.query(
-      '',
+      `select  count(*) as attributed_task_count from attributed_task 
+    group by attributed_task.user_id 
+    having attributed_task.user_id =$1;`,
       [id],
     );
     debug(result.rows);
@@ -29,6 +31,22 @@ module.exports = {
       return undefined;
     }
 
+    return result.rows[0];
+  },
+  async findDoneTaskCountByUserId(id) {
+    debug('dans findDoneTaskCountByUserId');
+    // query for dashboard
+    const result = await client.query(
+      `select  count(*) as done_task_count from done_task 
+      group by done_task.user_id 
+      having done_task.user_id =$1;`,
+      [id],
+    );
+    debug(result.rows);
+
+    if (result.rowCount === 0) {
+      return undefined;
+    }
     return result.rows[0];
   },
 };
