@@ -11,6 +11,7 @@ router
      * GET /api/v1/dashboard/{id}
      * @summary Get one dashboard by user id
      * @tags Dashboard
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {Dashboard}} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
