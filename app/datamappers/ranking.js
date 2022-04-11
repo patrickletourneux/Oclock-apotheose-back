@@ -17,15 +17,11 @@ module.exports = {
     debug('dans findByPk');
     // query for my home users
     const result = await client.query(
-      `select home.id as home_id, 
-      to_json(array_agg(distinct "user"))as "user"
+      `select home.id as home_id, "user".id,"user".avatar_img,"user".pseudonym
+ 
       from home
-      LEFT JOIN (
-          SELECT "user".id,"user".pseudonym ,"user".home_id
-          FROM "user"
-         ) AS "user"
-          ON  home.id = "user".home_id
-      group by home.id
+      LEFT JOIN "user"        ON  home.id = "user".home_id
+      group by home.id,"user".id
       having home.id =$1`,
       [homeId],
     );
@@ -35,7 +31,7 @@ module.exports = {
       return undefined;
     }
 
-    return result.rows[0];
+    return result.rows;
   },
   /**
      * Récupère par son id
@@ -48,15 +44,19 @@ module.exports = {
     debug('dans findByPk');
     // score for my home
     const result = await client.query(
-      `select "user".pseudonym as user_pseudonym, SUM(done_task.value) as user_score ,
-      to_json(array_agg(distinct done_task.name)) as done_task
-        from "done_task"
-        left join "user" on  "user".id=done_task.user_id
-        left join "home" on  "user".id=home.user_id
-        where to_char(done_task.created_at,'YYYY') = to_char(now(),'YYYY')
-              AND to_char(done_task.created_at,'WW') = to_char(now(),'WW')
-        group by "user".pseudonym,done_task.home_id
-      having done_task.home_id = $1`,
+      `select done_task.home_id,"user".id as id, SUM(done_task.value) as score ,"user".pseudonym,"user".avatar_img
+
+      from "user"
+      left join "done_task" on  "user".id=done_task.user_id
+      left join "home" on  "user".id=home.user_id
+
+      where to_char(done_task.created_at,'YYYY') = to_char(now(),'YYYY')
+            AND to_char(done_task.created_at,'WW') = to_char(now(),'WW')
+
+      group by "user".id,done_task.home_id
+having done_task.home_id = $1
+   
+  order by score desc`,
       [homeId],
     );
     // debug(result.rows);
