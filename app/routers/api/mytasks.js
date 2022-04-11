@@ -11,6 +11,7 @@ router
      * GET /api/v1/mytasks/{id}
      * @summary Get mytasks by user id
      * @tags Mytasks
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {Mytasks}} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
