@@ -16,7 +16,6 @@ const client = require('../config/db');
  * @property {number} value - description for the home_task
  * @property {number} home_id - id of the associate home
  * @property {number} user_id - id of the associate user
- * // @property {date} created_at - date of the creation of the done_task
  */
 
 const doneTaskDataMapper = {

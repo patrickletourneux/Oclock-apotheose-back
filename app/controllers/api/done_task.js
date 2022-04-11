@@ -31,7 +31,7 @@ const doneTaskController = {
     const doneTask = await doneTaskDataMapper.findOneByPk(req.params.id);
     if (doneTask) {
       debug('doneTask:', doneTask.id, ' a effacer de la bdd');
-      // delete the home_task in dbb
+      // delete the done_task in dbb
       const result = await doneTaskDataMapper.delete(req.params.id);
       debug('result ', result);
       if (result) {
