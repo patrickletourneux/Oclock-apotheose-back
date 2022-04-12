@@ -112,6 +112,9 @@ module.exports = {
      * @param {number} id - L'id à supprimer
      * @returns {boolean} - Le résultat de la suppression
      */
+  /**
+    * TODO delete data link to user, attributed_task, done_task,link to home before delete the user
+     */
   async delete(id) {
     debug('dans delete');
     const result = await client.query('DELETE FROM "user" WHERE id = $1', [id]);

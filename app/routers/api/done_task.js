@@ -6,13 +6,7 @@ const doneTaskCreateSchema = require('../../validation/schemas/doneTaskCreateSch
 const doneTaskController = require('../../controllers/api/done_task');
 const controllerHandler = require('../../helpers/controllerHandler');
 
-const verifyToken = require('../../helpers/verifyToken');
-
 const router = express.Router();
-
-/**
- * TODO ajouter verifyToken partout ou necessaire
- */
 
 router
   .route('/')
@@ -20,6 +14,7 @@ router
     * POST /api/v1/done_tasks
     * @summary POST done_task
     * @tags DoneTask
+    * @security BearerAuth
     * @param {CreateReward} request.body.required - CreateDoneTask
     * @return {DoneTask} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
@@ -33,12 +28,12 @@ router
     * DELETE /api/v1/done_tasks/{id}
     * @summary Delete one done_task
     * @tags DoneTask
+    * @security BearerAuth
     * @param {number} id.path.required - done_task id identifier
     * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - done_task not found - application/json
     */
-  // .delete(controllerHandler(doneTaskController.delete));
   .delete(controllerHandler(doneTaskController.deleteOneByPk));
 
 module.exports = router;

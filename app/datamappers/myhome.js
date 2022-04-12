@@ -17,13 +17,13 @@ module.exports = {
     debug('dans findByPk');
     // query for my home
     const result = await client.query(
-      `SELECT "home".id AS home_id,
-      to_json(array_agg(distinct home_task)) as home_task,
-      to_json(array_agg(distinct "user")) as "user"
+      `SELECT "home".id AS id, "home".name,
+      to_json(array_agg(distinct home_task)) as home_tasks,
+      to_json(array_agg(distinct "user")) as "users"
       FROM "home"
 
     LEFT JOIN (
-    SELECT "user".id,"user".pseudonym ,"user".home_id
+    SELECT "user".id,"user".pseudonym ,"user".home_id,"user".avatar_img
     FROM "user"
     ) AS "user"
       ON  home.id = "user".home_id

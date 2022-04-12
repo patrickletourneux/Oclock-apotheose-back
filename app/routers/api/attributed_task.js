@@ -6,13 +6,7 @@ const attributedTaskCreateSchema = require('../../validation/schemas/attributedT
 const attributedTaskController = require('../../controllers/api/attributed_task');
 const controllerHandler = require('../../helpers/controllerHandler');
 
-const verifyToken = require('../../helpers/verifyToken');
-
 const router = express.Router();
-
-/**
- * TODO ajouter verifyToken partout ou necessaire
- */
 
 router
   .route('/')
@@ -20,6 +14,7 @@ router
     * POST /api/v1/attributed_tasks
     * @summary POST attributed_task
     * @tags AttributedTask
+    * @security BearerAuth
     * @param {CreateAttributedTask} request.body.required - CreateAttributedTask
     * @return {AttributedTask} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
@@ -33,12 +28,12 @@ router
     * DELETE /api/v1/attributed_tasks/{id}
     * @summary Delete one attributed_task
     * @tags AttributedTask
+    * @security BearerAuth
     * @param {number} id.path.required - attributed_task id identifier
     * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - attributed_task not found - application/json
     */
-  // .delete(controllerHandler(attributedTaskController.delete));
   .delete(controllerHandler(attributedTaskController.deleteOneByPk));
 
 module.exports = router;

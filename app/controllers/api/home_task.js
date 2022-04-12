@@ -12,9 +12,8 @@ const homeTaskController = {
      */
   async createOne(req, res) {
     debug('dans createOne');
-    debug('req.body.name ', req.body.name);
-    debug('req.body.value ', req.body.value);
     const newHomeTask = await homeTaskDataMapper.insert(req.body);
+    delete newHomeTask.created_at;
     return res.status(200).json(newHomeTask);
   },
 
@@ -33,6 +32,7 @@ const homeTaskController = {
       debug('pas de home_task trouvée pour cet id');
       throw new ApiError('home_task not found', { statusCode: 404 });
     } else {
+      delete homeTask.created_at;
       return res.status(200).json(homeTask);
     }
   },
@@ -52,11 +52,11 @@ const homeTaskController = {
       debug('homeTask:', homeTask.id, ' a effacer de la bdd');
       // delete the home_task in dbb
       const result = await homeTaskDataMapper.delete(req.params.id);
-      debug('result ', result);
+      // debug('result ', result);
       if (result) {
         return res.status(200).json('home_task supprimé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression de la home_task');
+      throw new ApiError('erreur lors de la suppression de la home_task', { statusCode: 404 });
     }
     throw new ApiError('home_task not found', { statusCode: 404 });
   },
