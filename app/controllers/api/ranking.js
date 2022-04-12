@@ -26,11 +26,20 @@ module.exports = {
         statusCode: 404,
       });
     }
-    const ranking = await rankingDataMapper.score(req.params.id);
+    let ranking = await rankingDataMapper.score(req.params.id);
+    if (!ranking) {
+      ranking = [];
+    }
     // debug(ranking);
     const users = await rankingDataMapper.findUsersByPk(req.params.id);
     // debug('users ', users);
-    const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    if (!reward) {
+      reward = {
+        title: 'no reward',
+        descrition: 'no reward',
+      };
+    }
     delete reward.created_at;
     // debug('reward ', reward);
     // rework data for frontend need to deliver a clean ranking,
