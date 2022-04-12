@@ -13,9 +13,51 @@ module.exports = {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-    const mytasks = await mytasksDataMapper.findOneByPk(req.params.id);
-    debug(mytasks);
+    if (!user.home_id) {
+      debug('pas de home trouvé pour ce user id');
+      throw new ApiError('pas de home trouvé pour ce user id', { statusCode: 404 });
+    }
+    const homeTask = await mytasksDataMapper.findHomeTaskCountByHomeId(user.home_id);
+    debug('homeTask.home_task', homeTask.home_task);
+    if (!homeTask) {
+      throw new ApiError('pas de task dans la home', { statusCode: 404 });
+    }
+    let doneTasks = await mytasksDataMapper.findDoneTaskCountByUserId(user.id);
+    if (!doneTasks) {
+      doneTasks = [];
+    }
+    let attributedTask = await mytasksDataMapper.findAttributedTaskCountByUserId(user.id);
+    if (!attributedTask) {
+      attributedTask = [];
+      const newwTasks = [];
+      homeTask.home_task.forEach((taskH) => {
+        const taskHome = taskH;
+        taskHome.attributed = false;
+        newwTasks.push(taskHome);
+      });
+      const obj = {
+        home_tasks: newwTasks,
+        done_tasks: doneTasks,
+      };
+      return res.status(200).json(obj);
+    }
+    const newTasks = [];
 
-    return res.status(200).json(mytasks);
+    homeTask.home_task.forEach((taskH) => {
+      const taskHome = taskH;
+      const taskAttributed = attributedTask.attributed_task.find((e) => e.id === taskHome.id);
+      if (taskAttributed) {
+        taskHome.attributed = true;
+      } else {
+        taskHome.attributed = false;
+      }
+      newTasks.push(taskHome);
+    });
+    const obj = {
+      home_tasks: newTasks,
+      done_tasks: doneTasks,
+    };
+
+    return res.status(200).json(obj);
   },
 };

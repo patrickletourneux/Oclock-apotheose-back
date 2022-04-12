@@ -46,7 +46,7 @@ module.exports = {
      * Le home souhaité ou undefined si aucun home à cet id
      */
   async findOneByPk(id) {
-    debug('dans findByPk');
+    debug('dans findOneByPk');
     const result = await client.query('SELECT * FROM "home" WHERE id = $1;', [id]);
     if (result.rowCount === 0) {
       return undefined;

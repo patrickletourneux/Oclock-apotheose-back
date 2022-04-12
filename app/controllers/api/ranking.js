@@ -26,18 +26,28 @@ module.exports = {
         statusCode: 404,
       });
     }
-    const ranking = await rankingDataMapper.score(req.params.id);
+    let ranking = await rankingDataMapper.score(req.params.id);
+    if (!ranking) {
+      ranking = [];
+    }
     // debug(ranking);
     const users = await rankingDataMapper.findUsersByPk(req.params.id);
     // debug('users ', users);
-    const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    if (!reward) {
+      reward = {
+        title: 'no reward',
+        descrition: 'no reward',
+      };
+    }
     delete reward.created_at;
     // debug('reward ', reward);
     // rework data for frontend need to deliver a clean ranking,
     // pseudo merge ranking with users in newUsers
     const newUsers = [];
 
-    users.forEach((userHome) => {
+    users.forEach((userH) => {
+      const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
         debug('userRank.score', userRank.score);
@@ -52,10 +62,10 @@ module.exports = {
     // sort by score
     newUsers.sort((b, a) => a.score - b.score);
     let i = 1;
-    for (item of newUsers) {
-      item.rank = i;
-      i++;
-    }
+    newUsers.forEach((e) => {
+      e.rank = i;
+      i += 1;
+    });
     const obj = {
       // ranking,
       users: newUsers,
