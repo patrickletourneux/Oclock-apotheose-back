@@ -21,8 +21,12 @@ module.exports = {
     const userId = user.id;
     const homeId = user.home_id;
 
+    const usersHome = await rankingDataMapper.findUsersByPk(req.params.id);
+    // debug(usersHome.length);
     const home = await homeDataMapper.findOneByPk(homeId);
     delete home.created_at;
+    delete home.password;
+    home.userCount = usersHome.length;
     const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     delete reward.created_at;
     const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(req.params.id);
@@ -37,9 +41,9 @@ module.exports = {
     const obj = {
       home,
       reward,
-      tasks:{
-        attributed_task_count: attributedTask.attributed_task_count,
-        done_task_count: doneTask.done_task_count,
+      tasks: {
+        user_attributed_task_count: attributedTask.attributed_task_count,
+        user_done_task_count: doneTask.done_task_count,
       },
       // mytasks,
       ranking,

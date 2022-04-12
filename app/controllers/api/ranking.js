@@ -8,6 +8,13 @@ const {
 } = require('../../helpers/errorHandler');
 
 module.exports = {
+  /**
+     * ranking controller to get a ranking for a home.
+     * ExpressMiddleware signature
+     * @param {object} req Express request object (not used)
+     * @param {object} res Express response object
+     * @returns {Ranking} Route API JSON response
+     */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
     // check if a home exist in dbb for this id, id in req.params.id

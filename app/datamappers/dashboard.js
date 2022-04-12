@@ -11,7 +11,7 @@ const client = require('../config/db');
 module.exports = {
 /**
      * Récupère par son id
-     * @param {number} id - L'id du user
+     * @param {number} id - L'id de la home
      * @returns {(Dashboard|undefined)} -
      * Le user souhaité ou undefined si aucun user à cet id
      */

@@ -2,15 +2,15 @@ const debug = require('debug')('ranking datamapper');
 const client = require('../config/db');
 
 /**
- * @typedef {object} Ranking
+ * @typedef {object} Score
  */
 
 module.exports = {
 /**
      * Récupère par son id
      * @param {number} id - L'id home
-     * @returns {(Myhome|undefined)} -
-     * La home souhaité ou undefined si aucun home à cet id
+     * @returns {(Users|undefined)} -
+     * Les users d'une home à cet home id
      */
 
   async findUsersByPk(homeId) {

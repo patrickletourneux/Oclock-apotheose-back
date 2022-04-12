@@ -14,6 +14,7 @@ module.exports = {
       throw new ApiError('user not found', { statusCode: 404 });
     }
     const mytasks = await mytasksDataMapper.findOneByPk(req.params.id);
+    debug(mytasks);
 
     return res.status(200).json(mytasks);
   },
