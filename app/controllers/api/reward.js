@@ -38,7 +38,6 @@ const rewardController = {
       return res.status(200).json(reward);
     }
   },
-
   /**
      * reward controller to delete a reward.
      * ExpressMiddleware signature
