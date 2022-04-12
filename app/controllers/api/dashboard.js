@@ -19,32 +19,37 @@ module.exports = {
     }
     const homeId = user.home_id;
 
-    const usersHome = await rankingDataMapper.findUsersByPk(req.params.id);
-    // debug(usersHome.length);
+    /**
+ * TODO to secure all cases if following data are undefined
+ */
+
+    // load data for front end vue
     const home = await homeDataMapper.findOneByPk(homeId);
+    if (!home) {
+      debug('pas de home trouvé pour cet id');
+      throw new ApiError('home not found', { statusCode: 404 });
+    }
     delete home.created_at;
     delete home.password;
+    const usersHome = await rankingDataMapper.findUsersByPk(req.params.id);
     home.userCount = usersHome.length;
     const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     delete reward.created_at;
     const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(req.params.id);
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
-    // const mytasks = await mytasksDataMapper.findOneByPk(userId);
     const ranking = await rankingDataMapper.score(req.params.id);
     const users = await rankingDataMapper.findUsersByPk(req.params.id);
-    const newUsers = [];
 
+    // rework data to generate ranking for front end vue
+    const newUsers = [];
     users.forEach((userH) => {
       const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
-        debug('userRank.score', userRank.score);
-        debug('userRank', userRank);
         userHome.score = userRank.score;
       } else {
         userHome.score = 0;
       }
-      debug('userHome ', userHome);
       newUsers.push(userHome);
     });
     // sort by score
@@ -57,6 +62,8 @@ module.exports = {
 
     const firstUser = newUsers[0];
     const currentUser = newUsers.find((e) => e.id === user.id);
+
+    // object to send to front end
     const obj = {
       home,
       reward,
@@ -64,7 +71,6 @@ module.exports = {
         user_attributed_task_count: attributedTask.attributed_task_count,
         user_done_task_count: doneTask.done_task_count,
       },
-      // mytasks,
       ranking: {
         firstUser,
         currentUser,
