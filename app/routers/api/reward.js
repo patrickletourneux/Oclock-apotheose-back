@@ -42,7 +42,7 @@ router
     //  * @return {ApiError} 404 - Reward not found - application/json
      */
   .get(controllerHandler(rewardController.findOneByPk))
-  // .get(verifyToken.InReqAuthorisation, controllerHandler(controller.findOneByPk))
+  // .get(verifyToken.InReqAuthorisation, controllerHandler(rewardController.findOneByPk))
 
   /**
     * PATCH /api/v1/rewards/{id}
@@ -65,7 +65,7 @@ router
     * @param {number} id.path.required - reward id identifier
     * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
-    //  * @return {ApiError} 404 - User not found - application/json
+    //  * @return {ApiError} 404 - Reward not found - application/json
     */
   // .delete(controllerHandler(rewardController.delete));
   .delete(controllerHandler(rewardController.deleteOneByPk));
