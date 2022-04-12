@@ -13,6 +13,7 @@ const attributedTaskController = {
   async createOne(req, res) {
     debug('dans createOne');
     const newAttributedTask = await attributedTaskDataMapper.insert(req.body);
+    delete newAttributedTask.created_at;
     return res.status(200).json(newAttributedTask);
   },
 
@@ -35,7 +36,7 @@ const attributedTaskController = {
       if (result) {
         return res.status(200).json('attributed_task supprimé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression de la attributed_task');
+      throw new ApiError('erreur lors de la suppression de la attributed_task', { statusCode: 400 });
     }
     throw new ApiError('attributed_task not found', { statusCode: 404 });
   },

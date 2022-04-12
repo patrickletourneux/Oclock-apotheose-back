@@ -12,9 +12,8 @@ const doneTaskController = {
      */
   async createOne(req, res) {
     debug('dans createOne');
-    debug('req.body.name ', req.body.name);
-    debug('req.body.value ', req.body.value);
     const newDoneTask = await doneTaskDataMapper.insert(req.body);
+    delete newDoneTask.created_at;
     return res.status(200).json(newDoneTask);
   },
 
@@ -37,7 +36,7 @@ const doneTaskController = {
       if (result) {
         return res.status(200).json('done_task supprimé de la bdd');
       }
-      return res.status(400).json('erreur lors de la suppression de la done_task');
+      throw new ApiError('erreur lors de la suppression de la done_task', { statusCode: 400 });
     }
     throw new ApiError('done_task not found', { statusCode: 404 });
   },
