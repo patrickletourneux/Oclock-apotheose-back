@@ -10,6 +10,7 @@ const { ApiError } = require('../../helpers/errorHandler');
 module.exports = {
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    // req.params.id is user.id
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     // debug(user);
@@ -32,7 +33,11 @@ module.exports = {
     delete home.created_at;
     delete home.password;
     const usersHome = await rankingDataMapper.findUsersByHomeID(homeId);
-    home.userCount = usersHome.length;
+    if (usersHome) {
+      home.userCount = usersHome.length;
+    } else {
+      home.userCount = 0;
+    }
     let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     if (!reward) {
       reward = {
@@ -46,7 +51,7 @@ module.exports = {
     if (!attributedTask) {
       attributedCount = 0;
     } else {
-      attributedCount = attributedTask.attributed_task_count
+      attributedCount = attributedTask.attributed_task_count;
     }
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
     let doneCount;

@@ -6,6 +6,7 @@ const { ApiError } = require('../../helpers/errorHandler');
 module.exports = {
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    // req.params.id is user.id
     // check if a user exist in dbb for this id, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     // debug(user);
@@ -17,16 +18,16 @@ module.exports = {
       debug('pas de home trouvé pour ce user id');
       throw new ApiError('pas de home trouvé pour ce user id', { statusCode: 404 });
     }
-    const homeTask = await mytasksDataMapper.findHomeTaskCountByHomeId(user.home_id);
+    const homeTask = await mytasksDataMapper.findHomeTaskByHomeId(user.home_id);
     debug('homeTask.home_task', homeTask.home_task);
     if (!homeTask) {
       throw new ApiError('pas de task dans la home', { statusCode: 404 });
     }
-    let doneTasks = await mytasksDataMapper.findDoneTaskCountByUserId(user.id);
+    let doneTasks = await mytasksDataMapper.findDoneTaskByUserId(user.id);
     if (!doneTasks) {
       doneTasks = [];
     }
-    let attributedTask = await mytasksDataMapper.findAttributedTaskCountByUserId(user.id);
+    let attributedTask = await mytasksDataMapper.findAttributedTaskByUserId(user.id);
     if (!attributedTask) {
       attributedTask = [];
       const newwTasks = [];

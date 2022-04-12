@@ -17,6 +17,7 @@ module.exports = {
      */
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    // req.params.id is home.id
     // check if a home exist in dbb for this id, id in req.params.id
     const home = await homeDataMapper.findOneByPk(req.params.id);
     debug(home);
@@ -31,7 +32,7 @@ module.exports = {
       ranking = [];
     }
     // debug(ranking);
-    const users = await rankingDataMapper.findUsersByPk(req.params.id);
+    const users = await rankingDataMapper.findUsersByHomeID(req.params.id);
     // debug('users ', users);
     let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     if (!reward) {
