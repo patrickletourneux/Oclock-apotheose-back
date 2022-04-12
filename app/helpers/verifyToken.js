@@ -11,14 +11,14 @@ module.exports = {
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
       req.token = bearerToken;
-      debug('req.token:', req.token);
+      // debug('req.token:', req.token);
       jwt.verify(req.token, process.env.SECRETKEYJWT, (err, authData) => {
         if (err) {
           debug('token non valid');
           throw new ApiError('token not valid', { statusCode: 401 });
         } else {
           debug('token is valid');
-          debug(req.token);
+          // debug(req.token);
           // get the decoded payload ignoring signature, no secretOrPrivateKey needed
           // var decoded = jwt.decode(req.token);
 
@@ -26,11 +26,11 @@ module.exports = {
           const decoded = jwt.decode(req.token, {
             complete: true,
           });
-          debug('header ', decoded.header);
-          debug('payload ', decoded.payload);
-          debug('payload.user.id ', decoded.payload.user.id);
+          // debug('header ', decoded.header);
+          // // debug('payload ', decoded.payload);
+          // debug('payload.user.id ', decoded.payload.user.id);
           // add connected user id in res
-          res.connectedUserId = decoded.payload.user.id;
+          res.tokenUserId = decoded.payload.user.id;
           next();
         }
       });
@@ -38,7 +38,7 @@ module.exports = {
       debug('no token received in backend');
       debug('ATTENTION test token non actif, besoin d effacer le next() de la ligne suivante pour l activer et decommenter ligne throw error');
       next();
-      // throw new ApiError('no token received in backend', { statusCode: 400 });
+      // throw new ApiError('no token received in backend', { statusCode: 401 });
     }
   },
 };

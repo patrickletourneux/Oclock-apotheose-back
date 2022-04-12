@@ -7,13 +7,7 @@ const homeUpdateSchema = require('../../validation/schemas/homeUpdateSchema');
 const controller = require('../../controllers/api/home');
 const controllerHandler = require('../../helpers/controllerHandler');
 
-const verifyToken = require('../../helpers/verifyToken')
-
 const router = express.Router();
-
-/**
- * TODO ajouter verifyToken partout ou necessaire
- */
 
 router
   .route('/')
@@ -21,6 +15,7 @@ router
      * POST /api/v1/homes
      * @summary POST home
      * @tags Home
+     * @security BearerAuth
      * @param {CreateHome} request.body.required - SigninUser
      * @return {Home} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
@@ -34,6 +29,7 @@ router
      * GET /api/v1/homes/{id}
      * @summary Get one home by id
      * @tags Home
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {Home} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
@@ -45,6 +41,7 @@ router
      * PATCH /api/v1/homes/{id}
      * @summary Update one home
      * @tags Home
+     * @security BearerAuth
      * @param {number} id.path.required -  UpdateHome
      * @param {UpdateHome} request.body.required - home info
      * @return {User} 200 - success response - application/json
@@ -57,6 +54,7 @@ router
      * DELETE /api/v1/homes/{id}
      * @summary Delete one home
      * @tags Home
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json

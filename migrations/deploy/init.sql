@@ -16,7 +16,7 @@ CREATE TABLE "home" (
   name TEXT NOT NULL,
   password INT UNIQUE DEFAULT FLOOR (RANDOM()*(9999)),
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  user_id INT NOT NULL REFERENCES "user"(id) 
+  user_id INT NOT NULL REFERENCES "user"(id) UNIQUE
 );
 
 CREATE TABLE "generic_task" (
@@ -49,7 +49,7 @@ CREATE TABLE "reward" (
   title TEXT DEFAULT NULL,
   description TEXT DEFAULT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  home_id INT REFERENCES "home"(id) NOT NULL
+  home_id INT REFERENCES "home"(id) NOT NULL UNIQUE
 );
 
 CREATE TABLE "attributed_task" (

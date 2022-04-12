@@ -10,7 +10,8 @@ router
 /**
      * GET /api/v1/ranking/{id}
      * @summary Get ranking by home id
-     * @tags ranking
+     * @tags Ranking
+     * @security BearerAuth
      * @param {number} id.path.required - home id identifier
      * @return {Ranking}} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json

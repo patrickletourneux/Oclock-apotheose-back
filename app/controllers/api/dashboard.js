@@ -1,8 +1,6 @@
 const debug = require('debug')('dashboard controller');
 const userDataMapper = require('../../datamappers/user');
-const dashboardDataMapper = require('../../datamappers/dashboard');
 const homeDataMapper = require('../../datamappers/home');
-const myhomeDataMapper = require('../../datamappers/myhome');
 const mytasksDataMapper = require('../../datamappers/mytasks');
 const rankingDataMapper = require('../../datamappers/ranking');
 
@@ -21,16 +19,17 @@ module.exports = {
     const userId = user.id;
     const homeId = user.home_id;
 
-    const myhome = await homeDataMapper.findOneByPk(homeId);
+    const home = await homeDataMapper.findOneByPk(homeId);
+    delete home.created_at;
     const mytasks = await mytasksDataMapper.findOneByPk(userId);
     const ranking = await rankingDataMapper.score(homeId);
-    /** 
-     * TODO 
+    /**
+     * TODO
       */
-    // besoin de recuperer le reward par award.home_id 
+    // besoin de recuperer le reward par award.home_id
     // const reward = await awardDataMapper.findOneByPk(userId);
     const obj = {
-      myhome,
+      home,
       mytasks,
       ranking,
     };

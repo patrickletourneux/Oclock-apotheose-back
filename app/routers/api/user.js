@@ -30,6 +30,7 @@ router
      * GET /api/v1/users/{id}
      * @summary Get one user by id
      * @tags User
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {User} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
@@ -40,6 +41,7 @@ router
      * PATCH /api/v1/users/{id}
      * @summary Update one user
      * @tags User
+     * @security BearerAuth
      * @param {number} id.path.required -  UpdateUser
      * @param {UpdateUser} request.body.required - user info
      * @return {User} 200 - success response - application/json
@@ -51,6 +53,7 @@ router
      * DELETE /api/v1/users/{id}
      * @summary Delete one user
      * @tags User
+     * @security BearerAuth
      * @param {number} id.path.required - user id identifier
      * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json

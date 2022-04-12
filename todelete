@@ -19,3 +19,37 @@ insert into "user"
 (email,password,pseudonym)
 values 
 ('a@gmail.com','a','a');
+
+-- Requête pour récupérer toute la big data pour la big route :
+SELECT 
+    book.id, book.isbn13, book.isbn10,
+    row_to_json(connected_user) AS connected_user_associations_with_this_book,
+    MAX(donator.donation_date) AS last_donation_date,
+    COUNT(donator.*) AS number_of_donors,  
+    COALESCE(json_agg(to_jsonb(donator.*) - 'bio' - 'password' - 'mail_alert' - 'mail_donation') FILTER (WHERE donator.user_id IS NOT NULL), NULL) AS donors
+
+FROM book
+
+LEFT JOIN (
+    SELECT * 
+    FROM user_has_book 
+    JOIN "user" ON "user".id = user_has_book.user_id
+    WHERE user_has_book.is_in_donation = TRUE AND user_has_book.user_id <> 3   -- Renvoie les donateurs du livre sauf le connecté (token)
+) AS donator 
+ON book.id = donator.book_id
+
+LEFT JOIN (
+    SELECT "user".id, "user".username, "user".email, user_has_book.*
+    FROM user_has_book 
+    JOIN "user" ON "user".id = user_has_book.user_id 
+    WHERE user_has_book.user_id = 3    -- Renvoie que les associations de l'utilisateur connecté avec le livre (token)
+) AS connected_user
+ON book.id = connected_user.book_id
+
+LEFT JOIN "user" ON "user".id = donator.user_id
+
+WHERE book.id IN (11, 3, 6, 10, 12, 1)
+
+-- WHERE book.isbn13 = '9782075094504'  -- Filtre les livres et ne renvoie que celui possédant cet ISBN  
+
+GROUP BY book.id, connected_user.*;

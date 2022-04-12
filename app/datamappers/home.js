@@ -7,7 +7,6 @@ const client = require('../config/db');
  * @property {string} name - name for the home
  * @property {string} password - password for the home
  * @property {number} user_id - creator home_id
- * @property {date} created_at - date of the creation of the home
  */
 
 /**

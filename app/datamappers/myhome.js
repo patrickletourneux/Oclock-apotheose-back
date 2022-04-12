@@ -17,14 +17,25 @@ module.exports = {
     debug('dans findByPk');
     // query for my home
     const result = await client.query(
-      `select "home".id as home_id,
+      `SELECT "home".id AS home_id,
       to_json(array_agg(distinct home_task)) as home_task,
-      to_json(array_agg(distinct "user"))as user
-from "home"
-left join "user" on  home.id="user".home_id
-left join "home_task" on home.id = home_task.home_id
-GROUP BY "home".id
-having "home".id=$1;`,
+      to_json(array_agg(distinct "user")) as "user"
+      FROM "home"
+
+    LEFT JOIN (
+    SELECT "user".id,"user".pseudonym ,"user".home_id
+    FROM "user"
+    ) AS "user"
+      ON  home.id = "user".home_id
+
+      LEFT JOIN (
+    SELECT home_task.id,home_task.name ,home_task.value,home_task.home_id
+    FROM "home_task"
+    ) AS "home_task"
+    ON home.id = "home_task".home_id
+
+      GROUP BY "home".id
+    HAVING "home".id=$1;`,
       [id],
     );
     // debug(result.rows);
