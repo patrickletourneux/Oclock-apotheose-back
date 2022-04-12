@@ -23,7 +23,7 @@ module.exports = {
  * TODO to secure all cases if following data are undefined
  */
 
-    // load data for front end vue
+    // load data for front end vue and reword data to deliver to front end exactly the need
     const home = await homeDataMapper.findOneByPk(homeId);
     if (!home) {
       debug('pas de home trouvé pour cet id');
@@ -31,14 +31,35 @@ module.exports = {
     }
     delete home.created_at;
     delete home.password;
-    const usersHome = await rankingDataMapper.findUsersByPk(req.params.id);
+    const usersHome = await rankingDataMapper.findUsersByHomeID(homeId);
     home.userCount = usersHome.length;
-    const reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    if (!reward) {
+      reward = {
+        title: 'no reward',
+        descrition: 'no reward',
+      };
+    }
     delete reward.created_at;
     const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(req.params.id);
+    let attributedCount;
+    if (!attributedTask) {
+      attributedCount = 0;
+    } else {
+      attributedCount = attributedTask.attributed_task_count
+    }
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
-    const ranking = await rankingDataMapper.score(req.params.id);
-    const users = await rankingDataMapper.findUsersByPk(req.params.id);
+    let doneCount;
+    if (!doneTask) {
+      doneCount = 0;
+    } else {
+      doneCount = doneTask.done_task_count;
+    }
+    let ranking = await rankingDataMapper.score(req.params.id);
+    if (!ranking) {
+      ranking = [];
+    }
+    const users = await rankingDataMapper.findUsersByHomeID(homeId);
 
     // rework data to generate ranking for front end vue
     const newUsers = [];
@@ -68,8 +89,8 @@ module.exports = {
       home,
       reward,
       tasks: {
-        user_attributed_task_count: attributedTask.attributed_task_count,
-        user_done_task_count: doneTask.done_task_count,
+        user_attributed_task_count: attributedCount,
+        user_done_task_count: doneCount,
       },
       ranking: {
         firstUser,

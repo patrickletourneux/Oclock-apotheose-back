@@ -13,8 +13,8 @@ module.exports = {
      * Les users d'une home à cet home id
      */
 
-  async findUsersByPk(homeId) {
-    debug('dans findByPk');
+  async findUsersByHomeID(homeId) {
+    debug('dans findUsersByHomeID');
     // query for my home users
     const result = await client.query(
       `select home.id as home_id, "user".id,"user".avatar_img,"user".pseudonym
