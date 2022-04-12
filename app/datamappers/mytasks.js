@@ -1,5 +1,6 @@
 const debug = require('debug')('mytasks datamapper');
 const client = require('../config/db');
+const { findDoneTaskCountByUserId } = require('./dashboard');
 
 /**
  * @typedef {object} Mytasks
@@ -52,4 +53,76 @@ module.exports = {
 
     return result.rows[0];
   },
+
+  async findHomeTaskCountByHomeId(id) {
+    debug('dans findDoneTaskCountByUserId');
+    const result = await client.query(
+      `select home.id as home_id,
+      to_json(array_agg(distinct home_task)) as home_task
+      from home
+      join home_task on home_task.home_id = home.id
+      GROUP BY home.id
+      having home.id=$1;`,
+      [id],
+    );
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+
+    return result.rows[0];
+  },
+
+  async findDoneTaskCountByUserId(id) {
+    debug('dans findDoneTaskCountByUserId');
+
+    const result = await client.query(
+      `select "user".id as user_id,
+      to_json(array_agg(distinct done_task))as done_task 
+    from "user"
+    LEFT JOIN (
+    SELECT home.id,home.name ,home.user_id
+    FROM "home"
+    ) AS "home"
+  on "user".home_id=home.id
+    LEFT JOIN done_task on "user".id = done_task.user_id
+    where to_char(done_task.created_at,'YYYY') = to_char(now(),'YYYY')
+      AND to_char(done_task.created_at,'WW') = to_char(now(),'WW')
+
+      GROUP BY "user".id
+    having "user".id=$1;`,
+      [id],
+    );
+    if (result.rowCount === 0) {
+      debug(result);
+      return undefined;
+    }
+    return result.rows[0];
+  },
+  async findAttributedTaskCountByUserId(id) {
+    debug('dans findDoneTaskCountByUserId');
+
+    const result = await client.query(
+      `select "user".id as user_id,
+      to_json(array_agg(distinct attributed_task))as attributed_task 
+    from "user"
+    LEFT JOIN (
+    SELECT home.id,home.name ,home.user_id
+    FROM "home"
+    ) AS "home"
+  on "user".home_id=home.id
+    LEFT JOIN attributed_task on "user".id = attributed_task.user_id
+    where to_char(attributed_task.created_at,'YYYY') = to_char(now(),'YYYY')
+      AND to_char(attributed_task.created_at,'WW') = to_char(now(),'WW')
+
+      GROUP BY "user".id
+    having "user".id=$1;`,
+      [id],
+    );
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+
+    return result.rows[0];
+  },
+
 };

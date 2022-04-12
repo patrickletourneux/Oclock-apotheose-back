@@ -7,13 +7,7 @@ const rewardUpdateSchema = require('../../validation/schemas/rewardUpdateSchema'
 const rewardController = require('../../controllers/api/reward');
 const controllerHandler = require('../../helpers/controllerHandler');
 
-const verifyToken = require('../../helpers/verifyToken');
-
 const router = express.Router();
-
-/**
- * TODO ajouter verifyToken partout ou necessaire
- */
 
 router
   .route('/')

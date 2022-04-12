@@ -40,6 +40,7 @@ router
     * DELETE /api/v1/home_tasks/{id}
     * @summary Delete one home_task
     * @tags HomeTask
+    * @security BearerAuth
     * @param {number} id.path.required - home_task id identifier
     * @return {boolean} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
