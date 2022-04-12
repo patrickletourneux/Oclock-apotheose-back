@@ -37,7 +37,8 @@ module.exports = {
     // pseudo merge ranking with users in newUsers
     const newUsers = [];
 
-    users.forEach((userHome) => {
+    users.forEach((userH) => {
+      const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
         debug('userRank.score', userRank.score);
@@ -52,10 +53,10 @@ module.exports = {
     // sort by score
     newUsers.sort((b, a) => a.score - b.score);
     let i = 1;
-    for (item of newUsers) {
-      item.rank = i;
-      i++;
-    }
+    newUsers.forEach((e) => {
+      e.rank = i;
+      i += 1;
+    });
     const obj = {
       // ranking,
       users: newUsers,

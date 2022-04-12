@@ -13,10 +13,11 @@ module.exports = {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-    const mytasks = await mytasksDataMapper.findOneByPk(req.params.id); 
+    const mytasks = await mytasksDataMapper.findOneByPk(req.params.id);
     const newTasks = [];
 
-    mytasks.home_task.forEach((taskHome) => {
+    mytasks.home_task.forEach((taskH) => {
+      const taskHome = taskH;
       const taskAttributed = mytasks.attributed_task.find((e) => e.id === taskHome.id);
       if (taskAttributed) {
         taskHome.attributed = true;
