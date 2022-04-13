@@ -13,10 +13,10 @@ router
 /**
          * POST /api/v1/invitation
          * @summary POST invitation
-         * @tags invitation
+         * @tags Invitation
          * @security BearerAuth
-         * @param {Invitation} request.body.required - SigninUser
-         * @return {message} 200 - success response - application/json
+         * @param {Invitation} request.body.required - invitation
+         * @return {boolean} 200 - success response - application/json
         //  * @return {ApiError} 400 - Bad request response - application/json
         //  * @return {ApiError} 404 - Category not found - application/json
          */

@@ -9,7 +9,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {Message} Route API JSON response
+     * @returns {boolean} Route API JSON response
      */
   async createOne(req, res) {
     debug('dans createOne');

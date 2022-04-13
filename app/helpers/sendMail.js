@@ -1,7 +1,18 @@
 const nodemailer = require('nodemailer');
 const debug = require('debug')('sendMail');
 
-const sendMail = async function (email, sub, message) {
+/**
+ * @typedef {object} Invitation
+ * @property {number} id - Identifiant unique Pk de la home
+ * @property {string} email - email to send invitation
+ */
+
+const sendMail = async function send(email, sub, message) {
+  /**
+     * envoi une invitation dans une maison
+     * @param {Invitation} invitation - Les données à insérer
+     * @returns {boolean} - true or false
+     */
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     secure: false,

@@ -15,7 +15,7 @@ router
     * @summary POST done_task
     * @tags DoneTask
     * @security BearerAuth
-    * @param {CreateReward} request.body.required - CreateDoneTask
+    * @param {CreateDoneTask} request.body.required - CreateDoneTask
     * @return {DoneTask} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - DoneTask not found - application/json

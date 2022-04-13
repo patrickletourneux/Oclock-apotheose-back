@@ -8,7 +8,7 @@ const doneTaskController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
-     * @returns {DoneTask} Route API JSON response
+     * @returns {CreateDoneTask} Route API JSON response
      */
   async createOne(req, res) {
     debug('dans createOne');
