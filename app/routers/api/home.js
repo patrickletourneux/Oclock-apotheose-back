@@ -16,7 +16,7 @@ router
      * @summary POST home
      * @tags Home
      * @security BearerAuth
-     * @param {CreateHome} request.body.required - SigninUser
+     * @param {CreateHome} request.body.required - createHome
      * @return {Home} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - Category not found - application/json

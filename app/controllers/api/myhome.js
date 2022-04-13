@@ -6,6 +6,7 @@ const { ApiError } = require('../../helpers/errorHandler');
 module.exports = {
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    // req.params.id is home.id
     // check if a home exist in dbb for this id, id in req.params.id
     const home = await homeDataMapper.findOneByPk(req.params.id);
     // debug(home);

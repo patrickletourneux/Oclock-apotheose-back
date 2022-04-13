@@ -10,6 +10,7 @@ const { ApiError } = require('../../helpers/errorHandler');
 module.exports = {
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
+    // req.params.id is user.id
     // check if a user exist in dbb for this email, id in req.params.id
     const user = await userDataMapper.findOneByPk(req.params.id);
     // debug(user);
@@ -32,7 +33,11 @@ module.exports = {
     delete home.created_at;
     delete home.password;
     const usersHome = await rankingDataMapper.findUsersByHomeID(homeId);
-    home.userCount = usersHome.length;
+    if (usersHome) {
+      home.userCount = usersHome.length;
+    } else {
+      home.userCount = 0;
+    }
     let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
     if (!reward) {
       reward = {
@@ -46,14 +51,14 @@ module.exports = {
     if (!attributedTask) {
       attributedCount = 0;
     } else {
-      attributedCount = attributedTask.attributed_task_count
+      attributedCount = parseInt(attributedTask.attributed_task_count, 10);
     }
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
     let doneCount;
     if (!doneTask) {
       doneCount = 0;
     } else {
-      doneCount = doneTask.done_task_count;
+      doneCount = parseInt(doneTask.done_task_count, 10);
     }
     let ranking = await rankingDataMapper.score(req.params.id);
     if (!ranking) {
@@ -67,7 +72,7 @@ module.exports = {
       const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
-        userHome.score = userRank.score;
+        userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }

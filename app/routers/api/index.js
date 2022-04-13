@@ -15,6 +15,7 @@ const dashboardRouter = require('./dashboard');
 const mytasksRouter = require('./mytasks');
 const myhomeRouter = require('./myhome');
 const rankingRouter = require('./ranking');
+const invitationRouter = require('./invitation');
 
 // const { apiController } = require('../../controllers/api');
 
@@ -45,6 +46,7 @@ router.use('/dashboard', verifyToken.InReqAuthorisation, dashboardRouter);
 router.use('/mytasks', verifyToken.InReqAuthorisation, mytasksRouter);
 router.use('/myhome', verifyToken.InReqAuthorisation, myhomeRouter);
 router.use('/ranking', verifyToken.InReqAuthorisation, rankingRouter);
+router.use('/invitation', verifyToken.InReqAuthorisation, invitationRouter);
 
 router.use(() => {
   debug('route not found');
