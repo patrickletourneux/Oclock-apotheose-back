@@ -20,6 +20,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - Category not found - application/json
      */
-  .post(validate('body', joinHomeCreateSchema), controllerHandler(joinHomeController.createOne));
+  .post(validate('body', joinHomeCreateSchema), controllerHandler(joinHomeController.update));
 
 module.exports = router;

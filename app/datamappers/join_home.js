@@ -18,13 +18,14 @@ const joinHomeDataMapper = {
     * @param {RouteJoinHome} la route de join_home - Les données à insérer
     * @returns {TheJoinHome} - La home à rejoindre
     */
-  async insert(user) {
-    debug('dans insert');
+  async update(user) {
+    debug('dans update');
     const newJoinHome = await client.query(
       `
-        INSERT INTO "user"
-        (home_id) VALUES
-        ($1) RETURNING *
+        UPDATE "user" 
+        SET (home_id, home_password, user_id) VALUES
+        ($1, $2, $3) RETURNING home_id
+        WHERE user_id = $3
             `,
       [user.home_id],
     );
@@ -34,3 +35,22 @@ const joinHomeDataMapper = {
 };
 
 module.exports = joinHomeDataMapper;
+
+/* UPDATE "user"
+        (home_id, home_password, user_id) VALUES
+        ($1, $2, $3) RETURNING home_id
+
+        OU
+
+    async insert(user) {
+      debug('dans update');
+      const newJoinHome = await client.query(
+        `
+          UPDATE "user"
+          SET home_id WHERE user_id = $1
+          RETURNING home_id
+              `,
+        [user.home_id],
+      );
+      return newJoinHome.rows[0];
+    }, */
