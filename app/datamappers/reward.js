@@ -54,6 +54,16 @@ const rewardDataMapper = {
     }
     return result.rows[0];
   },
+  // find by home id needed for ranking vue
+  async findOneByHomeID(id) {
+    debug('dans findByHomeId');
+    const result = await client.query(`SELECT *,date_trunc('week',(now()+'7 days'::interval)) as end_at FROM "reward" 
+    WHERE home_id = $1;`, [id]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
 
   /**
      * Supprime de la base de données
@@ -62,9 +72,6 @@ const rewardDataMapper = {
      */
   async delete(id) {
     debug('dans delete');
-    /**
-    * TODO delete reward link from home before, if home delete
-     */
     const result = await client.query('DELETE FROM "reward" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
     // le rowcount est égal à 1 (truthy)soit non et il est égal a 0 (falsy)

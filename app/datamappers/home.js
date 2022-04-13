@@ -46,7 +46,7 @@ module.exports = {
      * Le home souhaité ou undefined si aucun home à cet id
      */
   async findOneByPk(id) {
-    debug('dans findByPk');
+    debug('dans findOneByPk');
     const result = await client.query('SELECT * FROM "home" WHERE id = $1;', [id]);
     if (result.rowCount === 0) {
       return undefined;
@@ -61,7 +61,7 @@ module.exports = {
   async delete(id) {
     debug('dans delete');
     /**
-    * TODO delete home task link to home before
+    * TODO delete home task , attributed_task, done_task,link to home before delete the home
      */
     const result = await client.query('DELETE FROM "home" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
