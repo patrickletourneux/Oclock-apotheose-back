@@ -51,14 +51,14 @@ module.exports = {
     if (!attributedTask) {
       attributedCount = 0;
     } else {
-      attributedCount = attributedTask.attributed_task_count;
+      attributedCount = parseInt(attributedTask.attributed_task_count, 10);
     }
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
     let doneCount;
     if (!doneTask) {
       doneCount = 0;
     } else {
-      doneCount = doneTask.done_task_count;
+      doneCount = parseInt(doneTask.done_task_count, 10);
     }
     let ranking = await rankingDataMapper.score(req.params.id);
     if (!ranking) {
@@ -72,7 +72,7 @@ module.exports = {
       const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
-        userHome.score = userRank.score;
+        userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }

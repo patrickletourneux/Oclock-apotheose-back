@@ -53,7 +53,7 @@ module.exports = {
       if (userRank) {
         debug('userRank.score', userRank.score);
         debug('userRank', userRank);
-        userHome.score = userRank.score;
+        userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }
