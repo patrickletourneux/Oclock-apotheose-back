@@ -55,6 +55,8 @@ module.exports = {
     if (await bcrypt.compare(req.body.password, user.password)) {
       debug('user et password ok');
       // token generation with user information inside token and send it to the front
+      delete user.password;
+      delete user.created_at;
       jwt.sign({
         user,
       }, process.env.SECRETKEYJWT, {
