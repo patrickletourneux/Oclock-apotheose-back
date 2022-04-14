@@ -5,6 +5,7 @@ const joinHomeCreateSchema = require('../../validation/schemas/joinHomeCreateSch
 
 const joinHomeController = require('../../controllers/api/join_home');
 const controllerHandler = require('../../helpers/controllerHandler');
+const findHomePassword = require('../../validation/schemas/findHomePassword');
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - Category not found - application/json
      */
-  .post(validate('body', joinHomeCreateSchema), controllerHandler(joinHomeController.update));
+  // .post(validate('body', joinHomeCreateSchema), controllerHandler(joinHomeController.update));
+  .post(validate('body', findHomePassword), controllerHandler(joinHomeController.findOnePassword));
 
 module.exports = router;

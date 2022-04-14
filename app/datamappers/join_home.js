@@ -1,4 +1,5 @@
 const debug = require('debug')('join_home datamapper');
+const { check } = require('prettier');
 const client = require('../config/db');
 
 /**
@@ -14,23 +15,41 @@ const client = require('../config/db');
  */
 const joinHomeDataMapper = {
   /**
-    * Ajoute un reward associé à une maison dans la base de donnée
+    * Ajoute une join_home / home associé à un user dans la base de donnée
     * @param {RouteJoinHome} la route de join_home - Les données à insérer
     * @returns {TheJoinHome} - La home à rejoindre
     */
-  async update(user) {
+  async update(body) {
+    debug('body', body);
     debug('dans update');
     const newJoinHome = await client.query(
       `
         UPDATE "user" 
-        SET (home_id, home_password, user_id) VALUES
-        ($1, $2, $3) RETURNING home_id
-        WHERE user_id = $3
+        SET home_id = $1
+        WHERE "user".id = $2
+        RETURNING *
             `,
-      [user.home_id],
+      [body.home_id, body.user_id],
     );
+    debug('query', newJoinHome);
 
     return newJoinHome.rows[0];
+  },
+
+  async getPassword(password) {
+    debug('password in joinHomeDatamapper', password);
+    const homePassword = await client.query(
+      `
+        SELECT "home".password, "home".id 
+        FROM "home"
+        WHERE "home".id = $1
+        RETURNING * 
+          `,
+      [password.home.id, password.home.password],
+    );
+    debug('le homePassword', homePassword);
+
+    return homePassword.rows[0];
   },
 };
 
