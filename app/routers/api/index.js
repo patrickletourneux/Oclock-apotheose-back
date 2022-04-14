@@ -10,6 +10,7 @@ const rewardRouter = require('./reward');
 const homeTaskRouter = require('./home_task');
 const attributedTaskRouter = require('./attributed_task');
 const doneTaskRouter = require('./done_task');
+const genericTaskRouter = require('./generic_task');
 
 const dashboardRouter = require('./dashboard');
 const mytasksRouter = require('./mytasks');
@@ -40,12 +41,13 @@ router.use('/rewards', verifyToken.InReqAuthorisation, rewardRouter);
 router.use('/home_tasks', verifyToken.InReqAuthorisation, homeTaskRouter);
 router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributedTaskRouter);
 router.use('/done_tasks', verifyToken.InReqAuthorisation, doneTaskRouter);
-// router.use('/generic_tasks', verifyToken.InReqAuthorisation, generic_taskRouter);
+router.use('/generic_tasks', verifyToken.InReqAuthorisation, genericTaskRouter);
 
 router.use('/dashboard', verifyToken.InReqAuthorisation, dashboardRouter);
 router.use('/mytasks', verifyToken.InReqAuthorisation, mytasksRouter);
 router.use('/myhome', verifyToken.InReqAuthorisation, myhomeRouter);
 router.use('/ranking', verifyToken.InReqAuthorisation, rankingRouter);
+// router.use('/join_home', verifyToken.InReqAuthorisation, invitationRouter);
 router.use('/invitation', verifyToken.InReqAuthorisation, invitationRouter);
 
 router.use(() => {
