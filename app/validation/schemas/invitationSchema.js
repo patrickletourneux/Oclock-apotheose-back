@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 module.exports = Joi.object({
   email: Joi.string().required().email(),
-  home_id: Joi.string().required(),
+  home_id: Joi.number().required(),
 }).required();
 
 // for array of email, how to sen an array in req.body ?? need research

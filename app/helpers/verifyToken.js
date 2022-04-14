@@ -27,10 +27,14 @@ module.exports = {
             complete: true,
           });
           // debug('header ', decoded.header);
-          // // debug('payload ', decoded.payload);
-          // debug('payload.user.id ', decoded.payload.user.id);
-          // add connected user id in res
+          // debug('payload ', decoded.payload);
+          // add connected user.id in res
           res.tokenUserId = decoded.payload.user.id;
+          // add connected  user.home_id in res
+          res.tokenHomeId = decoded.payload.user.home_id;
+          debug('res.tokenUserId :', res.tokenUserId);
+          debug('res.tokenHomeId :', res.tokenHomeId);
+
           next();
         }
       });
