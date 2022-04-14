@@ -19,7 +19,7 @@ module.exports = {
       throw new ApiError('pas de home trouvé pour ce user id', { statusCode: 404 });
     }
     let homeTask = await mytasksDataMapper.findHomeTaskByHomeId(user.home_id);
-    debug('homeTask.home_task', homeTask.home_task);
+    // debug('homeTask.home_task', homeTask.home_task);
     if (!homeTask) {
       homeTask = [];
     }
