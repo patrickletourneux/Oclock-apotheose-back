@@ -20,7 +20,7 @@ module.exports = {
     // req.params.id is home.id
     // check if a home exist in dbb for this id, id in req.params.id
     const home = await homeDataMapper.findOneByPk(req.params.id);
-    debug(home);
+    // debug(home);
     if (!home) {
       debug('pas de home trouvé pour cet id');
       throw new ApiError('home not found', {
@@ -51,13 +51,13 @@ module.exports = {
       const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
-        debug('userRank.score', userRank.score);
-        debug('userRank', userRank);
+        // debug('userRank.score', userRank.score);
+        // debug('userRank', userRank);
         userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }
-      debug('userHome ', userHome);
+      // debug('userHome ', userHome);
       newUsers.push(userHome);
     });
     // sort by score
