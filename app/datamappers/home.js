@@ -2,6 +2,18 @@ const debug = require('debug')('home datamapper');
 const client = require('../config/db');
 
 /**
+ * @typedef {object} JoinHome
+ * @property {string} home_password - password for the home
+ * @property {number} user_id - user_id to join home
+ */
+
+/**
+ * @typedef {object} Invitation
+ * @property {number} home_id - Identifiant unique Pk de la home
+ * @property {string} email - email to send invitation
+ */
+
+/**
  * @typedef {object} Home
  * @property {number} id - Identifiant unique Pk de la table
  * @property {string} name - name for the home
@@ -48,6 +60,20 @@ module.exports = {
   async findOneByPk(id) {
     debug('dans findOneByPk');
     const result = await client.query('SELECT * FROM "home" WHERE id = $1;', [id]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
+  /**
+     * Récupère par son password
+     * @param {string} password - password de la home
+     * @returns {(Home|undefined)} -
+     * Le home souhaité ou undefined si aucun home à cet id
+     */
+  async findOneByPassword(password) {
+    debug('dans findOneByPassword');
+    const result = await client.query('SELECT * FROM "home" WHERE password = $1;', [password]);
     if (result.rowCount === 0) {
       return undefined;
     }

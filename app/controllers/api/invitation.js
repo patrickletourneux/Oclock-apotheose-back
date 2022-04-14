@@ -24,6 +24,6 @@ module.exports = {
     );
     debug('envoi message', envoi);
 
-    return res.status(200).json('test en cours');
+    return res.status(200).json('invitation envoyée par mail');
   },
 };
