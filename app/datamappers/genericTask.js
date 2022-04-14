@@ -8,7 +8,7 @@ const genericTaskDataMapper = {
        */
   async getAll() {
     debug('dans getAll');
-    const result = await client.query(`SELECT * FROM "generic_task";`);
+    const result = await client.query('SELECT * FROM "generic_task";');
     return result.rows;
   },
 };
