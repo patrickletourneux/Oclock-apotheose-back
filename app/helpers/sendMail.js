@@ -1,12 +1,6 @@
 const nodemailer = require('nodemailer');
 const debug = require('debug')('sendMail');
 
-/**
- * @typedef {object} Invitation
- * @property {number} id - Identifiant unique Pk de la home
- * @property {string} email - email to send invitation
- */
-
 const sendMail = async function send(email, sub, message) {
   /**
      * envoi une invitation dans une maison
