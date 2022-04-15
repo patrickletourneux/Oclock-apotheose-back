@@ -18,53 +18,49 @@ module.exports = {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-    const homeId = user.home_id;
 
     /**
  * TODO to secure all cases if following data are undefined
  */
 
     // load data for front end vue and reword data to deliver to front end exactly the need
-    const home = await homeDataMapper.findOneByPk(homeId);
+    const home = await homeDataMapper.findOneByPk(user.home_id);
     if (!home) {
       debug('pas de home trouvé pour cet id');
       throw new ApiError('home not found', { statusCode: 404 });
     }
     delete home.created_at;
     delete home.password;
-    const usersHome = await rankingDataMapper.findUsersByHomeID(homeId);
+    const usersHome = await rankingDataMapper.findUsersByHomeID(user.home_id);
     if (usersHome) {
       home.userCount = usersHome.length;
     } else {
       home.userCount = 0;
     }
-    let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    const reward = await rewardDataMapper.findOneByHomeID(user.home_id);
     if (!reward) {
-      reward = {
-        title: 'no reward',
-        descrition: 'no reward',
-      };
+      throw new ApiError('pas reward not found', { statusCode: 404 });
     }
     delete reward.created_at;
-    const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(req.params.id);
+    const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(user.id);
     let attributedCount;
     if (!attributedTask) {
       attributedCount = 0;
     } else {
       attributedCount = parseInt(attributedTask.attributed_task_count, 10);
     }
-    const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(req.params.id);
+    const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(user.id);
     let doneCount;
     if (!doneTask) {
       doneCount = 0;
     } else {
       doneCount = parseInt(doneTask.done_task_count, 10);
     }
-    let ranking = await rankingDataMapper.score(req.params.id);
+    let ranking = await rankingDataMapper.score(user.home_id);
     if (!ranking) {
       ranking = [];
     }
-    const users = await rankingDataMapper.findUsersByHomeID(homeId);
+    const users = await rankingDataMapper.findUsersByHomeID(user.home_id);
 
     // rework data to generate ranking for front end vue
     const newUsers = [];
