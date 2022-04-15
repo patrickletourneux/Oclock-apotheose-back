@@ -1,4 +1,5 @@
 const debug = require('debug')('verifyUserAccess');
+
 const userDataMapper = require('../datamappers/user');
 
 const { ApiError } = require('./errorHandler');
@@ -7,6 +8,7 @@ module.exports = {
   async checkHomeIdAccess(req, res, next) {
     debug('ATTENTION test home non actif, besoin d effacer le next() de la ligne suivante pour l activer ');
     return next();
+
     // debug('res.tokenUserId', res.tokenUserId);
     // debug('res.tokenHomeId', res.tokenHomeId);
     // debug('req.params.id ', req.params.id);
