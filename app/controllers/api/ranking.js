@@ -2,12 +2,13 @@ const debug = require('debug')('ranking controller');
 const homeDataMapper = require('../../datamappers/home');
 const rankingDataMapper = require('../../datamappers/ranking');
 const rewardDataMapper = require('../../datamappers/reward');
+const sendMailRankingEndPeriod = require('../../helpers/sendMailRankingEndPeriod');
 
 const {
   ApiError,
 } = require('../../helpers/errorHandler');
 
-module.exports = {
+const rankingController = {
   /**
      * ranking controller to get a ranking for a home.
      * ExpressMiddleware signature
@@ -19,22 +20,42 @@ module.exports = {
     debug('dans findOneByPk');
     // req.params.id is home.id
     // check if a home exist in dbb for this id, id in req.params.id
-    const home = await homeDataMapper.findOneByPk(req.params.id);
-    debug(home);
+    // on factorise la fonction ci dessous qui est appelé à plusieurs endroits
+    const usersWithScore = await rankingController.rankingCreation(req.params.id);
+    return res.status(200).json(usersWithScore);
+  },
+  /**
+     * ranking controller to send a mail with ranking to all users of the home.
+     * ExpressMiddleware signature
+     * @param {object} req Express request object (not used)
+     * @param {object} res Express response object
+     * @returns {Ranking} Route API JSON response
+     */
+  async sendMailRankingEndPeriod(req, res) {
+    debug('sendMailRankingEndPeriod');
+    const usersWithScore = await rankingController.rankingCreation(req.params.id);
+    const sendMail = await sendMailRankingEndPeriod.sendMail(usersWithScore);
+    debug('sendMail', sendMail);
+    return res.status(200).json(sendMail);
+  },
+  async rankingCreation(homeID) {
+    // check if a home exist in dbb for this id, id in req.params.id
+    const home = await homeDataMapper.findOneByPk(homeID);
+    // debug(home);
     if (!home) {
       debug('pas de home trouvé pour cet id');
       throw new ApiError('home not found', {
         statusCode: 404,
       });
     }
-    let ranking = await rankingDataMapper.score(req.params.id);
+    let ranking = await rankingDataMapper.score(homeID);
     if (!ranking) {
       ranking = [];
     }
     // debug(ranking);
-    const users = await rankingDataMapper.findUsersByHomeID(req.params.id);
+    const users = await rankingDataMapper.findUsersByHomeID(homeID);
     // debug('users ', users);
-    let reward = await rewardDataMapper.findOneByHomeID(req.params.id);
+    let reward = await rewardDataMapper.findOneByHomeID(homeID);
     if (!reward) {
       reward = {
         title: 'no reward',
@@ -51,13 +72,13 @@ module.exports = {
       const userHome = userH;
       const userRank = ranking.find((e) => e.id === userHome.id);
       if (userRank) {
-        debug('userRank.score', userRank.score);
-        debug('userRank', userRank);
+        // debug('userRank.score', userRank.score);
+        // debug('userRank', userRank);
         userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }
-      debug('userHome ', userHome);
+      // debug('userHome ', userHome);
       newUsers.push(userHome);
     });
     // sort by score
@@ -72,6 +93,8 @@ module.exports = {
       users: newUsers,
       reward,
     };
-    return res.status(200).json(obj);
+    return obj;
   },
 };
+
+module.exports = rankingController;

@@ -93,7 +93,7 @@ module.exports = {
       [id],
     );
     if (result.rowCount === 0) {
-      debug(result);
+      // debug(result);
       return undefined;
     }
     return result.rows[0];

@@ -1,7 +1,7 @@
 const express = require('express');
 const debug = require('debug')('router index');
 const verifyToken = require('../../helpers/verifyToken');
-// const verifyUserAccess = require('../../helpers/verifyUserAccess');
+const verifyAccess = require('../../helpers/verifyAccessRights');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');
@@ -44,10 +44,10 @@ router.use('/attributed_tasks', verifyToken.InReqAuthorisation, attributedTaskRo
 router.use('/done_tasks', verifyToken.InReqAuthorisation, doneTaskRouter);
 router.use('/generic_tasks', verifyToken.InReqAuthorisation, genericTaskRouter);
 
-router.use('/dashboard', verifyToken.InReqAuthorisation, dashboardRouter);
-router.use('/mytasks', verifyToken.InReqAuthorisation, mytasksRouter);
-router.use('/myhome', verifyToken.InReqAuthorisation, myhomeRouter);
-router.use('/ranking', verifyToken.InReqAuthorisation, rankingRouter);
+router.use('/dashboard', verifyToken.InReqAuthorisation, verifyAccess.checkUserIdAccess, dashboardRouter);
+router.use('/mytasks', verifyToken.InReqAuthorisation, verifyAccess.checkUserIdAccess, mytasksRouter);
+router.use('/myhome', verifyToken.InReqAuthorisation, verifyAccess.checkHomeIdAccess, myhomeRouter);
+router.use('/ranking', verifyToken.InReqAuthorisation, verifyAccess.checkHomeIdAccess, rankingRouter);
 router.use('/join_home', verifyToken.InReqAuthorisation, joinHomeRouter);
 router.use('/invitation', verifyToken.InReqAuthorisation, invitationRouter);
 

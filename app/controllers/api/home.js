@@ -1,5 +1,6 @@
 const debug = require('debug')('home controller');
 const homeDataMapper = require('../../datamappers/home');
+const userDataMapper = require('../../datamappers/user');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
@@ -12,9 +13,18 @@ module.exports = {
      */
   async createOne(req, res) {
     debug('dans createOne');
-    debug('req.body.email ', req.body.email);
+    debug('req.body :', req.body);
+    // create home
     const newHome = await homeDataMapper.insert(req.body);
     delete newHome.created_at;
+    const user = {
+      home_id: newHome.id,
+    };
+    const id = req.body.user_id;
+    // update user.home_id with the id of new created home
+    const userUpdated = await userDataMapper.update(id, user);
+    delete userUpdated.password;
+    delete userUpdated.created_at;
     return res.status(200).json(newHome);
   },
   /**
