@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const debug = require('debug')('sendMail');
+const debug = require('debug')('sendMail helper');
 
 const sendMail = async function send(email, sub, message) {
   /**
