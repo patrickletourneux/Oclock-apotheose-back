@@ -33,7 +33,10 @@ const rankingController = {
      */
   async sendMailRankingEndPeriod(req, res) {
     debug('sendMailRankingEndPeriod');
-    const usersWithScore = await rankingController.rankingCreation(req.params.id);
+    let usersWithScore = await rankingController.rankingCreation(req.params.id);
+    if (!usersWithScore) {
+      usersWithScore = [];
+    }
     const sendMail = await sendMailRankingEndPeriod.sendMail(usersWithScore);
     debug('sendMail', sendMail);
     return res.status(200).json(sendMail);
@@ -93,6 +96,7 @@ const rankingController = {
       users: newUsers,
       reward,
     };
+    debug(obj);
     return obj;
   },
 };

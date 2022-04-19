@@ -79,6 +79,14 @@ module.exports = {
     }
     return result.rows[0];
   },
+  async findAll() {
+    debug('dans findAll');
+    const result = await client.query('SELECT home.id FROM "home" ;');
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows;
+  },
   /**
      * Supprime de la base de données
      * @param {number} id - L'id à supprimer
