@@ -17,7 +17,7 @@ module.exports = {
     debug('dans findByPk');
     // query for my home
     const result = await client.query(
-      `SELECT "home".id AS id, "home".name,
+      `SELECT "home".id AS id, "home".name,"home".password,
       to_json(array_agg(distinct home_task)) as home_tasks,
       to_json(array_agg(distinct "user")) as "users"
       FROM "home"
