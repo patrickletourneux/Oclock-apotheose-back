@@ -46,7 +46,7 @@ module.exports = {
 
     homeTask.home_task.forEach((taskH) => {
       const taskHome = taskH;
-      const taskAttributed = attributedTask.attributed_task.find((e) => e.id === taskHome.id);
+      const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
       if (taskAttributed) {
         taskHome.attributed = true;
       } else {
