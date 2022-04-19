@@ -44,6 +44,17 @@ INSERT INTO "reward" (title, description, home_id) VALUES
 ('Un bisou', 'Les perdants devront tous faire un bisou sur la main (gauche) du gagnant', 2)
 ;
 
+INSERT INTO "attributed_task" (user_id, home_task_id) VALUES
+(2, 4),
+(1, 3),
+(1, 9),
+(1, 10),
+(4, 11),
+(6, 13),
+(6, 15),
+(6, 17),
+(5, 16)
+;
 
 
 COMMIT;
