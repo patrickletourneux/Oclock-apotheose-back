@@ -2,7 +2,7 @@ const debug = require('debug')('ranking controller');
 const homeDataMapper = require('../../datamappers/home');
 const rankingDataMapper = require('../../datamappers/ranking');
 const rewardDataMapper = require('../../datamappers/reward');
-const sendMailRankingEndPeriod = require('../../helpers/sendMailRankingEndPeriod');
+const sendMailRanking = require('../../helpers/sendMailRanking');
 
 const {
   ApiError,
@@ -37,7 +37,7 @@ const rankingController = {
     if (!usersWithScore) {
       usersWithScore = [];
     }
-    const sendMail = await sendMailRankingEndPeriod.sendMail(usersWithScore);
+    const sendMail = await sendMailRanking.sendMail(usersWithScore);
     debug('sendMail', sendMail);
     return res.status(200).json(sendMail);
   },

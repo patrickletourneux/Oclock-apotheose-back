@@ -1,10 +1,9 @@
 require('dotenv').config();
 const debug = require('debug')('sendMailEndPeriod helper');
 const sendMailService = require('./sendMail');
-const rankingController = require('../controllers/api/ranking');
-const homeDatamapper = require('../datamappers/home');
 
-const sendMailEndPeriod = {
+const sendMailRanking = {
+  // to send a mail with ranking to a user
   async sendMail(usersWithScore) {
     debug('usersWithScore ', usersWithScore);
     // message formatage
@@ -36,19 +35,6 @@ const sendMailEndPeriod = {
     debug('done dans sendMailEndPeriod');
     return ('mails envoyés');
   },
-  async crontabSendMail() {
-    // get from dbb array of all homes ID
-    const homesId = await homeDatamapper.findAll();
-    let homesIdArray = [];
-    homesId.forEach((e) => {
-      homesIdArray.push(e.id);
-    });
-    debug(homesIdArray);
-    const usersWithScore = await rankingController.rankingCreation(1);
-    const sendMail = await sendMailEndPeriod.sendMail(usersWithScore);
-    debug('done dans crontabSendMail');
-    return ('mails envoyés');
-  },
 };
 
-module.exports = sendMailEndPeriod;
+module.exports = sendMailRanking;
