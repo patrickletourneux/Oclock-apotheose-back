@@ -59,7 +59,17 @@ module.exports = {
     const home = await homeDataMapper.findOneByPk(req.params.id);
     if (home) {
       debug('home:', home.id, ' a effacer de la bdd');
-      // delete the user in dbb
+      /**
+       * TODO
+       *
+       */
+      // before deleting, the home must have no users, the home will be deleted when when the last user of the home will be deleted
+      // need to delete the data associated to the home in bdd before delete the home
+      // attributed_task
+      // home_task
+      // done_task
+      // reward
+      // then delete the home
       const result = await homeDataMapper.delete(req.params.id);
       debug('result ', result);
       if (result) {

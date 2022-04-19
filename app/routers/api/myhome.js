@@ -13,7 +13,7 @@ router
      * @tags Myhome
      * @security BearerAuth
      * @param {number} id.path.required - user id identifier
-     * @return {Myhome}} 200 - success response - application/json
+     * @return {Myhome} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
