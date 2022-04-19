@@ -2,7 +2,8 @@ require('dotenv').config();
 const debug = require('debug')('sendMailEndPeriod helper');
 const sendMailService = require('./sendMail');
 
-const sendMailEndPeriod = {
+const sendMailRanking = {
+  // to send a mail with ranking to a user
   async sendMail(usersWithScore) {
     debug('usersWithScore ', usersWithScore);
     // message formatage
@@ -31,9 +32,9 @@ const sendMailEndPeriod = {
     });
 
     await Promise.all(mailsToSend);
-    debug('done');
+    debug('done dans sendMailEndPeriod');
     return ('mails envoyés');
   },
 };
 
-module.exports = sendMailEndPeriod;
+module.exports = sendMailRanking;
