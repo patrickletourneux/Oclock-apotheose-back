@@ -10,6 +10,10 @@ module.exports = {
     // check if a home exist in dbb for this id, id in req.params.id
     const home = await homeDataMapper.findOneByPk(req.params.id);
     // debug(home);
+    /**
+     * TODO
+     */
+    // if reward is empty, error en front
     if (!home) {
       debug('pas de home trouvé pour cet id');
       throw new ApiError('home not found', { statusCode: 404 });

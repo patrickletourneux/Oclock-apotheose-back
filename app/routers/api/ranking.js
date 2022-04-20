@@ -13,7 +13,7 @@ router
      * @tags Ranking
      * @security BearerAuth
      * @param {number} id.path.required - home id identifier
-     * @return {Ranking}} 200 - success response - application/json
+     * @return {Ranking} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
@@ -24,7 +24,7 @@ router
      * @tags Ranking
      * @security BearerAuth
      * @param {number} id.path.required - home id identifier
-     * @return {Ranking}} 200 - success response - application/json
+     * @return {Ranking} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
