@@ -1,6 +1,7 @@
 require('dotenv').config({
   path: '/var/www/html/Z_c_du_props/projet-c-du-props-back/.env',
 });
+const schedule = require('node-schedule');
 
 const debug = require('debug')('sendMailRankingCrontab helper');
 const rankingController = require('../controllers/api/ranking');
@@ -17,7 +18,7 @@ const sendMailEndPeriodCrontab = {
       homesIdArray.push(e.id);
     });
     debug(homesIdArray);
-    const mailsToSend = homesIdArray.map(async id => {
+    const mailsToSend = homesIdArray.map(async (id) => {
       const usersWithScore = await rankingController.rankingCreation(id);
       const sendMail = await sendMailRanking.sendMail(usersWithScore);
     });
@@ -27,4 +28,9 @@ const sendMailEndPeriodCrontab = {
   },
 };
 
-sendMailEndPeriodCrontab.crontabSendMail();
+// to send every sunday at 23h50
+// const sendMail = schedule.scheduleJob('47 * * * *', () => {
+const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
+  debug('sendMailCrontab with Node Schedule');
+  sendMailEndPeriodCrontab.crontabSendMail();
+});

@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 
+// require for periodic send mail
+const sendMailRankingCrontab = require('./services/sendMailRankingCrontab');
+
 const router = require('./routers');
 
 const app = express();
