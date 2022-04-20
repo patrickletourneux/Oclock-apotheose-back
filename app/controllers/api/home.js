@@ -1,8 +1,6 @@
 const debug = require('debug')('home controller');
 const homeDataMapper = require('../../datamappers/home');
 const userDataMapper = require('../../datamappers/user');
-const homeTaskDataMapper = require('../../datamappers/home_task');
-const rewardDataMapper = require('../../datamappers/reward');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
@@ -62,7 +60,7 @@ module.exports = {
     if (home) {
       debug('home:', home.id, ' a effacer de la bdd');
       // before deleting, the home must have no users,
-      // the home will be deleted when the last user of the home will be deleted 
+      // the home will be deleted when the last user of the home will be deleted
       // (users are deleted with attributed_task and done_task)
       // home_task
       // reward

@@ -1,6 +1,5 @@
 const debug = require('debug')('mytasks datamapper');
 const client = require('../config/db');
-const { findDoneTaskCountByUserId } = require('./dashboard');
 
 /**
  * @typedef {object} Mytasks

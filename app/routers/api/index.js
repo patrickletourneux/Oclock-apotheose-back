@@ -1,7 +1,6 @@
 const express = require('express');
 const debug = require('debug')('router index');
 const verifyToken = require('../../helpers/verifyToken');
-const verifyAccess = require('../../helpers/verifyAccessRights');
 
 const userRouter = require('./user');
 const signinRouter = require('./signin');

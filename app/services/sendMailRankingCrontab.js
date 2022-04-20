@@ -20,7 +20,7 @@ const sendMailEndPeriodCrontab = {
     debug(homesIdArray);
     const mailsToSend = homesIdArray.map(async (id) => {
       const usersWithScore = await rankingController.rankingCreation(id);
-      const sendMail = await sendMailRanking.sendMail(usersWithScore);
+      await sendMailRanking.sendMail(usersWithScore);
     });
     await Promise.all(mailsToSend);
     debug('done dans crontabSendMail');
@@ -29,7 +29,7 @@ const sendMailEndPeriodCrontab = {
 };
 
 // to send every sunday at 23h50
-// const sendMail = schedule.scheduleJob('47 * * * *', () => {
+// const sendMail = schedule.scheduleJob('04 * * * *', () => {
 const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
   debug('sendMailCrontab with Node Schedule');
   sendMailEndPeriodCrontab.crontabSendMail();
