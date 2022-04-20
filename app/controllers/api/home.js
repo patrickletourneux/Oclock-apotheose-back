@@ -1,6 +1,8 @@
 const debug = require('debug')('home controller');
 const homeDataMapper = require('../../datamappers/home');
 const userDataMapper = require('../../datamappers/user');
+const homeTaskDataMapper = require('../../datamappers/home_task');
+const rewardDataMapper = require('../../datamappers/reward');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
@@ -59,15 +61,10 @@ module.exports = {
     const home = await homeDataMapper.findOneByPk(req.params.id);
     if (home) {
       debug('home:', home.id, ' a effacer de la bdd');
-      /**
-       * TODO
-       *
-       */
-      // before deleting, the home must have no users, the home will be deleted when when the last user of the home will be deleted
-      // need to delete the data associated to the home in bdd before delete the home
-      // attributed_task
+      // before deleting, the home must have no users,
+      // the home will be deleted when the last user of the home will be deleted 
+      // (users are deleted with attributed_task and done_task)
       // home_task
-      // done_task
       // reward
       // then delete the home
       const result = await homeDataMapper.delete(req.params.id);

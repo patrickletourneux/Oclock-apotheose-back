@@ -1,8 +1,14 @@
 const debug = require('debug')('join_home controller');
-const homeDataMapper = require('../../datamappers/home');
-const userDataMapper = require('../../datamappers/user');
-const rankingDataMapper = require('../../datamappers/ranking');
+const homeDatamapper = require('../../datamappers/home');
+const userDatamapper = require('../../datamappers/user');
+const rankingDatamapper = require('../../datamappers/ranking');
+const attibutedTaskDatamapper = require('../../datamappers/attributed_task');
+const doneTaskDatamapper = require('../../datamappers/done_task');
+const homeTaskDataMapper = require('../../datamappers/home_task');
+const rewardDatamapper = require('../../datamappers/reward');
+
 const { ApiError } = require('../../helpers/errorHandler');
+const attributedTaskDataMapper = require('../../datamappers/attributed_task');
 
 /**
  * @typedef {object} JoinHome
@@ -21,7 +27,7 @@ module.exports = {
   async createOne(req, res) {
     debug('dans createOne');
     debug('req.body ', req.body);
-    const home = await homeDataMapper.findOneByPassword(req.body.home_password);
+    const home = await homeDatamapper.findOneByPassword(req.body.home_password);
     // check if home exist with the password in req.body
     if (!home) {
     //   debug('pas de home trouvé pour ce password');
@@ -29,7 +35,7 @@ module.exports = {
     }
     // debug(home);
     // check if user exist with the user_id in req.body
-    const user = await userDataMapper.findOneByPk(req.body.user_id);
+    const user = await userDatamapper.findOneByPk(req.body.user_id);
     if (!user) {
     //   debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
@@ -44,7 +50,7 @@ module.exports = {
     delete user.id;
     user.home_id = home.id;
     // debug(user);
-    const updatedUser = await userDataMapper.update(req.body.user_id, user);
+    const updatedUser = await userDatamapper.update(req.body.user_id, user);
     // debug(updatedUser);
     delete updatedUser.password;
     delete updatedUser.created_at;
@@ -52,32 +58,87 @@ module.exports = {
     return res.status(200).json(updatedUser);
   },
   async leaveHome(req, res) {
+    debug('dans leaveHome');
     /**
-     * TODO
+     * when a user leave a home we clean the bdd
      */
-    const homeIdToLeave = req.params.home_id;
+    const homeIdToLeave = req.params.id;
     const userIdToleave = req.body.user_id;
-    const home = await homeDataMapper.findOneByPk(homeIdToLeave);
+    const home = await homeDatamapper.findOneByPk(homeIdToLeave);
     if (!home) {
       throw new ApiError('home not found', { statusCode: 404 });
     }
-    const homeUsers = await rankingDataMapper.findUsersByHomeID(homeIdToLeave);
-    const user = await userDataMapper.findOneByPk(userIdToleave);
+    const homeUsers = await rankingDatamapper.findUsersByHomeID(homeIdToLeave);
+    const user = await userDatamapper.findOneByPk(userIdToleave);
     if (!user) {
       //   debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-    /**
-     * TODO test if user in homeUsers, if not throw error
-     */
-    if (userIdToleave !== home.user_id) {
-      debug(`case if the user is not the creator of the home (home.user_id)
-       delete all data linked to the user in the home attributed_task, done_task in the home `);
-    } else if (userIdToleave === home.user_id && homeUsers.length > 1) {
+    if (user.home_id !== home.id) {
+      throw new ApiError('user do not belong to the home', { statusCode: 404 });
+    }
+    if (user.home_id === home.id) {
+      debug('delete user data in the home');
+      let attibutedTasks = await attibutedTaskDatamapper.findAllByUserID(user.id);
+      if (!attibutedTasks) {
+        attibutedTasks = [];
+      }
+      debug('attibutedTasks ', attibutedTasks);
+      let doneTasks = await doneTaskDatamapper.findAllByUserID(user.id);
+      if (!doneTasks) {
+        doneTasks = [];
+      }
+      debug('doneTasks ', doneTasks);
+      const toDelete = [];
+      attibutedTasks.forEach((e) => {
+        const attibutedTaskToDelete = attributedTaskDataMapper.delete(e.id);
+        toDelete.push(attibutedTaskToDelete);
+      });
+      doneTasks.forEach((e) => {
+        const doneTaskToDelete = doneTaskDatamapper.delete(e.id);
+        toDelete.push(doneTaskToDelete);
+      });
+      await Promise.all(toDelete);
+    }
+    if (user.id !== home.user_id) {
+      user.home_id = null;
+      delete user.id;
+      const userUpdated = await userDatamapper.update(userIdToleave, user);
+      debug('user a quitté la maison');
+      res.status(200).json('user a quitté la maison');
+    } else if (user.id === home.user_id && homeUsers.length > 1) {
       debug(`if the user is the creator of the home and not the last user of the home, change the creator to another user
       then  delete all data linked to the user in the home attributed_task, done_task in the home `);
-    } else if (userIdToleave === home.user_id && homeUsers.length === 1) {
+      const newCreator = homeUsers.find((e) => e.id !== user.id);
+      home.user_id = newCreator.id;
+      delete home.id;
+      const homeUpdate = await homeDatamapper.update(homeIdToLeave, home);
+      user.home_id = null;
+      delete user.id;
+      const userUpdated = await userDatamapper.update(userIdToleave, user);
+      res.status(200).json('user a quitté la maison');
+    } else if (user.id === home.user_id && homeUsers.length === 1) {
       debug('if the user is the creator of the home and is the last user of the home, delete the home');
+      const toDelete = [];
+      let homeTasks = await homeTaskDataMapper.findAllByHomeId(home.id);
+      if (!homeTasks) {
+        homeTasks = [];
+      }
+      homeTasks.forEach((e) => {
+        const homeTaskToDelete = homeTaskDataMapper.delete(e.id);
+        toDelete.push(homeTaskToDelete);
+      });
+      await Promise.all(toDelete);
+      const reward = await rewardDatamapper.findOneByHomeId(home.id);
+      if (reward) {
+        const rewardToDelete = await rewardDatamapper.delete(reward.id);
+      }
+      user.home_id = null;
+      delete user.id;
+      const userUpdated = await userDatamapper.update(userIdToleave, user);
+      const deleteHome = await homeDatamapper.delete(home.id);
+      debug('user a quitté la maison et la maison a été détruite');
+      res.status(200).json('user a quitté la maison et la maison a été détruite');
     }
   },
 };

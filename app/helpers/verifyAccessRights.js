@@ -8,7 +8,7 @@ module.exports = {
   async checkHomeIdAccess(req, res, next) {
     if (process.env.SERVEROVH === 'N') {
       debug('ATTENTION test home non actif, besoin d effacer le next() de la ligne suivante pour l activer ');
-      next();
+      return next();
     }
     // debug('res.tokenUserId', res.tokenUserId);
     // debug('res.tokenHomeId', res.tokenHomeId);
@@ -33,14 +33,15 @@ module.exports = {
     // debug('res.tokenUserId', res.tokenUserId);
     const userId = req.params.id;
     // debug('userId :', userId);
+    if (process.env.SERVEROVH === 'N') {
+      debug('ATTENTION test home non actif, besoin d effacer le next() de la ligne suivante pour l activer ');
+      return next();
+    }
     if (res.tokenUserId && res.tokenUserId === userId) {
       debug('acces user ok');
-      next();
-    } else {
-      debug('acces user NOK');
-      debug('ATTENTION test user non actif, besoin d effacer le next() de la ligne suivante pour l activer et decommenter ligne throw error');
-      next();
-      // throw new ApiError('acces user non valide pour cet url', {statusCode: 401,});
+      return next();
     }
+    debug('acces user NOK');
+    throw new ApiError('acces user non valide pour cet url', { statusCode: 401 });
   },
 };

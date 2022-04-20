@@ -54,6 +54,14 @@ const rewardDataMapper = {
     }
     return result.rows[0];
   },
+  async findOneByHomeId(homeId) {
+    debug('dans findOneByHomeId');
+    const result = await client.query('SELECT * FROM "reward" WHERE home_id = $1;', [homeId]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
   // find by home id needed for ranking vue
   async findOneByHomeID(id) {
     debug('dans findByHomeId');

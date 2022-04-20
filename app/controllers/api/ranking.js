@@ -96,7 +96,7 @@ const rankingController = {
       users: newUsers,
       reward,
     };
-    debug(obj);
+    // debug(obj);
     return obj;
   },
 };

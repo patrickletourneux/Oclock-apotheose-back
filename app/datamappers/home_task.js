@@ -50,6 +50,14 @@ const homeTaskDataMapper = {
     }
     return result.rows[0];
   },
+  async findAllByHomeId(homeId) {
+    debug('dans findAllByHomeId');
+    const result = await client.query('SELECT * FROM "home_task" WHERE home_id = $1;', [homeId]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows;
+  },
 
   /**
      * Supprime de la base de données
