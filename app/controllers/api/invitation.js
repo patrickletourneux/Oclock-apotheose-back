@@ -20,7 +20,7 @@ module.exports = {
       req.body.email,
       // ne pas depasser le nombre de caractères max pour le subject
       'Cduprops invitation ',
-      `rejoins la maison ${home.id.toString()} avec le mot de passe ${home.password.toString()} `,
+      `rejoins la maison "${home.name}" avec le code "${home.password.toString()}" `,
     );
     debug('envoi message', envoi);
 
