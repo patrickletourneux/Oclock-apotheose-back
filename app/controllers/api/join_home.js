@@ -1,6 +1,7 @@
 const debug = require('debug')('join_home controller');
 const homeDataMapper = require('../../datamappers/home');
 const userDataMapper = require('../../datamappers/user');
+const rankingDataMapper = require('../../datamappers/ranking');
 const { ApiError } = require('../../helpers/errorHandler');
 
 /**
@@ -49,5 +50,34 @@ module.exports = {
     delete updatedUser.created_at;
 
     return res.status(200).json(updatedUser);
+  },
+  async leaveHome(req, res) {
+    /**
+     * TODO
+     */
+    const homeIdToLeave = req.params.home_id;
+    const userIdToleave = req.body.user_id;
+    const home = await homeDataMapper.findOneByPk(homeIdToLeave);
+    if (!home) {
+      throw new ApiError('home not found', { statusCode: 404 });
+    }
+    const homeUsers = await rankingDataMapper.findUsersByHomeID(homeIdToLeave);
+    const user = await userDataMapper.findOneByPk(userIdToleave);
+    if (!user) {
+      //   debug('pas de user trouvé pour cet id');
+      throw new ApiError('user not found', { statusCode: 404 });
+    }
+    /**
+     * TODO test if user in homeUsers, if not throw error
+     */
+    if (userIdToleave !== home.user_id) {
+      debug(`case if the user is not the creator of the home (home.user_id)
+       delete all data linked to the user in the home attributed_task, done_task in the home `);
+    } else if (userIdToleave === home.user_id && homeUsers.length > 1) {
+      debug(`if the user is the creator of the home and not the last user of the home, change the creator to another user
+      then  delete all data linked to the user in the home attributed_task, done_task in the home `);
+    } else if (userIdToleave === home.user_id && homeUsers.length === 1) {
+      debug('if the user is the creator of the home and is the last user of the home, delete the home');
+    }
   },
 };

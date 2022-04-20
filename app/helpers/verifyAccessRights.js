@@ -6,9 +6,10 @@ const { ApiError } = require('./errorHandler');
 
 module.exports = {
   async checkHomeIdAccess(req, res, next) {
-    debug('ATTENTION test home non actif, besoin d effacer le next() de la ligne suivante pour l activer ');
-    return next();
-
+    if (process.env.SERVEROVH === 'N') {
+      debug('ATTENTION test home non actif, besoin d effacer le next() de la ligne suivante pour l activer ');
+      next();
+    }
     // debug('res.tokenUserId', res.tokenUserId);
     // debug('res.tokenHomeId', res.tokenHomeId);
     // debug('req.params.id ', req.params.id);
@@ -25,7 +26,7 @@ module.exports = {
       next();
     } else {
       debug('acces home NOK');
-      throw new ApiError('acces user non valide pour cet url', {statusCode: 401,});
+      throw new ApiError('acces user non valide pour cet url', { statusCode: 401 });
     }
   },
   checkUserIdAccess(req, res, next) {

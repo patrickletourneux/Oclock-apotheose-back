@@ -22,4 +22,19 @@ router
          */
   .post(validate('body', joinHomeSchema), controllerHandler(controller.createOne));
 
+router
+  .route('/:id(\\d+)')
+  /**
+     * DELETE /api/v1/join_home/{home_id}
+     * @summary user leave home
+     * @tags joinHome
+     * @security BearerAuth
+     * @param {number} id.path.required - user id identifier
+     * @return {boolean} 200 - success response - application/json
+    //  * @return {ApiError} 400 - Bad request response - application/json
+    //  * @return {ApiError} 404 - User not found - application/json
+     */
+  // .delete(controllerHandler(userController.delete));
+  .delete(controllerHandler(controller.leaveHome));
+
 module.exports = router;
