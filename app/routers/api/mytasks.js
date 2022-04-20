@@ -13,7 +13,7 @@ router
      * @tags Mytasks
      * @security BearerAuth
      * @param {number} id.path.required - user id identifier
-     * @return {Mytasks}} 200 - success response - application/json
+     * @return {Mytasks} 200 - success response - application/json
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */

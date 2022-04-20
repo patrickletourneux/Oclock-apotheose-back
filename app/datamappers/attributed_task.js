@@ -47,6 +47,14 @@ const attributedTaskDataMapper = {
     }
     return result.rows[0];
   },
+  async findAllByUserID(userId) {
+    debug('dans findAllByUserID');
+    const result = await client.query('SELECT * FROM "attributed_task" WHERE user_id = $1;', [userId]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows;
+  },
 
   /**
      * Supprime de la base de données

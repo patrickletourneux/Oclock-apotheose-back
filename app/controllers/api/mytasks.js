@@ -33,7 +33,7 @@ module.exports = {
       const newwTasks = [];
       homeTask.home_task.forEach((taskH) => {
         const taskHome = taskH;
-        taskHome.attributed = false;
+        taskHome.attributedTaskId = 0;
         newwTasks.push(taskHome);
       });
       const obj = {
@@ -48,9 +48,9 @@ module.exports = {
       const taskHome = taskH;
       const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
       if (taskAttributed) {
-        taskHome.attributed = true;
+        taskHome.attributedTaskId = taskAttributed.id;
       } else {
-        taskHome.attributed = false;
+        taskHome.attributedTaskId = 0;
       }
       newTasks.push(taskHome);
     });

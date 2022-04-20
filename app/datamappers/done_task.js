@@ -1,5 +1,6 @@
 const debug = require('debug')('done_task datamapper');
 const client = require('../config/db');
+const { findAllByUserID } = require('./attributed_task');
 
 /**
  * @typedef {object} DoneTask
@@ -22,7 +23,7 @@ const doneTaskDataMapper = {
   /**
      * Ajoute une done_task associé à une maison et à un user dans la base de donnée
      * @param {CreateDoneTask} done_task - Les données à insérer
-     * @returns {DoneTask} - La done_task insérée
+     * @returns {DoneTask} - la done_task insérée
      */
   async insert(doneTask) {
     debug('dans insert');
@@ -51,6 +52,14 @@ const doneTaskDataMapper = {
       return undefined;
     }
     return result.rows[0];
+  },
+  async findAllByUserID(userId) {
+    debug('dans findAllByUserID');
+    const result = await client.query('SELECT * FROM "done_task" WHERE user_id = $1;', [userId]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows;
   },
 
   /**
