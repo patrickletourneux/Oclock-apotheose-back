@@ -1,7 +1,6 @@
 const debug = require('debug')('generic_task datamapper');
 const client = require('../config/db');
 
-
 /**
  * @typedef {object} GenericTasks
  */

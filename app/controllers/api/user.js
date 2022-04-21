@@ -121,7 +121,8 @@ module.exports = {
       // need to delete the data associated to the user in bdd before delete the user
       // attributed_task
       // done_task
-      // if user is the creator of the home and not the last user of the home , change the home.user_id for another user of the home and change user.home_id to null
+      // if user is the creator of the home and not the last user of the home ,
+      // change the home.user_id for another user of the home and change user.home_id to null
       // if user is the last user of the home, change user.home_id to null then delete the home
       // then delete the user
       const result = await userDataMapper.delete(req.params.id);
