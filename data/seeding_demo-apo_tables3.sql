@@ -7,7 +7,7 @@ INSERT INTO "home_task" (name, value, home_id) VALUES
 ('Faire un repas', 35, 1),
 ('Aller au marcher', 55, 1),
 ('Faire les poussières', 40, 1),
-('S''occuper du composte', 30, 1),
+('S''occuper du compost', 30, 1),
 ('Changer les draps', 50, 1),
 ('Laver le linge au lavoir', 75, 1),
 ('Laver les draps au lavoir', 120, 1),
