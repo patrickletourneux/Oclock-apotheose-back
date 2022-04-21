@@ -54,6 +54,14 @@ const rewardDataMapper = {
     }
     return result.rows[0];
   },
+  async findOneByHomeId(homeId) {
+    debug('dans findOneByHomeId');
+    const result = await client.query('SELECT * FROM "reward" WHERE home_id = $1;', [homeId]);
+    if (result.rowCount === 0) {
+      return undefined;
+    }
+    return result.rows[0];
+  },
   // find by home id needed for ranking vue
   async findOneByHomeID(id) {
     debug('dans findByHomeId');
@@ -65,7 +73,7 @@ const rewardDataMapper = {
     return result.rows[0];
   },
   async findEndDatePeriod() {
-    const result = await client.query(`SELECT date_trunc('week',(now()+'7 days'::interval)) as end_at"`);
+    const result = await client.query('SELECT date_trunc(\'week\',(now()+\'7 days\'::interval)) as end_at"');
     debug(result.rows);
     return result.rows[0];
   },
