@@ -5,7 +5,7 @@ INSERT INTO "home_task" (name, value, home_id) VALUES
 ('Vider et nettoyer les pots de chambre', 75, 1),
 ('Nettoyer la vaisselle', 30, 1),
 ('Faire un repas', 35, 1),
-('Aller au marcher', 55, 1),
+('Aller au marché', 55, 1),
 ('Faire les poussières', 40, 1),
 ('S''occuper du compost', 30, 1),
 ('Changer les draps', 50, 1),
@@ -26,7 +26,7 @@ INSERT INTO "home_task" (name, value, home_id) VALUES
 
 INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ('Faire un repas', 35, 1, 1),
-('Aller au marcher', 55, 1, 2),
+('Aller au marché', 55, 1, 2),
 ('Faire un repas', 35, 1, 2),
 ('Passer le balais', 50, 1,2),
 ('Laver le linge au lavoir', 75, 1, 1),
