@@ -1,6 +1,5 @@
 const debug = require('debug')('done_task datamapper');
 const client = require('../config/db');
-const { findAllByUserID } = require('./attributed_task');
 
 /**
  * @typedef {object} DoneTask

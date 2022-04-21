@@ -4,6 +4,7 @@ const controller = require('../../controllers/api/dashboard');
 const controllerHandler = require('../../helpers/controllerHandler');
 
 const router = express.Router();
+const verifyAccess = require('../../helpers/verifyAccessRights');
 
 router
   .route('/:id(\\d+)')
@@ -17,6 +18,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
-  .get(controllerHandler(controller.findOneByPk));
+  .get(verifyAccess.checkUserIdAccess, controllerHandler(controller.findOneByPk));
 
 module.exports = router;

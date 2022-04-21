@@ -20,7 +20,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (user) {
       debug('user deja existant avec cet email pas possible de cree');
-      throw new ApiError('user already exist', { statusCode: 409 });
+      throw new ApiError('Un compte est déjà associé à cette adresse mail', { statusCode: 409 });
     }
     debug('pas de user trouvé, user à creer dans bdd');
     // encrypt password with bcrypt
@@ -48,7 +48,7 @@ module.exports = {
     const user = await userDataMapper.findOneByEmail(req.body.email);
     if (!user) {
       debug('pas de user trouvé');
-      throw new ApiError('user not found', { statusCode: 404 });
+      throw new ApiError('Email et/ou mot de passe incorrect', { statusCode: 401 });
     }
     debug('user trouvé pour cet email');
     // check password with bcrypt
@@ -76,7 +76,7 @@ module.exports = {
     } else {
       // sinon je lui envoie un message d'erreur
       debug('password nok');
-      throw new ApiError('error in login/password', { statusCode: 401 });
+      throw new ApiError('Email et/ou mot de passe incorrect', { statusCode: 401 });
     }
   },
   /**
@@ -121,7 +121,8 @@ module.exports = {
       // need to delete the data associated to the user in bdd before delete the user
       // attributed_task
       // done_task
-      // if user is the creator of the home and not the last user of the home , change the home.user_id for another user of the home and change user.home_id to null
+      // if user is the creator of the home and not the last user of the home ,
+      // change the home.user_id for another user of the home and change user.home_id to null
       // if user is the last user of the home, change user.home_id to null then delete the home
       // then delete the user
       const result = await userDataMapper.delete(req.params.id);

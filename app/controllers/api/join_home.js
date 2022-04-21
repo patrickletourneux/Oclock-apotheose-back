@@ -103,7 +103,7 @@ module.exports = {
     if (user.id !== home.user_id) {
       user.home_id = null;
       delete user.id;
-      const userUpdated = await userDatamapper.update(userIdToleave, user);
+      await userDatamapper.update(userIdToleave, user);
       debug('user a quitté la maison');
       res.status(200).json('user a quitté la maison');
     } else if (user.id === home.user_id && homeUsers.length > 1) {
@@ -112,10 +112,10 @@ module.exports = {
       const newCreator = homeUsers.find((e) => e.id !== user.id);
       home.user_id = newCreator.id;
       delete home.id;
-      const homeUpdate = await homeDatamapper.update(homeIdToLeave, home);
+      await homeDatamapper.update(homeIdToLeave, home);
       user.home_id = null;
       delete user.id;
-      const userUpdated = await userDatamapper.update(userIdToleave, user);
+      await userDatamapper.update(userIdToleave, user);
       res.status(200).json('user a quitté la maison');
     } else if (user.id === home.user_id && homeUsers.length === 1) {
       debug('if the user is the creator of the home and is the last user of the home, delete the home');
@@ -131,12 +131,12 @@ module.exports = {
       await Promise.all(toDelete);
       const reward = await rewardDatamapper.findOneByHomeId(home.id);
       if (reward) {
-        const rewardToDelete = await rewardDatamapper.delete(reward.id);
+        await rewardDatamapper.delete(reward.id);
       }
       user.home_id = null;
       delete user.id;
-      const userUpdated = await userDatamapper.update(userIdToleave, user);
-      const deleteHome = await homeDatamapper.delete(home.id);
+      await userDatamapper.update(userIdToleave, user);
+      await homeDatamapper.delete(home.id);
       debug('user a quitté la maison et la maison a été détruite');
       res.status(200).json('user a quitté la maison et la maison a été détruite');
     }

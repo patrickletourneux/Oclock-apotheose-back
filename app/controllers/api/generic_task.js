@@ -1,6 +1,5 @@
 const debug = require('debug')('generic_task controller');
 const genericTaskDataMapper = require('../../datamappers/genericTask');
-const { ApiError } = require('../../helpers/errorHandler');
 
 const genericTaskController = {
   /**
