@@ -2,10 +2,9 @@ const Joi = require('joi');
 
 const rewardUpdateSchema = Joi.object({
   title: Joi.string()
-    .min(1)
-    .max(35),
+    .max(80),
   description: Joi.string()
-    .max(50),
+    .max(150),
 }).required().min(1).max(2);
 
 module.exports = rewardUpdateSchema;
