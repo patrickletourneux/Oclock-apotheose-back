@@ -18,47 +18,48 @@ module.exports = {
       debug('pas de home trouvé pour ce user id');
       throw new ApiError('pas de home trouvé pour ce user id', { statusCode: 404 });
     }
-    let homeTask = await mytasksDataMapper.findHomeTaskByHomeId(user.home_id);
-    // debug('homeTask.home_task', homeTask.home_task);
-    if (!homeTask) {
-      homeTask = [];
-    }
     let doneTasks = await mytasksDataMapper.findDoneTaskByUserId(user.id);
     if (!doneTasks) {
       doneTasks = [];
     }
-    let attributedTask = await mytasksDataMapper.findAttributedTaskByUserId(user.id);
-    if (!attributedTask) {
-      attributedTask = [];
-      const newwTasks = [];
-      homeTask.home_task.forEach((taskH) => {
-        const taskHome = taskH;
-        taskHome.attributedTaskId = 0;
-        newwTasks.push(taskHome);
-      });
+    let homeTask = await mytasksDataMapper.findHomeTaskByHomeId(user.home_id);
+    // debug('homeTask.home_task', homeTask.home_task);
+    if (!homeTask) {
+      homeTask = [];
       const obj = {
-        home_tasks: newwTasks,
+        home_tasks: homeTask,
         done_tasks: doneTasks,
       };
       return res.status(200).json(obj);
     }
+    let attributedTask = await mytasksDataMapper.findAttributedTaskByUserId(user.id);
     const newTasks = [];
-
-    homeTask.home_task.forEach((taskH) => {
-      const taskHome = taskH;
-      const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
-      if (taskAttributed) {
-        taskHome.attributedTaskId = taskAttributed.id;
-      } else {
+    // if 0 attributed to the user
+    if (!attributedTask) {
+      attributedTask = [];
+      homeTask.home_task.forEach((taskH) => {
+        const taskHome = taskH;
+        // 0 in front will be interpreted as not attributed
         taskHome.attributedTaskId = 0;
-      }
-      newTasks.push(taskHome);
-    });
+        newTasks.push(taskHome);
+      });
+    } else {
+      homeTask.home_task.forEach((taskH) => {
+        const taskHome = taskH;
+        const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
+        if (taskAttributed) {
+          taskHome.attributedTaskId = taskAttributed.id;
+        } else {
+          // 0 in front will be interpreted as not attributed
+          taskHome.attributedTaskId = 0;
+        }
+        newTasks.push(taskHome);
+      });
+    }
     const obj = {
       home_tasks: newTasks,
       done_tasks: doneTasks,
     };
-
     return res.status(200).json(obj);
   },
 };

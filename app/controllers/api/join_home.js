@@ -2,7 +2,6 @@ const debug = require('debug')('join_home controller');
 const homeDatamapper = require('../../datamappers/home');
 const userDatamapper = require('../../datamappers/user');
 const rankingDatamapper = require('../../datamappers/ranking');
-const attibutedTaskDatamapper = require('../../datamappers/attributed_task');
 const doneTaskDatamapper = require('../../datamappers/done_task');
 const homeTaskDataMapper = require('../../datamappers/home_task');
 const rewardDatamapper = require('../../datamappers/reward');
@@ -79,7 +78,7 @@ module.exports = {
     }
     if (user.home_id === home.id) {
       debug('delete user data in the home');
-      let attibutedTasks = await attibutedTaskDatamapper.findAllByUserID(user.id);
+      let attibutedTasks = await attributedTaskDataMapper.findAllByUserID(user.id);
       if (!attibutedTasks) {
         attibutedTasks = [];
       }
