@@ -28,7 +28,7 @@ INSERT INTO "done_task" (name, value, home_id, user_id) VALUES
 ('Faire un repas', 35, 1, 1),
 ('Aller au marché', 55, 1, 2),
 ('Faire un repas', 35, 1, 2),
-('Passer le balais', 50, 1,2),
+('Passer le balais', 50, 1, 2),
 ('Laver le linge au lavoir', 75, 1, 1),
 ('Faire un repas', 35, 1, 1),
 ('Mettre la table', 15, 2, 4),
