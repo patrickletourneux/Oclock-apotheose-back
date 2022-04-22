@@ -94,9 +94,6 @@ module.exports = {
      */
   async delete(id) {
     debug('dans delete');
-    /**
-    * TODO delete home task , attributed_task, done_task,link to home before delete the home
-     */
     const result = await client.query('DELETE FROM "home" WHERE id = $1', [id]);
     // Soit il a supprimer un enregistrement et
     // le rowcount est égal à 1 (truthy)soit non et il est égal a 0 (falsy)
