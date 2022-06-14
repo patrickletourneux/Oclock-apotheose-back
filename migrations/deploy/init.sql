@@ -47,7 +47,7 @@ CREATE TABLE "done_task" (
 CREATE TABLE "reward" (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   title TEXT DEFAULT NULL,
-  description TEXT DEFAULT NULL,
+  "description" TEXT DEFAULT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   home_id INT REFERENCES "home"(id) NOT NULL UNIQUE
 );
