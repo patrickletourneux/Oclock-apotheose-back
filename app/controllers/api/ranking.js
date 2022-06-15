@@ -2,7 +2,7 @@ const debug = require('debug')('ranking controller');
 const homeDataMapper = require('../../datamappers/home');
 const rankingDataMapper = require('../../datamappers/ranking');
 const rewardDataMapper = require('../../datamappers/reward');
-const sendMailRanking = require('../../helpers/sendMailRanking');
+const sendMailRanking = require('../../services/sendMailRankingOneHome');
 
 const {
   ApiError,
@@ -26,13 +26,14 @@ const rankingController = {
   },
   /**
      * ranking controller to send a mail with ranking to all users of the home.
+     * use to test the functionnality when we ask this route
      * ExpressMiddleware signature
      * @param {object} req Express request object (not used)
      * @param {object} res Express response object
      * @returns {Ranking} Route API JSON response
      */
-  async sendMailRankingEndPeriod(req, res) {
-    debug('sendMailRankingEndPeriod');
+  async sendMailRankingForOneHome(req, res) {
+    debug('sendMailRankingForOneHome in controller');
     let usersWithScore = await rankingController.rankingCreation(req.params.id);
     if (!usersWithScore) {
       usersWithScore = [];
@@ -41,6 +42,9 @@ const rankingController = {
     debug('sendMail', sendMail);
     return res.status(200).json(sendMail);
   },
+  // return an object with 2 properties
+  // users wich is an array of user with a rank
+  // reward , the home reaward
   async rankingCreation(homeID) {
     // check if a home exist in dbb for this id, id in req.params.id
     const home = await homeDataMapper.findOneByPk(homeID);
@@ -96,6 +100,7 @@ const rankingController = {
       users: newUsers,
       reward,
     };
+    // debug(obj);
     // debug(obj);
     return obj;
   },

@@ -1,6 +1,6 @@
 const debug = require('debug')('invitation controller');
 const homeDataMapper = require('../../datamappers/home');
-const sendMailService = require('../../helpers/sendMail');
+const sendMailService = require('../../services/sendMail');
 // const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {

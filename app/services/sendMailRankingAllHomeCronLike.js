@@ -3,10 +3,10 @@ require('dotenv').config({
 });
 const schedule = require('node-schedule');
 
-const debug = require('debug')('sendMailRankingCrontab helper');
+const debug = require('debug')('sendMailRankingAllHomeCronLike service');
 const rankingController = require('../controllers/api/ranking');
 const homeDatamapper = require('../datamappers/home');
-const sendMailRanking = require('../helpers/sendMailRanking');
+const sendMailRankingOneHome = require('./sendMailRankingOneHome');
 
 const sendMailEndPeriodCrontab = {
   // to send a mail with ranking for each user of each home
@@ -20,8 +20,9 @@ const sendMailEndPeriodCrontab = {
     debug(homesIdArray);
     const mailsToSend = homesIdArray.map(async (id) => {
       const usersWithScore = await rankingController.rankingCreation(id);
-      await sendMailRanking.sendMail(usersWithScore);
+      await sendMailRankingOneHome.sendMail(usersWithScore);
     });
+    debug('mailsToSend ', mailsToSend);
     await Promise.all(mailsToSend);
     debug('done dans crontabSendMail');
     return ('mails envoyés');
@@ -34,3 +35,6 @@ const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
   debug('sendMailCrontab with Node Schedule');
   sendMailEndPeriodCrontab.crontabSendMail();
 });
+
+sendMailEndPeriodCrontab.crontabSendMail();
+

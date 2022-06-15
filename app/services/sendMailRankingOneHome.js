@@ -1,5 +1,5 @@
 require('dotenv').config();
-const debug = require('debug')('sendMailEndPeriod helper');
+const debug = require('debug')('sendMailRankingOneHome service');
 const sendMailService = require('./sendMail');
 
 const sendMailRanking = {
@@ -20,7 +20,7 @@ const sendMailRanking = {
       message += `<tr><td> ${user.pseudonym} </td><td> ${user.rank} </td><td> ${user.score} </td></tr>`;
     });
     message += '</table>';
-    debug(message);
+    // debug(message);
     // pour chaque user on envoie un mail
     const mailsToSend = [];
     usersWithScore.users.forEach((user) => {

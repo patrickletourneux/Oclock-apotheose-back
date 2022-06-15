@@ -29,6 +29,6 @@ router
     //  * @return {ApiError} 400 - Bad request response - application/json
     //  * @return {ApiError} 404 - dashboard not found - application/json
      */
-  .post(controllerHandler(controller.sendMailRankingEndPeriod));
+  .post(controllerHandler(controller.sendMailRankingForOneHome));
 
 module.exports = router;

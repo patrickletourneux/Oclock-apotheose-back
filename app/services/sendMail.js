@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const debug = require('debug')('sendMail helper');
+const debug = require('debug')('sendMail service');
 
 const sendMail = async function send(email, sub, message) {
   /**
@@ -20,8 +20,8 @@ const sendMail = async function send(email, sub, message) {
     },
   });
   debug(email);
-  debug(sub);
-  debug(message);
+  // debug(sub);
+  // debug(message);
 
   const mailOptions = {
     from: 'cduprops',

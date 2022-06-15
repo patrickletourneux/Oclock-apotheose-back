@@ -8,6 +8,7 @@ const rewardDataMapper = require('../../datamappers/reward');
 const { ApiError } = require('../../helpers/errorHandler');
 
 module.exports = {
+  // need to return to fron all necessary data for dashboard vue
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
     // req.params.id is user.id
@@ -18,10 +19,6 @@ module.exports = {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-
-    /**
- * TODO to secure all cases if following data are undefined
- */
 
     // load data for front end vue and reword data to deliver to front end exactly the need
     const home = await homeDataMapper.findOneByPk(user.home_id);
