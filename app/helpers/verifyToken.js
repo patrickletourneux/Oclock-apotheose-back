@@ -38,7 +38,7 @@ module.exports = {
           next();
         }
       });
-    } else if (process.env.SERVEROVH === 'N') {
+    } else if (process.env.TOKEN_VERIFY_ACTIV === 'N') {
       debug('no token received in backend');
       debug('ATTENTION test token non actif');
       next();

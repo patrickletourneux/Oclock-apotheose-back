@@ -36,5 +36,5 @@ const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
   sendMailEndPeriodCrontab.crontabSendMail();
 });
 
-sendMailEndPeriodCrontab.crontabSendMail();
+// sendMailEndPeriodCrontab.crontabSendMail();
 
