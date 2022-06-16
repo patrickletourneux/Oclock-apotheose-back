@@ -31,15 +31,7 @@ const sendMail = async function send(email, sub, message) {
     html: message,
   };
 
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      debug('error ', err);
-      return err;
-      // throw new ApiError("problème lors de l'envoi du mail", { statusCode: 503 });
-    } else {
-      debug('info.accepted ', info.accepted);
-    }
-  });
+  return transporter.sendMail(mailOptions);
 };
 
 module.exports = sendMail;
