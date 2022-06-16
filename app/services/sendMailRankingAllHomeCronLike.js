@@ -30,8 +30,8 @@ const sendMailEndPeriodCrontab = {
 };
 
 // to send every sunday at 23h50
-// const sendMail = schedule.scheduleJob('04 * * * *', () => {
-const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
+const sendMail = schedule.scheduleJob('04 * * * *', () => {
+// const sendMail = schedule.scheduleJob('50 23 * * 7', () => {
   debug('sendMailCrontab with Node Schedule');
   sendMailEndPeriodCrontab.crontabSendMail();
 });

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const debug = require('debug')('sendMail service');
+const { ApiError } = require('../helpers/errorHandler');
 
 const sendMail = async function send(email, sub, message) {
   /**
@@ -33,8 +34,10 @@ const sendMail = async function send(email, sub, message) {
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       debug('error ', err);
+      return err;
+      // throw new ApiError("problème lors de l'envoi du mail", { statusCode: 503 });
     } else {
-      debug('info ', info);
+      debug('info.accepted ', info.accepted);
     }
   });
 };
