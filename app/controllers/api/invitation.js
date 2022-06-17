@@ -11,7 +11,7 @@ module.exports = {
      * @param {object} res Express response object
      * @returns {boolean} Route API JSON response
      */
-  async createOne(req, res) {
+  async createOne(req, res, next) {
     debug('dans createOne');
     debug('req.body ', req.body);
     const home = await homeDataMapper.findOneByPk(req.body.home_id);
@@ -27,13 +27,10 @@ module.exports = {
     try {
       const envoi = await transporterSendmail;
       debug('dans le try envoi.accepted', envoi.accepted);
-      // return 'mail envoyé';
-      return res.status(200).json('mail envoyé');
+      res.status(200).json('mail envoyé');
     } catch (error) {
       debug('dans le catch error ', error);
-      // return error;
-      // return res.status(500).json('error envoi mail');
-      throw new ApiError('error envoi mail', { statusCode: 500 });
+      next(new ApiError('error envoi mail', { statusCode: 500 }));
     }
   },
 };
