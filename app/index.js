@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const xssClean = require('xss-clean');
+const sanitizReqDomPurify = require('./helpers/sanitizeReqDomPurify');
 
 // require for periodic send mail
 const sendMailRankingCrontab = require('./services/sendMailRankingAllHomeCronLike');
@@ -18,6 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // sanitiz user input   protect against Cross-site scripting / XSS attacks
 app.use(xssClean());
+
+// sanitizer with isomorphic-DomPurify
+app.use(sanitizReqDomPurify('body'));
 
 // On lève la restriction CORS pour nos amis React
 app.use(cors(process.env.CORS_DOMAINS ?? '*'));
