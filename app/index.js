@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(xssClean());
 
 // sanitizer with isomorphic-DomPurify
-app.use(sanitizReqDomPurify('body'));
+// app.use(sanitizReqDomPurify('body'));
 
 // On lève la restriction CORS pour nos amis React
 app.use(cors(process.env.CORS_DOMAINS ?? '*'));

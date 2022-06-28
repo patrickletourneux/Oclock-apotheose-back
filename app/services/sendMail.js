@@ -31,6 +31,8 @@ const sendMail = async function send(email, sub, message) {
     html: message,
   };
 
+  // If callback argument is not set then the method returns a Promise object.
+  // https://nodemailer.com/usage/
   return transporter.sendMail(mailOptions);
 };
 
