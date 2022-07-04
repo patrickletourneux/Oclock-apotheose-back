@@ -37,7 +37,7 @@ module.exports = {
   // L'opérateur de "rest" permet de transformer
   // ici X variables en param. en un tableau
   async query(...params) {
-    debug(...params);
+    // debug(...params);
 
     // L'opérateur ici fait l'effet inverse on transforme
     // un tableau en une liste

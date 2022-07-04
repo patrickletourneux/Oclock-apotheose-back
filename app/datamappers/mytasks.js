@@ -54,7 +54,7 @@ module.exports = {
   },
 
   async findHomeTaskByHomeId(id) {
-    debug('dans findDoneTaskCountByUserId');
+    debug('dans findHomeTaskByHomeId');
     const result = await client.query(
       `select home.id as home_id,
       to_json(array_agg(distinct home_task)) as home_task
@@ -68,11 +68,12 @@ module.exports = {
       return undefined;
     }
 
+    debug(result.rows[0]);
     return result.rows[0];
   },
 
   async findDoneTaskByUserId(id) {
-    debug('dans findDoneTaskCountByUserId');
+    debug('dans findDoneTaskByUserId');
 
     const result = await client.query(
       `select "user".id as user_id,
@@ -95,10 +96,11 @@ module.exports = {
       // debug(result);
       return undefined;
     }
+    debug(result.rows[0]);
     return result.rows[0];
   },
   async findAttributedTaskByUserId(id) {
-    debug('dans findDoneTaskCountByUserId');
+    debug('dans findAttributedTaskByUserId');
 
     const result = await client.query(
       `select "user".id as user_id,
