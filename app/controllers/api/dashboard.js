@@ -7,20 +7,18 @@ const rewardDataMapper = require('../../datamappers/reward');
 
 const { ApiError } = require('../../helpers/errorHandler');
 
-module.exports = {
+const dashboardController = {
   // need to return to fron all necessary data for dashboard vue
-  async findOneByPk(req, res) {
-    debug('dans findOneByPk');
-    // req.params.id is user.id
-    // check if a user exist in dbb for this email, id in req.params.id
+  async getUserFromBdd(req) {
     const user = await userDataMapper.findOneByPk(req.params.id);
     // debug(user);
     if (!user) {
       debug('pas de user trouvé pour cet id');
       throw new ApiError('user not found', { statusCode: 404 });
     }
-
-    // load data for front end vue and reword data to deliver to front end exactly the need
+    return user;
+  },
+  async getHomeFromBdd(user) {
     const home = await homeDataMapper.findOneByPk(user.home_id);
     if (!home) {
       debug('pas de home trouvé pour cet id');
@@ -28,6 +26,16 @@ module.exports = {
     }
     delete home.created_at;
     delete home.password;
+    return home;
+  },
+
+  async findOneByPk(req, res) {
+    debug('dans findOneByPk');
+    // req.params.id is user.id
+    const user = await dashboardController.getUserFromBdd(req);
+    // load data for front end vue and reword data to deliver to front end exactly the need
+    const home = await dashboardController.getHomeFromBdd(user);
+
     const usersHome = await rankingDataMapper.findUsersByHomeID(user.home_id);
     if (usersHome) {
       home.userCount = usersHome.length;
@@ -98,3 +106,5 @@ module.exports = {
     return res.status(200).json(obj);
   },
 };
+
+module.exports = dashboardController;
