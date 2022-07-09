@@ -103,7 +103,6 @@ const dashboardController = {
     const homeUsers = await rankingDataMapper.findUsersByHomeID(user.home_id);
     const userScores = await dashboardController.getHomeScores(user);
     const homeRanking = await dashboardController.createHomeRanking(homeUsers, userScores);
-
     const firstUser = homeRanking[0];
     const currentUser = homeRanking.find((e) => e.id === user.id);
 
