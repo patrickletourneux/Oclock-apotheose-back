@@ -28,50 +28,51 @@ const dashboardController = {
     delete home.password;
     return home;
   },
-
-  async findOneByPk(req, res) {
-    debug('dans findOneByPk');
-    // req.params.id is user.id
-    const user = await dashboardController.getUserFromBdd(req);
-    // load data for front end vue and reword data to deliver to front end exactly the need
-    const home = await dashboardController.getHomeFromBdd(user);
-
+  async getNumberUsersinHome(user) {
     const usersHome = await rankingDataMapper.findUsersByHomeID(user.home_id);
+    let userCount = 0;
     if (usersHome) {
-      home.userCount = usersHome.length;
-    } else {
-      home.userCount = 0;
+      userCount = usersHome.length;
     }
+    return userCount;
+  },
+  async getHomeReward(user) {
     const reward = await rewardDataMapper.findOneByHomeID(user.home_id);
     if (!reward) {
       throw new ApiError('pas reward not found', { statusCode: 404 });
     }
     delete reward.created_at;
+    return reward;
+  },
+  async getNumberAttributedTaskToUser(user) {
     const attributedTask = await dashboardDataMapper.findAttributedTaskCountByUserId(user.id);
-    let attributedCount;
-    if (!attributedTask) {
-      attributedCount = 0;
-    } else {
+    let attributedCount = 0;
+    if (attributedTask) {
       attributedCount = parseInt(attributedTask.attributed_task_count, 10);
     }
+    return attributedCount;
+  },
+  async getNumberDoneTaskByUser(user) {
     const doneTask = await dashboardDataMapper.findDoneTaskCountByUserId(user.id);
-    let doneCount;
-    if (!doneTask) {
-      doneCount = 0;
-    } else {
+    let doneCount = 0;
+    if (doneTask) {
       doneCount = parseInt(doneTask.done_task_count, 10);
     }
+    return doneCount;
+  },
+  async getHomeScores(user) {
     let ranking = await rankingDataMapper.score(user.home_id);
     if (!ranking) {
       ranking = [];
     }
-    const users = await rankingDataMapper.findUsersByHomeID(user.home_id);
-
+    return ranking;
+  },
+  async createHomeRanking(homeUsers, userScores) {
     // rework data to generate ranking for front end vue
     const newUsers = [];
-    users.forEach((userH) => {
+    homeUsers.forEach((userH) => {
       const userHome = userH;
-      const userRank = ranking.find((e) => e.id === userHome.id);
+      const userRank = userScores.find((e) => e.id === userHome.id);
       if (userRank) {
         userHome.score = parseInt(userRank.score, 10);
       } else {
@@ -86,9 +87,25 @@ const dashboardController = {
       e.rank = i;
       i += 1;
     });
+    return newUsers;
+  },
 
-    const firstUser = newUsers[0];
-    const currentUser = newUsers.find((e) => e.id === user.id);
+  async findOneByPk(req, res) {
+    debug('dans findOneByPk');
+    // req.params.id is user.id
+    const user = await dashboardController.getUserFromBdd(req);
+    // load data for front end vue and reward data to deliver to front end exactly the need
+    const home = await dashboardController.getHomeFromBdd(user);
+    home.userCount = await dashboardController.getNumberUsersinHome(user);
+    const reward = await dashboardController.getHomeReward(user);
+    const attributedCount = await dashboardController.getNumberAttributedTaskToUser(user);
+    const doneCount = await dashboardController.getNumberDoneTaskByUser(user);
+    const homeUsers = await rankingDataMapper.findUsersByHomeID(user.home_id);
+    const userScores = await dashboardController.getHomeScores(user);
+    const homeRanking = await dashboardController.createHomeRanking(homeUsers, userScores);
+
+    const firstUser = homeRanking[0];
+    const currentUser = homeRanking.find((e) => e.id === user.id);
 
     // object to send to front end
     const obj = {
