@@ -41,10 +41,27 @@ const myTasksController = {
   async getAttributesTaskByUserId(user) {
     let attributedTask = await mytasksDataMapper.findAttributedTaskByUserId(user.id);
     if (!attributedTask) {
-      attributedTask = [];
+      attributedTask = {};
+      attributedTask.attributed_task = [];
     }
     return attributedTask;
   },
+  async createHomeTaskwithAttributedTaskId(homeTask, attributedTask) {
+    const newTasks = [];
+    homeTask.home_task.forEach((taskH) => {
+      const taskHome = taskH;
+      const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
+      if (taskAttributed) {
+        taskHome.attributedTaskId = taskAttributed.id;
+      } else {
+        // 0 in front will be interpreted as not attributed
+        taskHome.attributedTaskId = 0;
+      }
+      newTasks.push(taskHome);
+    });
+    return newTasks;
+  },
+
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
     // req.params.id is user.id
@@ -53,32 +70,11 @@ const myTasksController = {
     const home = await myTasksController.getHomeFromBdd(user);
     const doneTasks = await myTasksController.getDoneTaskByUserId(user);
     const homeTask = await myTasksController.getHomeTaskByHomeId(home);
-    let attributedTask = await myTasksController.getAttributesTaskByUserId(user);
-    const newTasks = [];
-    // if 0 attributed to the user
-    if (!attributedTask) {
-      attributedTask = [];
-      homeTask.home_task.forEach((taskH) => {
-        const taskHome = taskH;
-        // 0 in front will be interpreted as not attributed
-        taskHome.attributedTaskId = 0;
-        newTasks.push(taskHome);
-      });
-    } else {
-      homeTask.home_task.forEach((taskH) => {
-        const taskHome = taskH;
-        const taskAttributed = attributedTask.attributed_task.find((e) => e.home_task_id === taskHome.id);
-        if (taskAttributed) {
-          taskHome.attributedTaskId = taskAttributed.id;
-        } else {
-          // 0 in front will be interpreted as not attributed
-          taskHome.attributedTaskId = 0;
-        }
-        newTasks.push(taskHome);
-      });
-    }
+    const attributedTask = await myTasksController.getAttributesTaskByUserId(user);
+    const homeTaskwithAttributedTaskId = await myTasksController.createHomeTaskwithAttributedTaskId(homeTask, attributedTask);
+
     const obj = {
-      home_tasks: newTasks,
+      home_tasks: homeTaskwithAttributedTaskId,
       done_tasks: doneTasks,
     };
     return res.status(200).json(obj);
