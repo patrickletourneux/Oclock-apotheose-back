@@ -45,8 +45,7 @@ const rankingController = {
   // return an object with 2 properties
   // users wich is an array of user with a rank
   // reward , the home reaward
-  async rankingCreation(homeID) {
-    // check if a home exist in dbb for this id, id in req.params.id
+  async getHomeFromBddWithHomeId(homeID) {
     const home = await homeDataMapper.findOneByPk(homeID);
     // debug(home);
     if (!home) {
@@ -55,37 +54,34 @@ const rankingController = {
         statusCode: 404,
       });
     }
+    return home;
+  },
+  async getHomeScores(homeID) {
     let ranking = await rankingDataMapper.score(homeID);
     if (!ranking) {
       ranking = [];
     }
-    // debug(ranking);
-    const users = await rankingDataMapper.findUsersByHomeID(homeID);
-    // debug('users ', users);
-    let reward = await rewardDataMapper.findOneByHomeID(homeID);
+    return ranking;
+  },
+  async getHomeReward(homeID) {
+    const reward = await rewardDataMapper.findOneByHomeID(homeID);
     if (!reward) {
-      reward = {
-        title: 'no reward',
-        descrition: 'no reward',
-      };
+      throw new ApiError('pas reward not found', { statusCode: 404 });
     }
     delete reward.created_at;
-    // debug('reward ', reward);
-    // rework data for frontend need to deliver a clean ranking,
-    // pseudo merge ranking with users in newUsers
+    return reward;
+  },
+  async createHomeRanking(homeUsers, userScores) {
+    // rework data to generate ranking for front end vue
     const newUsers = [];
-
-    users.forEach((userH) => {
+    homeUsers.forEach((userH) => {
       const userHome = userH;
-      const userRank = ranking.find((e) => e.id === userHome.id);
+      const userRank = userScores.find((e) => e.id === userHome.id);
       if (userRank) {
-        // debug('userRank.score', userRank.score);
-        // debug('userRank', userRank);
         userHome.score = parseInt(userRank.score, 10);
       } else {
         userHome.score = 0;
       }
-      // debug('userHome ', userHome);
       newUsers.push(userHome);
     });
     // sort by score
@@ -95,13 +91,21 @@ const rankingController = {
       e.rank = i;
       i += 1;
     });
+    return newUsers;
+  },
+  async rankingCreation(homeID) {
+    // check if a home exist in dbb for this id, id in req.params.id
+    const home = await rankingController.getHomeFromBddWithHomeId(homeID);
+    const userScores = await rankingController.getHomeScores(homeID);
+    const homeUsers = await rankingDataMapper.findUsersByHomeID(homeID);
+    const reward = await rankingController.getHomeReward(homeID);
+    // rework data for frontend need to deliver a clean ranking,
+    const homeRanking = await rankingController.createHomeRanking(homeUsers, userScores);
+
     const obj = {
-      // ranking,
-      users: newUsers,
+      users: homeRanking,
       reward,
     };
-    // debug(obj);
-    // debug(obj);
     return obj;
   },
 };
