@@ -87,38 +87,70 @@ const dashboardController = {
       e.rank = i;
       i += 1;
     });
+    console.log(newUsers)
     return newUsers;
+  },
+
+  async buildDashboardData(req,res){
+        // req.params.id is user.id
+        const user = await dashboardController.getUserFromBdd(req);
+        // load data for front end vue and reward data to deliver to front end exactly the need
+        const home = await dashboardController.getHomeFromBdd(user);
+        home.userCount = await dashboardController.getNumberUsersinHome(user);
+        const reward = await dashboardController.getHomeReward(user);
+        const attributedCount = await dashboardController.getNumberAttributedTaskToUser(user);
+        const doneCount = await dashboardController.getNumberDoneTaskByUser(user);
+        const homeUsers = await rankingDataMapper.findUsersByHomeID(user.home_id);
+        const userScores = await dashboardController.getHomeScores(user);
+        const homeRanking = await dashboardController.createHomeRanking(homeUsers, userScores);
+        const firstUser = homeRanking[0];
+        const currentUser = homeRanking.find((e) => e.id === user.id);
+    
+        // object to send to front end
+        const obj = {
+          home,
+          reward,
+          tasks: {
+            user_attributed_task_count: attributedCount,
+            user_done_task_count: doneCount,
+          },
+          ranking: {
+            firstUser,
+            currentUser,
+          },
+        };
+        return obj;
   },
 
   async findOneByPk(req, res) {
     debug('dans findOneByPk');
     // req.params.id is user.id
-    const user = await dashboardController.getUserFromBdd(req);
-    // load data for front end vue and reward data to deliver to front end exactly the need
-    const home = await dashboardController.getHomeFromBdd(user);
-    home.userCount = await dashboardController.getNumberUsersinHome(user);
-    const reward = await dashboardController.getHomeReward(user);
-    const attributedCount = await dashboardController.getNumberAttributedTaskToUser(user);
-    const doneCount = await dashboardController.getNumberDoneTaskByUser(user);
-    const homeUsers = await rankingDataMapper.findUsersByHomeID(user.home_id);
-    const userScores = await dashboardController.getHomeScores(user);
-    const homeRanking = await dashboardController.createHomeRanking(homeUsers, userScores);
-    const firstUser = homeRanking[0];
-    const currentUser = homeRanking.find((e) => e.id === user.id);
+    const obj = await dashboardController.buildDashboardData(req,res);
+    // // load data for front end vue and reward data to deliver to front end exactly the need
+    // const home = await dashboardController.getHomeFromBdd(user);
+    // home.userCount = await dashboardController.getNumberUsersinHome(user);
+    // const reward = await dashboardController.getHomeReward(user);
+    // const attributedCount = await dashboardController.getNumberAttributedTaskToUser(user);
+    // const doneCount = await dashboardController.getNumberDoneTaskByUser(user);
+    // const homeUsers = await rankingDataMapper.findUsersByHomeID(user.home_id);
+    // const userScores = await dashboardController.getHomeScores(user);
+    // const homeRanking = await dashboardController.createHomeRanking(homeUsers, userScores);
+    // const firstUser = homeRanking[0];
+    // const currentUser = homeRanking.find((e) => e.id === user.id);
 
-    // object to send to front end
-    const obj = {
-      home,
-      reward,
-      tasks: {
-        user_attributed_task_count: attributedCount,
-        user_done_task_count: doneCount,
-      },
-      ranking: {
-        firstUser,
-        currentUser,
-      },
-    };
+    // // object to send to front end
+    // const obj = {
+    //   home,
+    //   reward,
+    //   tasks: {
+    //     user_attributed_task_count: attributedCount,
+    //     user_done_task_count: doneCount,
+    //   },
+    //   ranking: {
+    //     firstUser,
+    //     currentUser,
+    //   },
+    // };
     return res.status(200).json(obj);
   },
 };
