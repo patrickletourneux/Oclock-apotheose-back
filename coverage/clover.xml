@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1657808534036" clover="3.2.0">
-  <project timestamp="1657808534036" name="All files">
-    <metrics statements="887" coveredstatements="626" conditionals="39" coveredconditionals="27" methods="37" coveredmethods="18" elements="963" coveredelements="671" complexity="0" loc="887" ncloc="887" packages="6" files="11" classes="11"/>
+<coverage generated="1657827270325" clover="3.2.0">
+  <project timestamp="1657827270325" name="All files">
+    <metrics statements="887" coveredstatements="619" conditionals="37" coveredconditionals="26" methods="37" coveredmethods="17" elements="961" coveredelements="662" complexity="0" loc="887" ncloc="887" packages="6" files="11" classes="11"/>
     <package name="config">
       <metrics statements="48" coveredstatements="42" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <file name="db.js" path="/home/patrick2/1-projects/1-cduprops-back/Oclock-apotheose-back/app/config/db.js">
@@ -45,14 +45,14 @@
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="39" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="11" type="stmt"/>
-        <line num="41" count="11" type="stmt"/>
-        <line num="42" count="11" type="stmt"/>
-        <line num="43" count="11" type="stmt"/>
-        <line num="44" count="11" type="stmt"/>
-        <line num="45" count="11" type="stmt"/>
-        <line num="46" count="11" type="stmt"/>
-        <line num="47" count="11" type="stmt"/>
+        <line num="40" count="9" type="stmt"/>
+        <line num="41" count="9" type="stmt"/>
+        <line num="42" count="9" type="stmt"/>
+        <line num="43" count="9" type="stmt"/>
+        <line num="44" count="9" type="stmt"/>
+        <line num="45" count="9" type="stmt"/>
+        <line num="46" count="9" type="stmt"/>
+        <line num="47" count="9" type="stmt"/>
         <line num="48" count="1" type="stmt"/>
       </file>
     </package>
@@ -221,7 +221,7 @@
       </file>
     </package>
     <package name="datamappers">
-      <metrics statements="521" coveredstatements="348" conditionals="15" coveredconditionals="9" methods="23" coveredmethods="7"/>
+      <metrics statements="521" coveredstatements="341" conditionals="13" coveredconditionals="8" methods="23" coveredmethods="6"/>
       <file name="dashboard.js" path="/home/patrick2/1-projects/1-cduprops-back/Oclock-apotheose-back/app/datamappers/dashboard.js">
         <metrics statements="56" coveredstatements="52" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
@@ -633,7 +633,7 @@
         <line num="120" count="1" type="stmt"/>
       </file>
       <file name="user.js" path="/home/patrick2/1-projects/1-cduprops-back/Oclock-apotheose-back/app/datamappers/user.js">
-        <metrics statements="123" coveredstatements="79" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="1"/>
+        <metrics statements="123" coveredstatements="72" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -691,16 +691,16 @@
         <line num="55" count="1" type="stmt"/>
         <line num="56" count="1" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="58" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="2" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="62" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
         <line num="68" count="1" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
         <line num="70" count="1" type="stmt"/>
